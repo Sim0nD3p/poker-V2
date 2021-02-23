@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 })
 
 
-function Room({ id, name }) {
+function Room({ id, playerObject }) {
     const [joined, setJoined] = useState()
     const [players, setPlayers] = useState([]);
     const socket = useSocket();
@@ -23,19 +23,21 @@ function Room({ id, name }) {
 
 
     useEffect(() => {
-        let playerObject = {
+        console.log(playerObject);
+        /* let playerObject = {
             id: id,
             name: name
-        };
+        }; */
         if(socket){
             if (joined !== true) {
+                let name = playerObject.name;
                 socket.emit('join-room', { name, id });
                 setJoined(true);
             }
             console.log(socket);
             console.log(store.getState());
             socket.on('test', (arg) => {
-                console.log('this is disconnect socket');
+                //console.log('this is disconnect socket');
                 console.log(arg);
             });
             socket.on('player-left', (playerObject) => {
@@ -62,7 +64,7 @@ function Room({ id, name }) {
     return (
         players.map((player, index) => {
             return(
-                <Card elevation={5} className={classes.card}>
+                <Card key={index} elevation={5} className={classes.card}>
                     <Typography>{player.name}</Typography>
                 </Card>
             )

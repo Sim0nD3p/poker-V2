@@ -5,6 +5,16 @@ playersDisconnected = [];
 ids = [];
 
 io.on('connection', (socket) => {
+  console.log('New connection!!!');
+  //io.emit('test', socket);
+  const id = socket.handshake.query.id;
+  ids.push(id);
+  console.log(socket);
+  //console.log(ids);
+  socket.join('room')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
+
+
+
   socket.on('disconnect', (reason) => {
     console.log(socket.username + ' has disconnected!');
     let playerObject = {
@@ -22,11 +32,7 @@ io.on('connection', (socket) => {
     players.splice(index, 1);   //remove the disconnected player
     io.emit('players', players);  //send updated list to everyone
   })
-  console.log('New connection!!!');
-  const id = socket.handshake.query.id;
-  ids.push(id);
-  //console.log(ids);
-  socket.join('room')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
+  
 
   
 

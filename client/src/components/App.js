@@ -13,6 +13,7 @@ import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { ArrowBack } from '@material-ui/icons';
 
 import { addPlayer } from '../redux/actions/actions';
+import { Socket } from 'socket.io-client';
 
 const useStyles = makeStyles({
   container:{
@@ -31,51 +32,47 @@ const useStyles = makeStyles({
   }
 })
 
+/**
+ * Initial screen: newGame | joinGame
+ * newGame: create game with new gameId
+ * joinGame: ask for game id and join the room with the game id
+ * @param {*} param0 
+ */
 function InitialScreen({ submitName, submitGameId }){
   const classes = useStyles();
   const [newGame, isNewGame] = useState(true);
   let name;
   let gameId;
-  function createGame(){
+  function createGame(){  //createGame, will create and join the game with new gameId
     console.log('create game');
-    console.log(name);
     submitName(name);
-    submitGameId('gameId');
-
+    submitGameId('gameId');   //DEAL WITH GAMEID (link?, router?)(randomString?)(displayToUser?)
   }
-  function getName(e){
-    if(newGame == true){
+  function getName(e){  //get name from textField (input)
+    //if(newGame == true){
       name = e.target.value;
-      console.log(name);
-    }
+    //}
   }
-  function getGameId(e){
+  function getGameId(e){  //get gameId from textField (input)
     gameId = e.target.value;
-    console.log(gameId);
   }
-  function joinGame(){
+  function joinGame(){    //will run 2 times (when the user chose to join game and after he enters the gameId)
     console.log('join game');
-    isNewGame(false);
-    console.log(name);
-    console.log(gameId);
-    if(name){
+    isNewGame(false);   //will now render joinGame interface
+    if(name){     //submit name to app component (1st time it runs), will be undefined the 2nd time it runs(textField doesnt exist anymore)
       submitName(name);
     }
-    if(gameId !== undefined && gameId !== null && gameId !== ''){
-
-      console.log('gameId defined');
+    //submit the gameId to app component (2nd time it runs)
+    if(gameId !== undefined && gameId !== null && gameId !== ''){   //just to be sure it doesnt go to shit
       submitGameId(gameId);
-      console.log(name)
     }
-
   }
-  function back(){
+  function back(){    //go back if user changes mind
     isNewGame(true);
-
   }
+  //Initial screen with 2 options (createGame, joinGame)
   function Initial() {
     return (
-
       <Paper elevation={5} className={classes.container}>
         <TextField
           className={classes.textField}
@@ -94,6 +91,7 @@ function InitialScreen({ submitName, submitGameId }){
       </Paper>
     )
   }
+  //2nd screen when user wants to join game; ask for gameId
   function JoinGame() {
     return(
     <Paper
@@ -121,36 +119,41 @@ function InitialScreen({ submitName, submitGameId }){
 }
 
 
-function Content({ id, name }) {
+function SocketEnv({ playerObject }) {
+  //id might be useless
+  console.log(playerObject);
   return (
-    <SocketProvider id={id}>
-      <Room name={name} id={id}></Room>
-
+    <SocketProvider id={playerObject.id}>
+    
+      <Room playerObject={playerObject}></Room>
     </SocketProvider>
   )
 }
 
 
 function App(){
-  const [id, setId] = useState();
+  const [id, setId] = useState('thisIsIdBruh');
   const [name, setName] = useState();
   const [gameId, getGameId] = useState();
+  const [playerObject, setPlayerObject] = useState();
 
+  //runs everytime name or gameId get updated
   useEffect(() => {
-    console.log(name);
-    console.log(gameId);
-    console.log('useEffect main app');
-    let playerObject = {
+    console.log('update on name or gameId');
+    
+    setPlayerObject({
       id: id,
-      name, name
-    }
-    if(name){
+      name, name,
+      gameId: gameId
+    });
+    if(gameId){
       store.dispatch(addPlayer(playerObject));
       console.log(store.getState());  
     }
+    console.log(playerObject);
   }, [name, gameId]);  
   return (
-    gameId ? <Content id={id} name={name}/> : <InitialScreen submitName={setName} submitGameId={getGameId} />
+    gameId ? <SocketEnv id={id} playerObject={playerObject}/> : <InitialScreen submitName={setName} submitGameId={getGameId} />
   )
 }
 
