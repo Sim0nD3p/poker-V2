@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core';
 import { useSocket } from '../contexts/SocketProvider';
 import Room from './room';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
+import { ArrowBack } from '@material-ui/icons';
 
 import { addPlayer } from '../redux/actions/actions';
 
@@ -30,27 +31,92 @@ const useStyles = makeStyles({
   }
 })
 
-function CreateId({ submitName, submitId }){
+function InitialScreen({ submitName, submitGameId }){
   const classes = useStyles();
+  const [newGame, isNewGame] = useState(true);
   let name;
-  function generateIdString() {
+  let gameId;
+  function createGame(){
+    console.log('create game');
+    console.log(name);
     submitName(name);
-    submitId(uuidV4()); //random string for id (see uuidV4)
+    submitGameId('gameId');
+
   }
-  function textField(e){
-    name = e.target.value;
+  function getName(e){
+    if(newGame == true){
+      name = e.target.value;
+      console.log(name);
+    }
   }
+  function getGameId(e){
+    gameId = e.target.value;
+    console.log(gameId);
+  }
+  function joinGame(){
+    console.log('join game');
+    isNewGame(false);
+    console.log(name);
+    console.log(gameId);
+    if(name){
+      submitName(name);
+    }
+    if(gameId !== undefined && gameId !== null && gameId !== ''){
+
+      console.log('gameId defined');
+      submitGameId(gameId);
+      console.log(name)
+    }
+
+  }
+  function back(){
+    isNewGame(true);
+
+  }
+  function Initial() {
     return (
-        <Paper elevation={5} className={classes.container}>
-          <TextField
+
+      <Paper elevation={5} className={classes.container}>
+        <TextField
           className={classes.textField}
-          onChange={textField}
+          onChange={getName}
           variant='outlined'></TextField>
-          <Button
+        <Button
           className={classes.button}
           variant='outlined'
-          onClick={generateIdString}>Create new Id</Button>
-        </Paper>
+          onClick={joinGame}
+        >Join game</Button>
+        <Button
+          className={classes.button}
+          onClick={createGame}
+          variant='outlined'
+        >Create new game</Button>
+      </Paper>
+    )
+  }
+  function JoinGame() {
+    return(
+    <Paper
+      elevation={5}
+      className={classes.container}
+    >
+      <ArrowBack onClick={back}></ArrowBack>
+
+      <TextField
+        onChange={getGameId}
+        className={classes.textField}
+        variant='outlined'></TextField>
+      <Button
+        className={classes.button}
+        variant='outlined'
+        onClick={joinGame}>Join game</Button>
+
+    </Paper>
+    )
+  }
+    return (
+      newGame ? <Initial submitName={submitName}/> : <JoinGame submitName={submitName} submitGameId={submitGameId}/>
+        
     )
 }
 
@@ -68,9 +134,12 @@ function Content({ id, name }) {
 function App(){
   const [id, setId] = useState();
   const [name, setName] = useState();
+  const [gameId, getGameId] = useState();
 
   useEffect(() => {
-    console.log(name, id);
+    console.log(name);
+    console.log(gameId);
+    console.log('useEffect main app');
     let playerObject = {
       id: id,
       name, name
@@ -79,9 +148,9 @@ function App(){
       store.dispatch(addPlayer(playerObject));
       console.log(store.getState());  
     }
-  }, [name, id]);  
+  }, [name, gameId]);  
   return (
-    id ? <Content id={id} name={name}/> : <CreateId submitName={setName} submitId={setId} />
+    gameId ? <Content id={id} name={name}/> : <InitialScreen submitName={setName} submitGameId={getGameId} />
   )
 }
 
