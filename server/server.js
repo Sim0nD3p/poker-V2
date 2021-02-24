@@ -22,18 +22,24 @@ const server = new Server();
 
 io.on('connection', (socket) => {
   console.log('New connection!!!');
-  //const id = socket.handshake.query.id;
-  //ids.push(id);
-  //console.log(socket);
-  //console.log(ids);
-  socket.join('room')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
+  socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
+  //gucci
   socket.on('create-table', (newTableObject) => {
     console.log(newTableObject);
     newTableObject.host = socket.id;
     server.addTable(newTableObject);
+    socket.join(newTableObject.id);
+    console.log('user joined table ' + newTableObject.id);
+  })
+
+  socket.on('join-table', (joinObject) => {
+    console.log(joinObject);
 
   })
+  
+
+
 
 
 

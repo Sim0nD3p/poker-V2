@@ -15,7 +15,25 @@ const useStyles = makeStyles({
 })
 
 
-function Room({ id, playerObject }) {
+export default function Table({ tableId, gameSettingsProps }) {
+    const classes = useStyles();
+    const [players, addPlayers] = useState([]);
+    const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
+
+    useEffect(() => {
+        console.log('THIS IS TABLE');
+
+    })
+    function getPlayers() {
+
+    }
+
+    return (
+        <Typography>THIS IS ROOM</Typography>
+    )
+}
+
+/* function Table({ playerObject }) {
     const [joined, setJoined] = useState()
     const [players, setPlayers] = useState([]);
     const socket = useSocket();
@@ -25,14 +43,10 @@ function Room({ id, playerObject }) {
     useEffect(() => {
         console.log(playerObject);
         console.log('this is ROOM');
-        /* let playerObject = {
-            id: id,
-            name: name
-        }; */
         if(socket){
             if (joined !== true) {
                 let name = playerObject.name;
-                socket.emit('join-room', { name, id });
+                socket.emit('join-table', { name, id });
                 setJoined(true);
             }
             console.log(socket);
@@ -70,4 +84,4 @@ function Room({ id, playerObject }) {
     )
 }
 
-export default Room;
+export default Room; */

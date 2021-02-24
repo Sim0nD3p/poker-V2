@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import store from '../redux/store';
 import { withStyles } from '@material-ui/core';
 import { useSocket } from '../contexts/SocketProvider';
-import Room from './room';
+import Table from './room';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { ArrowBack } from '@material-ui/icons';
 import InitialScreen from './initialScreen';
@@ -62,10 +62,7 @@ function SocketEnv({ playerObject, newGameId }) {
 
   
   return (
-    <Router>
-      <Route path='/table'><Room playerObject={playerObject}></Room></Route>
-
-    </Router>
+    null
     
       
   )
@@ -84,12 +81,12 @@ const defaultSettings = {
 
 
 function App(){
-  const [id, setId] = useState('thisIsIdBruh');
+  //const [id, setId] = useState('thisIsIdBruh');
   const [name, setName] = useState();
-  const [gameId, getGameId] = useState();
+  const [tableId, setTableId] = useState();
+  const [gameSettings, setGameSettings] = useState(defaultSettings);
   const [goToRoom, letsGoToRoom] = useState(false);
   const [playerObject, setPlayerObject] = useState();
-  const [gameSettings, setGameSettings] = useState(defaultSettings);
   const socket = useSocket();
 
   //runs everytime name or gameId get updated
@@ -98,18 +95,18 @@ function App(){
     console.log(gameSettings);
 
     setPlayerObject({
-      id: id,
+      //id: id,
       name, name,
-      gameId: gameId
+      gameId: tableId
     });
-    if(gameId){
+    if(tableId){
       store.dispatch(addPlayer(playerObject));
       console.log(store.getState());  
     }
     console.log(playerObject);
-    console.log(gameId);
+    console.log(tableId);
     console.log(name);
-  }, [name, gameId, gameSettings]); 
+  }, [name, tableId, gameSettings]); 
 /* 
   if(gameId && name && goToRoom == true){
     return (
@@ -122,9 +119,9 @@ function App(){
     return (
       <SocketProvider>
         <Router>
-          <Route path='/table'><Room playerObject={playerObject}></Room></Route>
-          <Route path='/' exact><InitialScreen submitName={setName} submitGameId={getGameId} /></Route>
-          <Route path='/createTable'><CreateTable submitGoToRoom={letsGoToRoom} submitGameId={getGameId} defaultSettings={defaultSettings} submitGameSettings={setGameSettings}></CreateTable></Route>
+          <Route path='/table'><Table tableId={tableId} gameSettings={gameSettings} playerObject={playerObject}></Table></Route>
+          <Route path='/' exact><InitialScreen submitName={setName} submitGameId={setTableId} /></Route>
+          <Route path='/createTable'><CreateTable submitGoToRoom={letsGoToRoom} submitGameId={setTableId} defaultSettings={defaultSettings} submitGameSettings={setGameSettings}></CreateTable></Route>
         </Router>
       </SocketProvider>
   )
