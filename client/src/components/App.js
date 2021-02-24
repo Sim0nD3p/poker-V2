@@ -66,7 +66,6 @@ function SocketEnv({ playerObject, newGameId }) {
       <Route path='/table'><Room playerObject={playerObject}></Room></Route>
 
     </Router>
-
     
       
   )
@@ -111,14 +110,14 @@ function App(){
     console.log(gameId);
     console.log(name);
   }, [name, gameId, gameSettings]); 
-
+/* 
   if(gameId && name && goToRoom == true){
     return (
       <SocketProvider>
         <SocketEnv newGameId={gameId} playerObject={playerObject}></SocketEnv>
       </SocketProvider> 
     )
-  } else {
+  } else { */
     
     return (
       <SocketProvider>
@@ -129,7 +128,7 @@ function App(){
         </Router>
       </SocketProvider>
   )
-}
+
 }
 //{gameId ? <SocketEnv id={id} playerObject={playerObject}/> : <InitialScreen submitName={setName} submitGameId={getGameId} />}
 

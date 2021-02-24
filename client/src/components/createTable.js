@@ -98,12 +98,16 @@ export default function CreateTable({ defaultSettings, submitGameSettings, submi
             timer: timer,
             cashAmount: cashAmount,
         }
-        socket.emit('game-settings', gameSettings);
         //let str = genRandomStr(10)
         //setTableId(str);
         console.log(tableId);
         console.log(tableId);
-        socket.emit('new-game', tableId);
+        let newGameObject = {
+            id: tableId,
+            gameSettings: gameSettings
+        }
+        socket.emit('create-table', newGameObject);
+        //socket.emit('game-settings', gameSettings);
         submitGameSettings(gameSettings);
         submitGoToRoom(true);
         //submitGameId(tableId);
