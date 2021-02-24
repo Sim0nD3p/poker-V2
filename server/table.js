@@ -1,8 +1,9 @@
+//import class deck
 class Table{
-    constructor(tableObject){
-        this.id = tableObject.id;
-        this.host = tableObject.host;
-        this.gameSettings = tableObject.gameSettings;
+    constructor(newTableObject){
+        this.id = newTableObject.id;
+        this.host = newTableObject.host;
+        this.gameSettings = newTableObject.gameSettings;
         //this.deck = new Deck()
     }
     addPlayer(playerObject){
@@ -11,4 +12,4 @@ class Table{
     }
 }
 
-export default Table
+module.exports = Table;

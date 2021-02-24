@@ -1,4 +1,5 @@
-import Table from './table';
+const Table = require('./table');
+
 const io = require('socket.io')(5000)
 
 let players = [];
@@ -11,9 +12,10 @@ class Server{
 
   }
   addTable(table){
-    let id = table.id
+    let id = table.id;
     this.casino.push(id);
-    let table = this.caniso.id;
+    let tableRef = this.casino.id;
+    tableRef = new Table(table);
     console.log(this.casino);
   }
 }
@@ -29,10 +31,10 @@ io.on('connection', (socket) => {
   //console.log(ids);
   socket.join('room')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
-  socket.on('create-table', (newGameObject) => {
-    console.log(newGameObject);
-    
-    server.addTable();
+  socket.on('create-table', (newTableObject) => {
+    console.log(newTableObject);
+    newTableObject.host = socket.id;
+    server.addTable(newTableObject);
 
   })
 
