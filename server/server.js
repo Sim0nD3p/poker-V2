@@ -12,10 +12,7 @@ class Server{
 
   }
   addTable(table){
-    let id = table.id;
-    this.casino.push(id);
-    let tableRef = this.casino.id;
-    tableRef = new Table(table);
+    this.casino.push(new Table(table));
     console.log(this.casino);
   }
 }
