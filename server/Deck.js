@@ -1,3 +1,4 @@
+const Card = require('./Card');
 class Deck{
 
     suits = ["spades", "clubs", "hearts", "diamonds"];
@@ -41,3 +42,4 @@ function shuffle(array) {
 
     return array;
 }
+module.exports = Deck;
