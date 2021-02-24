@@ -1,7 +1,7 @@
 const Card = require('./Card');
 class Deck{
 
-    suits = ["spades", "clubs", "hearts", "diamonds"];
+
     cards = [];
 
     constructor(){
@@ -9,9 +9,9 @@ class Deck{
         let j;
         for(i=2; i<15; i++)
         {
-            for(j=0;j<this.suits.length;j++)
+            for(j=0;j<4;j++)
             {
-                this.cards.push(new Card(i+1, this.suits[j]));
+                this.cards.push(new Card(i, j));
             }
         }
         shuffle(this.cards)

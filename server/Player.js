@@ -1,5 +1,5 @@
-import React from "react";
-import {Container, Paper, Typography} from "@material-ui/core";
+
+
 
 class Player{
 
@@ -10,8 +10,9 @@ class Player{
     hand = [];
     handType;
 
-    constructor(name) {
+    constructor(name, id) {
         this.name = name;
+        this.id = id;
         this.hand = [];
     }
 
@@ -21,13 +22,8 @@ class Player{
 
     }
 
-    updateHand()
-    {
-
-    }
-    isRoyalFlush()
-    {
-
-    }
 
 }
+
+
+
