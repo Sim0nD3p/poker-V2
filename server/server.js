@@ -9,7 +9,7 @@ io.on('connection', (socket) => {
   //io.emit('test', socket);
   const id = socket.handshake.query.id;
   ids.push(id);
-  console.log(socket);
+  //console.log(socket);
   //console.log(ids);
   socket.join('room')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
@@ -21,16 +21,32 @@ io.on('connection', (socket) => {
       id: socket.id,
       name: socket.username
     }
+    let arg = io.engine.clientsCount;
+    io.emit('test', arg);
+/* 
     let index = 0;  //find index in playersArray
+    console.log(players);
     while(players[index].id !== playerObject.id){
       index++
       if(index > players.length){
         break;
       }
     }
+
     playersDisconnected.push(players[index]); //keeps track of who left
     players.splice(index, 1);   //remove the disconnected player
+     */
     io.emit('players', players);  //send updated list to everyone
+  })
+
+  socket.on('game-settings', (gameSettings) => {
+    console.log('received game settings');
+    console.log(gameSettings);
+  })
+
+  socket.on('new-game', (tableId) => {
+    console.log(tableId);
+    io.emit('test', tableId);
   })
   
 

@@ -24,6 +24,7 @@ function Room({ id, playerObject }) {
 
     useEffect(() => {
         console.log(playerObject);
+        console.log('this is ROOM');
         /* let playerObject = {
             id: id,
             name: name
@@ -46,6 +47,7 @@ function Room({ id, playerObject }) {
             })
             socket.on('players', (players) => {
                 console.log('Players in game');
+                console.log(players);
                 store.dispatch(updatePlayers(players));
                 console.log(store.getState());
                 setPlayers(players);
@@ -62,13 +64,8 @@ function Room({ id, playerObject }) {
     //each player has a list of all players and their info on redux store
 
     return (
-        players.map((player, index) => {
-            return(
-                <Card key={index} elevation={5} className={classes.card}>
-                    <Typography>{player.name}</Typography>
-                </Card>
-            )
-        })
+        <Typography>THIS IS ROOM</Typography>
+        
         
     )
 }
