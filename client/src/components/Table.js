@@ -5,7 +5,7 @@ import store from '../redux/store';
 import { Card, Typography, Box } from '@material-ui/core';
 import { updatePlayers } from '../redux/actions/actions';
 import { makeStyles } from '@material-ui/core/styles';
-import { TableTop } from './graphic/table';
+import { TableTop } from './graphic/tableTop';
 import Player from './player';
 
 const useStyles = makeStyles({
@@ -22,11 +22,7 @@ const useStyles = makeStyles({
         padding:5
     },
     tableTop:{
-        height:'100vh',
-        width:'100vw',
-        position:'absolute',
-        top:0,
-        //doesn<t work
+        //doesn<t work stop trying dude
     },
     text:{
         position:'absolute'
@@ -42,6 +38,11 @@ export default function Table({ tableId, gameSettingsProps }) {
     const [players, setPlayers] = useState();
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
+    
+    function populateTable(){
+
+    }
+
     if(socket){
         socket.on('players', (arg) => {
             console.log(arg);
@@ -54,17 +55,9 @@ export default function Table({ tableId, gameSettingsProps }) {
         })
     }
 
-    useEffect(() => {
-        console.log('THIS IS TABLE');
-
-    })
-    function getPlayers() {
-
-    }
-
     return (
         <Box className={classes.tableContainer}>
-            <Player x={0.25*window.innerWidth} y={0} className={classes.player}></Player>
+            <Player x={-0.75} className={classes.player}></Player>
             <TableTop className={classes.tableTop}></TableTop>
             <Typography className={classes.text}>THIS IS ROOM</Typography>
 

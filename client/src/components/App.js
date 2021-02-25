@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import store from '../redux/store';
 import { withStyles } from '@material-ui/core';
 import { useSocket } from '../contexts/SocketProvider';
-import Table from './room';
+import Table from './Table';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { ArrowBack } from '@material-ui/icons';
 import InitialScreen from './initialScreen';

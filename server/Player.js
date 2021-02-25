@@ -9,9 +9,9 @@ class Player{
     bestHand = [];
     handType;
 
-    constructor(joinObject) {
-        this.name = joinObject.name;
-        this.id = joinObject.id;
+    constructor({name, id}) {
+        this.name = name;
+        this.id = id;
         this.hand = [];
         this.cardsInHand = [];
     }

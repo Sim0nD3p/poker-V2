@@ -6,10 +6,10 @@ class Table{
 
     CardsOnTable = [];
 
-    constructor(newTableObject){
-        this.id = newTableObject.tableId;
-        this.host = newTableObject.id;
-        this.gameSettings = newTableObject.gameSettings;
+    constructor({ tableId, gameSettings, id }){
+        this.id = tableId;
+        this.host = id;
+        this.gameSettings = gameSettings;
         this.deck = new Deck()
         this.players = [];
     }

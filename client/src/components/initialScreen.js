@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import store from '../redux/store';
 import { withStyles } from '@material-ui/core';
 import { useSocket } from '../contexts/SocketProvider';
-import Room from './room';
+import Room from './Table';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { ArrowBack, SettingsSystemDaydreamOutlined } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
@@ -36,18 +36,18 @@ const useStyles = makeStyles({
 function JoinGame({ submitId, submitBack, name }) {
     const socket = useSocket();
     const classes = useStyles();
-    const [id, setId] = useState()
+    const [tableId, setTableId] = useState()
     function getGameId(e){
-        setId(e.target.value);
+        setTableId(e.target.value);
     }
     function joinGame(){
-        submitId(id);
+        submitId(tableId);
         let joinObject = {
             name: name,
-            tableId: id
+            tableId: tableId
         };
         console.log('should emit from initialScreen');
-        socket.emit('join-table', joinObject);
+        socket.emit('join-table', ({ name, tableId }));
     }
     function back(){
         submitBack(true);
@@ -65,7 +65,7 @@ function JoinGame({ submitId, submitBack, name }) {
                 variant='outlined'>
 
             </TextField>
-            <Link onClick={event => (!id) ? event.preventDefault() : null} to={`/table?id=${id}`}>
+            <Link onClick={event => (!tableId) ? event.preventDefault() : null} to={`/table?id=${tableId}`}>
                 <Button
                     className={classes.button}
                     variant='outlined'

@@ -108,7 +108,7 @@ export default function CreateTable({ name, defaultSettings, submitGameSettings,
             tableId: tableId,
             gameSettings: gameSettings
         }
-        socket.emit('create-table', newGameObject);
+        socket.emit('create-table', ({ name, tableId, gameSettings }));
         //socket.emit('game-settings', gameSettings);
         submitGameSettings(gameSettings);
         submitGoToRoom(true);

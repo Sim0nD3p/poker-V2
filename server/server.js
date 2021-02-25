@@ -17,23 +17,38 @@ class Server{
     console.log('this is casino');
     console.log(this.casino);
   }
+  findTable(tableId){
+    for(let i = 0; i < this.casino.length; i++){
+      if(this.casino[i].id == tableId){
+        return i;
+      }
+    }
+  }
+  removeDisconnected(socket){
+    //transfer host
+    let index = this.findTable(socket.tableId);
+    console.log(index);
+    if(index !== undefined){
+      console.log('removing someone');
+      for(let i = 0; i < this.casino[index].players.length; i++){
+        console.log('`player ${i}`');
+        if(this.casino[index].players[i].id == socket.id){
+          console.log('FOUND THE BASTARD');
+          this.casino[index].players.splice(i, 1);
+          console.log(this.casino[index].players);
+          let players = this.casino[index].players
+          console.log(players);
+          io.emit('players', players);
+        }
+      }
+    }
+    //console.log(`${socket.id} left table ${socket.tableId}`);
+  }
 }
 const server = new Server();
 
 
-function findTableIndex(tableId){
-  //nlet tables = server.casino;
-  let index = 0;
-  if(server.casino){
-    while(server.casino[index].id !== tableId){
-      index++;
-      if(index > server.casino.length){
-        break;
-      }
-    }
-  }
-  return index;
-}
+//problem
 
 
 
@@ -41,26 +56,29 @@ io.on('connection', (socket) => {
   console.log('New connection!!!');
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
-  socket.on('create-table', (newTableObject) => {
-    newTableObject.id = socket.id;                                    //client socket.id
-    server.addTable(newTableObject);                                  //create table
-    socket.join(newTableObject.tableId);                              //join tableId room socket.io
-    socket.tableId = newTableObject.tableId;
-    let index = findTableIndex(newTableObject.tableId);               //find index of table in casino
-    server.casino[index].players.push(new Player(newTableObject));    //add player to table
-    io.in(newTableObject.tableId).emit('players', server.casino[index].players);                 //emit players to everyone
-    io.in(newTableObject.tableId).emit('game-settings', server.casino[index].gameSettings);      //emit gameSettings to everyone
+  //gucci
+  socket.on('create-table', ({ name, tableId, gameSettings }) => {
+    let id = socket.id;                                    //client socket.id
+    server.addTable({ tableId, gameSettings, id });                                  //create table
+    socket.join(tableId);                              //join tableId room socket.io
+    socket.tableId = tableId;
+    let index = server.findTable(tableId);               //find index of table in casino
+    server.casino[index].players.push(new Player({ name, id }));    //add player to table
+    io.in(tableId).emit('players', server.casino[index].players);                 //emit players to everyone
+    io.in(tableId).emit('game-settings', gameSettings);      //emit gameSettings to everyone
 
   })
 
-  socket.on('join-table', (joinObject) => {
-    socket.join(joinObject.tableId);                                  //join tableId room socket.io
-    socket.tableId = joinObject.tableId;
-    joinObject.id = socket.id;                                        //add tableId to joinObject
-    let index = findTableIndex(joinObject.tableId);                   //find index of table in casino
-    server.casino[index].players.push(new Player(joinObject));        //add player to table in casino
-    io.in(joinObject.tableId).emit('players', server.casino[index].players);                 //emit players to everyone
-    io.in(joinObject.tableId).emit('game-settings', server.casino[index].gameSettings);      //emit gameSettings to everyone
+  //gucci
+  socket.on('join-table', ({ name, tableId }) => {
+    socket.join(tableId);                                  //join tableId room socket.io
+    socket.tableId = tableId;
+    let id = socket.id;                                        //add tableId to joinObject
+    let index = server.findTable(tableId);                   //find index of table in casino
+    server.casino[index].players.push(new Player({name, id}));        //add player to table in casino
+    io.in(tableId).emit('players', server.casino[index]);                 //emit players to everyone
+    io.in(tableId).emit('game-settings', server.casino[index].gameSettings);      //emit gameSettings to everyone
+
 
 
   })
@@ -72,16 +90,17 @@ io.on('connection', (socket) => {
   })
 
 
-  socket.on('disconnecting', (arg) => {
-    let index = findTableIndex(socket.tableId);
+  socket.on('disconnect', (arg) => {
+    server.removeDisconnected(socket);
+    /* let index = server.findTable(socket.tableId);
     let players = server.casino[index].players;
     for(let i = 0; i < players.length; i++){
       if(players[i].id == socket.id){
         players.splice(i, 1);
         break;
       }
-    }
-    io.in(socket.tableId).emit('players', players);
+    } */
+    
   })
   
 

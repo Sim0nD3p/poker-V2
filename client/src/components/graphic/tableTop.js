@@ -1,18 +1,27 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { Stage, Layer, Rect } from 'react-konva';
 
-export const tableWidth = 0.5 * window.innerWidth;
-export const tableHeight = 0.5 * window.innerHeight;
+export const tableWidth = 0.3 * window.innerWidth;
+export const tableHeight = 0.4 * window.innerHeight;
+
+const useStyles = makeStyles({
+    stage:{
+        position:'fixed'
+    }
+})
 
 
 export const TableTop = () => {
+    const classes = useStyles();
     let offsetX = 0;
     let offsetY = 0;    //75
     return (
         <Stage 
+        className={classes.stage}
 
-        width={0.80 * window.innerWidth}
-        height={0.80 * window.innerHeight}
+        width={window.innerWidth}
+        height={window.innerHeight}
         >
             <Layer>
                 <Rect
