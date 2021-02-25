@@ -5,20 +5,20 @@ class Player{
 
     name = "Nameless Player";
     id;
-    card1;
-    card2;
-    hand = [];
+    cardsInHand= [];
+    bestHand = [];
     handType;
 
     constructor(joinObject) {
         this.name = joinObject.name;
         this.id = joinObject.id;
         this.hand = [];
+        this.cardsInHand = [];
     }
 
     assignCards(card1, card2) {
-        this.card1 = card1;
-        this.card2 = card2;
+        this.cardsInHand.push(card1);
+        this.cardsInHand.push(card2);
 
     }
 

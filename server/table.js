@@ -17,10 +17,63 @@ class Table{
         console.log(playerObject);
 
     }
-    GetWinner()
-    {
-        
+    SetHands(){
+        for(let x=0;x<this.players.length; x++){
+            this.players[x].bestHand = this.findBestHandTexasHoldEm(this.players[x].cardsInHand)[0];
+        }
     }
+    GetWinner(){
+        let maxScore = 0, maxDesc, maxHand = [];
+        let score = 0, desc, hand = [];
+        let maxIndex;
+        for(let x=0;x<this.players.length; x++) {
+            [score, desc, hand] = this.findBestHandTexasHoldEm(this.players[x].cardsInHand);
+            if(maxScore<score){
+                maxIndex = x;
+                maxScore = score;
+                maxDesc = desc;
+                maxHand = hand;
+            }
+        }
+        return maxDesc, maxHand, this.players[maxIndex]; //only returns 1 winner, change for ties
+    }
+
+    findBestHandTexasHoldEm(holeCards){
+        let board = this.CardsOnTable;
+        const hands = [];
+        hands.push(board);
+        for (let c = 0; c < 2; c += 1) {
+            for (let b = 0; b < 5; b += 1) {
+                const newHand = [...board];
+                newHand[b] = holeCards[c];
+                hands.push(newHand);
+            }
+        }
+        for (let b = 0; b < 4; b += 1) {
+            for (let r = b + 1; r < 5; r += 1) {
+                const newHand = [...board];
+                newHand[b] = holeCards[0];
+                newHand[r] = holeCards[1];
+                hands.push(newHand);
+            }
+        }
+        let maxScore=0;
+        let maxDesc;
+        let maxIndex;
+        let score = 0;
+        let desc;
+        for(let k=0;k<hands.length;k++)
+        {
+            [score, desc] = GetScore(hands[k])
+            if(maxScore<score)
+            {
+                maxScore = score;
+                maxIndex = k;
+                maxDesc = desc;
+            }
+        }
+        return maxScore, maxDesc, hands[maxIndex];
+    };
 
 }
 function GetScore(cards)
@@ -30,7 +83,7 @@ function GetScore(cards)
     let lowerAce = false;
     let i;
     for(i=0;i<cards.length;i++) {
-        cardNums[cards[i].number]++;
+        cardNums[cards[i].number-2]++;
         cardSorts[cards[i].suit]++;
     }
     const ranks = {
@@ -84,6 +137,9 @@ function GetScore(cards)
         }
 
     }
-    return score;
+    return score, rankDescription;
 }
+
+
+
 module.exports = Table;
