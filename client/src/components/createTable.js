@@ -104,8 +104,8 @@ export default function CreateTable({ name, defaultSettings, submitGameSettings,
         console.log(tableId);
         console.log(tableId);
         let newGameObject = {
-            name, name,
-            id: tableId,
+            name: name,
+            tableId: tableId,
             gameSettings: gameSettings
         }
         socket.emit('create-table', newGameObject);

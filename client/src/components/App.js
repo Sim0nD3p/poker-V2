@@ -117,13 +117,13 @@ function App(){
   } else { */
     
     return (
-      <SocketProvider>
-        <Router>
-          <Route path='/table'><Table tableId={tableId} gameSettings={gameSettings} playerObject={playerObject}></Table></Route>
-          <Route path='/' exact><InitialScreen submitName={setName} submitGameId={setTableId} /></Route>
-          <Route path='/createTable'><CreateTable name={name} submitGoToRoom={letsGoToRoom} submitGameId={setTableId} defaultSettings={defaultSettings} submitGameSettings={setGameSettings}></CreateTable></Route>
-        </Router>
-      </SocketProvider>
+        <SocketProvider>
+          <Router>
+            <Route path='/table'><Table tableId={tableId} gameSettings={gameSettings} playerObject={playerObject}></Table></Route>
+            <Route path='/' exact><InitialScreen submitName={setName} submitGameId={setTableId} /></Route>
+            <Route path='/createTable'><CreateTable name={name} submitGoToRoom={letsGoToRoom} submitGameId={setTableId} defaultSettings={defaultSettings} submitGameSettings={setGameSettings}></CreateTable></Route>
+          </Router>
+        </SocketProvider>
   )
 
 }

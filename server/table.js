@@ -7,8 +7,8 @@ class Table{
     CardsOnTable = [];
 
     constructor(newTableObject){
-        this.id = newTableObject.id;
-        this.host = newTableObject.host;
+        this.id = newTableObject.tableId;
+        this.host = newTableObject.id;
         this.gameSettings = newTableObject.gameSettings;
         this.deck = new Deck()
         this.players = [];

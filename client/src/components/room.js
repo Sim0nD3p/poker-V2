@@ -2,15 +2,36 @@ import React, { useEffect } from 'react';
 import { useSocket } from '../contexts/SocketProvider';
 import { useState } from 'react';
 import store from '../redux/store';
-import { Card, Typography } from '@material-ui/core';
+import { Card, Typography, Box } from '@material-ui/core';
 import { updatePlayers } from '../redux/actions/actions';
 import { makeStyles } from '@material-ui/core/styles';
+import { TableTop } from './graphic/table';
+import Player from './player';
 
 const useStyles = makeStyles({
+    tableContainer:{
+        height:'100vh',
+        width:'100vw',
+        overflow:'hide',
+        //backgroundColor:'blue',
+        overflow:'hidden',
+    },
     card:{
         height:200,
         width:200,
         padding:5
+    },
+    tableTop:{
+        height:'100vh',
+        width:'100vw',
+        position:'absolute',
+        top:0,
+        //doesn<t work
+    },
+    text:{
+        position:'absolute'
+    },
+    player:{
     }
 })
 
@@ -18,12 +39,20 @@ const useStyles = makeStyles({
 export default function Table({ tableId, gameSettingsProps }) {
     const socket = useSocket();
     const classes = useStyles();
-    const [players, addPlayers] = useState([]);
+    const [players, setPlayers] = useState();
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
-    socket.on('players', (players) => {
-        console.log(players);
-    })
+    if(socket){
+        socket.on('players', (arg) => {
+            console.log(arg);
+            //setPlayers(arg);
+            //console.log(players)
+            
+        });
+        socket.on('game-settings', (gameSettings) => {
+            console.log(gameSettings);
+        })
+    }
 
     useEffect(() => {
         console.log('THIS IS TABLE');
@@ -34,7 +63,14 @@ export default function Table({ tableId, gameSettingsProps }) {
     }
 
     return (
-        <Typography>THIS IS ROOM</Typography>
+        <Box className={classes.tableContainer}>
+            <Player x={0.25*window.innerWidth} y={0} className={classes.player}></Player>
+            <TableTop className={classes.tableTop}></TableTop>
+            <Typography className={classes.text}>THIS IS ROOM</Typography>
+
+
+
+        </Box>
     )
 }
 
