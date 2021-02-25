@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 })
 
 
-export default function CreateTable({ defaultSettings, submitGameSettings, submitGameId, submitGoToRoom }){
+export default function CreateTable({ name, defaultSettings, submitGameSettings, submitGameId, submitGoToRoom }){
     const classes = useStyles();
     const socket = useSocket();
     const [disableSlider, setDisableSlider] = useState(true);
@@ -55,7 +55,7 @@ export default function CreateTable({ defaultSettings, submitGameSettings, submi
     const [cashAmount, setCashAmount] = useState(defaultSettings.cashAmount)
 
     useEffect(() => {
-        submitGameId(tableId);
+        
     })
     function handleGameMode(e){
         console.log(e.target.value);
@@ -87,6 +87,7 @@ export default function CreateTable({ defaultSettings, submitGameSettings, submi
         }        
     }
     function createGame(){
+        submitGameId(tableId);
         let timer;
         if(disableSlider == true){
             timer = null;
@@ -103,6 +104,7 @@ export default function CreateTable({ defaultSettings, submitGameSettings, submi
         console.log(tableId);
         console.log(tableId);
         let newGameObject = {
+            name, name,
             id: tableId,
             gameSettings: gameSettings
         }

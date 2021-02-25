@@ -11,6 +11,7 @@ class Table{
         this.host = newTableObject.host;
         this.gameSettings = newTableObject.gameSettings;
         this.deck = new Deck()
+        this.players = [];
     }
     addPlayer(playerObject){
         console.log(playerObject);

@@ -10,9 +10,9 @@ class Player{
     hand = [];
     handType;
 
-    constructor(name, id) {
-        this.name = name;
-        this.id = id;
+    constructor(joinObject) {
+        this.name = joinObject.name;
+        this.id = joinObject.id;
         this.hand = [];
     }
 
@@ -24,6 +24,6 @@ class Player{
 
 
 }
-
+module.exports = Player;
 
 

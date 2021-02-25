@@ -16,9 +16,14 @@ const useStyles = makeStyles({
 
 
 export default function Table({ tableId, gameSettingsProps }) {
+    const socket = useSocket();
     const classes = useStyles();
     const [players, addPlayers] = useState([]);
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
+
+    socket.on('players', (players) => {
+        console.log(players);
+    })
 
     useEffect(() => {
         console.log('THIS IS TABLE');

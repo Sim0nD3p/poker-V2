@@ -99,7 +99,10 @@ export default function InitialScreen({ submitName, submitGameId }) {
     var idStr = '';
     function createGame() {  //createGame, will create and join the game with new gameId
         console.log('create game');
-        submitName(name);
+        setName(nameStr);
+        console.log(nameStr);
+        console.log(name)
+        submitName(nameStr);
         //submitGameId('gameId');   //DEAL WITH GAMEID (link?, router?)(randomString?)(displayToUser?)
     }
     function getName(e) {  //get name from textField (input)
@@ -138,7 +141,7 @@ export default function InitialScreen({ submitName, submitGameId }) {
                     variant='outlined'
                     onClick={saveName}
                 >Join game</Button>
-                <Link onClick={event => (!name) ? event.preventDefault() : null} to={'/createTable'}>
+                <Link onClick={event => (!nameStr) ? event.preventDefault() : null} to={'/createTable'}>
                     <Button
                         className={classes.button}
                         onClick={createGame}
