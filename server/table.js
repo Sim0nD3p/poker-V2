@@ -18,24 +18,19 @@ class Table{
 
     }
     SetHands(){
+        let score = 0, desc, hand = [];
         for(let x=0;x<this.players.length; x++){
-            this.players[x].bestHand = this.findBestHandTexasHoldEm(this.players[x].cardsInHand)[0];
+            [score, desc, hand] = this.findBestHandTexasHoldEm(this.players[x].cardsInHand);
+            this.players[x].bestHand = hand;
+            this.players[x].bestHandDesc = desc;
+            this.players[x].bestHandScore = score;
         }
     }
-    GetWinner(){
-        let maxScore = 0, maxDesc, maxHand = [];
-        let score = 0, desc, hand = [];
-        let maxIndex;
-        for(let x=0;x<this.players.length; x++) {
-            [score, desc, hand] = this.findBestHandTexasHoldEm(this.players[x].cardsInHand);
-            if(maxScore<score){
-                maxIndex = x;
-                maxScore = score;
-                maxDesc = desc;
-                maxHand = hand;
-            }
-        }
-        return maxDesc, maxHand, this.players[maxIndex]; //only returns 1 winner, change for ties
+    GetWinners(){
+        this.SetHands()
+        let winners = this.players;
+        winners.sort(function(a,b){return b.bestHandScore - a.bestHandScore})
+        return winners;
     }
 
     findBestHandTexasHoldEm(holeCards){
@@ -76,6 +71,8 @@ class Table{
     };
 
 }
+
+
 function GetScore(cards)
 {
     let cardNums = [0,0,0,0,0,0,0,0,0,0,0,0,0];

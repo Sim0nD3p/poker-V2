@@ -7,7 +7,8 @@ class Player{
     id;
     cardsInHand= [];
     bestHand = [];
-    handType;
+    bestHandDesc;
+    bestHandScore;
 
     constructor({name, id}) {
         this.name = name;
