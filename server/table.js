@@ -2,10 +2,12 @@
 const Deck = require('./Deck');
 const CardValues = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192];
 const suitsEnum = Object.freeze({"spades":0, "clubs":1, "hearts":2, "diamonds":3});
+
 class Table{
 
     CardsOnTable = [];
-
+    deck;
+    currentPot;
     constructor({ tableId, gameSettings, id }){
         this.id = tableId;
         this.host = id;
@@ -13,29 +15,70 @@ class Table{
         this.deck = new Deck()
         this.players = [];
     }
+
     addPlayer(playerObject){
         console.log(playerObject);
 
     }
+
+    AddCardToFlop()
+    {
+        if(this.CardsOnTable.length === 0)
+        {
+            this.deck.pop();
+            this.CardsOnTable.push(this.deck.pop());
+            this.CardsOnTable.push(this.deck.pop());
+            this.CardsOnTable.push(this.deck.pop());
+        }
+        else if(this.CardsOnTable.length === 3 || this.CardsOnTable.length === 4){
+            this.deck.pop();
+            this.CardsOnTable.push(this.deck.pop());
+        }
+        else {
+            // METHOD FOR END OF GAME
+            let winners = this.GetWinners();
+            let potTaken = 0;
+            for(let x=0; x<winners.length; x++){
+                for(let y=0; y<this.players; y++){
+                    if(winners[x].id === this.players[y].id){
+                        if(this.currentPot === potTaken){
+                            break;
+                        }
+                        else if( this.players[y].maxPot <= this.currentPot-potTaken){
+                            this.players[y].balance += this.players[y].maxPot;
+                            potTaken+= this.players[y].maxPot;
+                        }
+                        else {
+                            this.players[y].balance += this.currentPot - potTaken;
+                            potTaken += this.currentPot - potTaken;
+                        }
+                    }
+                }
+            }
+            this.NewRound();
+        }
+
+    }
+    NewRound(){
+        this.deck = new Deck();
+        this.players.forEach(Reset);
+    }
+
     SetHands(){
+        let score = 0, desc, hand = [];
         for(let x=0;x<this.players.length; x++){
-            this.players[x].bestHand = this.findBestHandTexasHoldEm(this.players[x].cardsInHand)[0];
+            [score, desc, hand] = this.findBestHandTexasHoldEm(this.players[x].cardsInHand);
+            this.players[x].bestHand = hand;
+            this.players[x].bestHandDesc = desc;
+            this.players[x].bestHandScore = score;
         }
     }
-    GetWinner(){
-        let maxScore = 0, maxDesc, maxHand = [];
-        let score = 0, desc, hand = [];
-        let maxIndex;
-        for(let x=0;x<this.players.length; x++) {
-            [score, desc, hand] = this.findBestHandTexasHoldEm(this.players[x].cardsInHand);
-            if(maxScore<score){
-                maxIndex = x;
-                maxScore = score;
-                maxDesc = desc;
-                maxHand = hand;
-            }
-        }
-        return maxDesc, maxHand, this.players[maxIndex]; //only returns 1 winner, change for ties
+
+    GetWinners(){
+        this.SetHands()
+        let winners = this.players;
+        winners.sort(function(a,b){return b.bestHandScore - a.bestHandScore})
+        return winners;
     }
 
     findBestHandTexasHoldEm(holeCards){
@@ -76,6 +119,15 @@ class Table{
     };
 
 }
+function Reset(player){
+    player.cardsInHand= [];
+    player.bestHand = [];
+    player.bestHandDesc = "";
+    player.bestHandScore = 0;
+    player.playingState = "playing";
+
+}
+
 function GetScore(cards)
 {
     let cardNums = [0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -115,11 +167,13 @@ function GetScore(cards)
 
     let rankIndex = 0;
     let rankDescription = "";
+
     Object.keys(ranks).every((key, index) => {     //to check if it works
         rankIndex = 10 - index;
         rankDescription = key;
         return !ranks[key];
     });
+
     let score = rankIndex*Math.pow(10, 13);
     let temp1=0, temp2=0;
     let TwoPairs = false;
@@ -139,7 +193,5 @@ function GetScore(cards)
     }
     return score, rankDescription;
 }
-
-
 
 module.exports = Table;
