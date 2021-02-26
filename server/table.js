@@ -2,10 +2,12 @@
 const Deck = require('./Deck');
 const CardValues = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192];
 const suitsEnum = Object.freeze({"spades":0, "clubs":1, "hearts":2, "diamonds":3});
+
 class Table{
 
     CardsOnTable = [];
-
+    deck;
+    currentPot;
     constructor({ tableId, gameSettings, id }){
         this.id = tableId;
         this.host = id;
@@ -13,10 +15,50 @@ class Table{
         this.deck = new Deck()
         this.players = [];
     }
+
     addPlayer(playerObject){
         console.log(playerObject);
 
     }
+
+    AddCardToFlop()
+    {
+        if(this.CardsOnTable.length === 0)
+        {
+            this.deck.pop();
+            this.CardsOnTable.push(this.deck.pop());
+            this.CardsOnTable.push(this.deck.pop());
+            this.CardsOnTable.push(this.deck.pop());
+        }
+        else if(this.CardsOnTable.length === 3 || this.CardsOnTable.length === 4){
+            this.deck.pop();
+            this.CardsOnTable.push(this.deck.pop());
+        }
+        else {
+            // METHOD FOR END OF GAME
+            let winners = this.GetWinners();
+            let potTaken = 0;
+            for(let x=0; x<winners.length; x++){
+                for(let y=0; y<this.players; y++){
+                    if(winners[x].id === this.players[y].id){
+                        if(this.currentPot === potTaken){
+                            break;
+                        }
+                        else if( this.players[y].maxPot <= this.currentPot-potTaken){
+                            this.players[y].balance += this.players[y].maxPot;
+                            potTaken+= this.players[y].maxPot;
+                        }
+                        else {
+                            this.players[y].balance += this.currentPot - potTaken;
+                            potTaken += this.currentPot - potTaken;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
     SetHands(){
         let score = 0, desc, hand = [];
         for(let x=0;x<this.players.length; x++){
@@ -26,6 +68,7 @@ class Table{
             this.players[x].bestHandScore = score;
         }
     }
+
     GetWinners(){
         this.SetHands()
         let winners = this.players;
@@ -112,11 +155,13 @@ function GetScore(cards)
 
     let rankIndex = 0;
     let rankDescription = "";
+
     Object.keys(ranks).every((key, index) => {     //to check if it works
         rankIndex = 10 - index;
         rankDescription = key;
         return !ranks[key];
     });
+
     let score = rankIndex*Math.pow(10, 13);
     let temp1=0, temp2=0;
     let TwoPairs = false;

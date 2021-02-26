@@ -9,12 +9,17 @@ class Player{
     bestHand = [];
     bestHandDesc;
     bestHandScore;
+    playingState;
+    balance;
+
+    maxPot = 0;
 
     constructor({name, id}) {
         this.name = name;
         this.id = id;
         this.hand = [];
         this.cardsInHand = [];
+        this. playingState = "playing";
     }
 
     assignCards(card1, card2) {
