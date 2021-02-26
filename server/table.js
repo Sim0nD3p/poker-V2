@@ -55,8 +55,13 @@ class Table{
                     }
                 }
             }
+            this.NewRound();
         }
 
+    }
+    NewRound(){
+        this.deck = new Deck();
+        this.players.forEach(Reset);
     }
 
     SetHands(){
@@ -114,7 +119,14 @@ class Table{
     };
 
 }
+function Reset(player){
+    player.cardsInHand= [];
+    player.bestHand = [];
+    player.bestHandDesc = "";
+    player.bestHandScore = 0;
+    player.playingState = "playing";
 
+}
 
 function GetScore(cards)
 {
@@ -181,7 +193,5 @@ function GetScore(cards)
     }
     return score, rankDescription;
 }
-
-
 
 module.exports = Table;
