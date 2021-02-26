@@ -29,15 +29,10 @@ class Server{
     let index = this.findTable(socket.tableId);
     console.log(index);
     if(index !== undefined){
-      console.log('removing someone');
       for(let i = 0; i < this.casino[index].players.length; i++){
-        console.log('`player ${i}`');
         if(this.casino[index].players[i].id == socket.id){
-          console.log('FOUND THE BASTARD');
           this.casino[index].players.splice(i, 1);
-          console.log(this.casino[index].players);
           let players = this.casino[index].players
-          console.log(players);
           io.emit('players', players);
         }
       }
@@ -69,14 +64,14 @@ io.on('connection', (socket) => {
 
   })
 
-  //gucci
+  //cath when player try to join a table that doesnt exist
   socket.on('join-table', ({ name, tableId }) => {
     socket.join(tableId);                                  //join tableId room socket.io
     socket.tableId = tableId;
     let id = socket.id;                                        //add tableId to joinObject
     let index = server.findTable(tableId);                   //find index of table in casino
     server.casino[index].players.push(new Player({name, id}));        //add player to table in casino
-    io.in(tableId).emit('players', server.casino[index]);                 //emit players to everyone
+    io.in(tableId).emit('players', server.casino[index].players);                 //emit players to everyone
     io.in(tableId).emit('game-settings', server.casino[index].gameSettings);      //emit gameSettings to everyone
 
 

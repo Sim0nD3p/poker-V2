@@ -103,9 +103,9 @@ function App(){
       store.dispatch(addPlayer(playerObject));
       console.log(store.getState());  
     }
-    console.log(playerObject);
-    console.log(tableId);
-    console.log(name);
+    //console.log(playerObject);
+    //console.log(tableId);
+    //console.log(name);
   }, [name, tableId, gameSettings]); 
 /* 
   if(gameId && name && goToRoom == true){

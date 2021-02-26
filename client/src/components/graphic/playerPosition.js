@@ -13,8 +13,4 @@ export default function playerPosition(playerNumber){
         }
 
     }
-return(
-    'yooo'
-)
-
 }

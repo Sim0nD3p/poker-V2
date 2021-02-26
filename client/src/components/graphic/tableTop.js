@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Stage, Layer, Rect } from 'react-konva';
 
-export const tableWidth = 0.3 * window.innerWidth;
-export const tableHeight = 0.4 * window.innerHeight;
+export const tableWidth = 0.45 * window.innerWidth;
+export const tableHeight = 0.3 * window.innerHeight;
 
 const useStyles = makeStyles({
     stage:{

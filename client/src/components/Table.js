@@ -7,6 +7,7 @@ import { updatePlayers } from '../redux/actions/actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { TableTop } from './graphic/tableTop';
 import Player from './player';
+import playerPosition from './graphic/playerPosition';
 
 const useStyles = makeStyles({
     tableContainer:{
@@ -31,33 +32,93 @@ const useStyles = makeStyles({
     }
 })
 
+class PlayersOnScreen extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            players: this.props.players
+        }
+    }
+
+    render(){
+        const { players } = this.state;
+        return (
+
+            <Box>
+
+
+                {players.map((player, i) => {
+                    let positions = playerPosition(players.length);
+                let x = positions[i][0];
+                let place = positions[i][1];
+
+                return (
+                <Player x={x} placement={place}></Player>
+
+                    )
+                })}
+            </Box>
+
+
+        )
+    }
+}
+
 
 export default function Table({ tableId, gameSettingsProps }) {
     const socket = useSocket();
     const classes = useStyles();
-    const [players, setPlayers] = useState();
+    const [players, setPlayers] = useState([]);
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
     
     function populateTable(){
 
+
     }
+    useEffect(() => {
+        console.log(players);
+        console.log(playerPosition(players.length))
+        populateTable();
+
+        function playersOnScreen() {
+            let content = [];
+
+                
+                return content
+
+        }
+    }, [players])
 
     if(socket){
-        socket.on('players', (arg) => {
-            console.log(arg);
-            //setPlayers(arg);
-            //console.log(players)
+        socket.on('players', (players) => {
+            console.log(players);
+            setPlayers(players);
+           // alert('new players');
+            
             
         });
         socket.on('game-settings', (gameSettings) => {
-            console.log(gameSettings);
+            //console.log(gameSettings);
         })
     }
 
     return (
         <Box className={classes.tableContainer}>
-            <Player x={-0.75} className={classes.player}></Player>
+            {players.map((player, i) => {
+                console.log('updating player ');
+                console.log(player);
+                let positions = playerPosition(players.length);
+                let x = positions[i][0];
+                let place = positions[i][1];
+                console.log(`this is x ${x} and this is place ${place}`);
+
+                return (
+                    <Player x={x} placement={place}></Player>
+
+                )
+            })}
+
             <TableTop className={classes.tableTop}></TableTop>
             <Typography className={classes.text}>THIS IS ROOM</Typography>
 
@@ -66,7 +127,7 @@ export default function Table({ tableId, gameSettingsProps }) {
         </Box>
     )
 }
-
+ 
 /* function Table({ playerObject }) {
     const [joined, setJoined] = useState()
     const [players, setPlayers] = useState([]);
