@@ -32,7 +32,7 @@ export const TableTop = () => {
                 x={window.innerWidth/2}
                 y={window.innerHeight/2}
                 cornerRadius={tableHeight/2}
-                strokeWidth={20}
+                strokeWidth={15}
                 stroke='#a7c0cd'
                 fill='#4b636e'/>
             </Layer>

@@ -106,15 +106,11 @@ export default function Table({ tableId, gameSettingsProps }) {
     return (
         <Box className={classes.tableContainer}>
             {players.map((player, i) => {
-                console.log('updating player ');
-                console.log(player);
                 let positions = playerPosition(players.length);
                 let x = positions[i][0];
                 let place = positions[i][1];
-                console.log(`this is x ${x} and this is place ${place}`);
-
                 return (
-                    <Player x={x} placement={place}></Player>
+                    <Player key={i} x={x} placement={place}></Player>
 
                 )
             })}
