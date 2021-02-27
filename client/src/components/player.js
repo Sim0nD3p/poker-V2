@@ -12,13 +12,16 @@ const useStyles = makeStyles({
         //height:200,
         backgroundColor:'red',
         //position:'fixed'
+    },
+    playerName:{
+        textAlign:'center',
     }
 })
 
 export default function Player({ key, player, x, placement }){
     const classes = useStyles();
     const [position, setPosition] = useState();
-    const [size, setSize] = useState({height:100, width:100});
+    const [size, setSize] = useState({height:100, width:300});
     const [xPos, setXPos] = useState();
     const [yPos, setYPos] = useState();
     const [margin, setMargin] = useState();

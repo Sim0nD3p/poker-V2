@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { useSocket } from '../contexts/SocketProvider';
 import { useState } from 'react';
 import store from '../redux/store';
-import { Card, Typography, Box } from '@material-ui/core';
+import { Card, Paper, Typography, TextField, Button, Box } from '@material-ui/core';
 import { updatePlayers } from '../redux/actions/actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { TableTop } from './graphic/tableTop';
 import Player from './player';
 import playerPosition from './graphic/playerPosition';
+import queryString from 'querystring';
+
+const loginContainerSize = [400, 300];
 
 const useStyles = makeStyles({
     tableContainer:{
@@ -29,46 +32,93 @@ const useStyles = makeStyles({
         position:'absolute'
     },
     player:{
+    },
+    loginContainer: {
+        width:loginContainerSize[0],
+        height:loginContainerSize[1],
+        position:'fixed',
+        display:'flex',
+        flexDirection:'column',
+        zIndex:10000,
+        left: ((window.innerWidth / 2) - (loginContainerSize[0] / 2)),
+        top: (window.innerHeight / 2 - loginContainerSize[1] / 2),
+    },
+    header:{
+        margin:'auto',
+        marginTop:10,
+        marginBottom:10,
+    },
+    nameInput:{
+        margin:'auto',
+        marginTop:10,
+        marginBottom:10,
+        width:'65%',
+    },
+    joinButton:{
+        width:'65%',
+        margin:'auto',
+        marginTop:10,
     }
 })
+function Login({ submitClient, setHidden, socket }){
+    const classes = useStyles();
+    const [name, setName] = useState();
+    const [tableId, setTableId] = useState();
 
-class PlayersOnScreen extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            players: this.props.players
+    useEffect(() => {
+        const parsed = queryString.parse(window.location.search);
+        setTableId(parsed["?id"]);
+    })
+    
+    function getNameInput(e){
+        setName(e.target.value);
+    }
+    function joinTable(){
+        let client = {
+            name: name,
+            tableId: tableId,
         }
+        submitClient(client);
+        socket.emit('join-table', ({ name, tableId }));
+        setHidden(true);
+
     }
 
-    render(){
-        const { players } = this.state;
-        return (
-
-            <Box>
-
-
-                {players.map((player, i) => {
-                    let positions = playerPosition(players.length);
-                let x = positions[i][0];
-                let place = positions[i][1];
-
-                return (
-                <Player x={x} placement={place}></Player>
-
-                    )
-                })}
-            </Box>
-
-
-        )
-    }
+    return(
+        <Paper
+            elevation={5}
+            className={classes.loginContainer}>
+            <Typography
+                variant='h4'
+                className={classes.header}
+            >Join table</Typography>
+            <Typography
+                variant='body1'
+                style={{ margin: 'auto', marginTop: 10, marginBottom: 10 }}
+            >Enter your user infos</Typography>
+            <TextField
+                variant='outlined'
+                color='primary'
+                label='name'
+                onChange={getNameInput}
+                className={classes.nameInput}
+            ></TextField>
+            <Button
+            color='primary'
+            variant='contained'
+            onClick={joinTable}
+            className={classes.joinButton}
+            >PLAY</Button>
+        </Paper>
+    )
 }
 
 
-export default function Table({ tableId, gameSettingsProps, client }) {
+export default function Table({ tableId, gameSettingsProps, client, submitClient }) {
     const socket = useSocket();
     const classes = useStyles();
     const [players, setPlayers] = useState([]);
+    const [hiddenLogin, setHiddenLogin] = useState();
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
     
@@ -76,10 +126,14 @@ export default function Table({ tableId, gameSettingsProps, client }) {
 
 
     }
+    function defineClient(){
+
+    }
     useEffect(() => {
-        console.log(players);
-        console.log(playerPosition(players.length))
-        populateTable();
+        console.log(client);
+        if(client == undefined){
+            setHiddenLogin(false);
+        }
 
         function playersOnScreen() {
             let content = [];
@@ -88,7 +142,7 @@ export default function Table({ tableId, gameSettingsProps, client }) {
                 return content
 
         }
-    }, [players])
+    }, [players, client])
 
     if(socket){
         socket.on('players', (players) => {
@@ -105,6 +159,14 @@ export default function Table({ tableId, gameSettingsProps, client }) {
 
     return (
         <Box className={classes.tableContainer}>
+            {hiddenLogin ? null : <Login
+                socket={socket}
+                setHidden={setHiddenLogin}
+                className={classes.login}
+                submitClient={submitClient}
+            ></Login>
+            }
+
             {players.map((player, i) => {
                 let positions = playerPosition(players.length);
                 let x = positions[i][0];
@@ -114,6 +176,7 @@ export default function Table({ tableId, gameSettingsProps, client }) {
 
                 )
             })}
+            
 
             <TableTop className={classes.tableTop}></TableTop>
             <Typography className={classes.text}>THIS IS ROOM</Typography>
@@ -123,56 +186,3 @@ export default function Table({ tableId, gameSettingsProps, client }) {
         </Box>
     )
 }
- 
-/* function Table({ playerObject }) {
-    const [joined, setJoined] = useState()
-    const [players, setPlayers] = useState([]);
-    const socket = useSocket();
-    const classes = useStyles();
-
-
-    useEffect(() => {
-        console.log(playerObject);
-        console.log('this is ROOM');
-        if(socket){
-            if (joined !== true) {
-                let name = playerObject.name;
-                socket.emit('join-table', { name, id });
-                setJoined(true);
-            }
-            console.log(socket);
-            console.log(store.getState());
-            socket.on('test', (arg) => {
-                //console.log('this is disconnect socket');
-                console.log(arg);
-            });
-            socket.on('player-left', (playerObject) => {
-                console.log('A user has left the game');
-                console.log(playerObject);
-            })
-            socket.on('players', (players) => {
-                console.log('Players in game');
-                console.log(players);
-                store.dispatch(updatePlayers(players));
-                console.log(store.getState());
-                setPlayers(players);
-            })
-        }
-        
-        console.log(socket);
-        //socket.emit('test', 'This is some test data');
-        //socket.emit('join-room', playerObject);
-    }, [socket])
-
-    //emit le id du player quand il join la room.
-    // quand les autres recoivent le emit, ils envoyent leur id
-    //each player has a list of all players and their info on redux store
-
-    return (
-        <Typography>THIS IS ROOM</Typography>
-        
-        
-    )
-}
-
-export default Room; */

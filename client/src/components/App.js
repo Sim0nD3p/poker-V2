@@ -94,6 +94,8 @@ function App(){
     console.log('update on name or gameId');
     console.log(gameSettings);
 
+
+    //maybe only have a playerObject without name and table id passed everywhere is a good idea
     setPlayerObject({
       //id: id,
       name, name,
@@ -103,9 +105,6 @@ function App(){
       store.dispatch(addPlayer(playerObject));
       console.log(store.getState());  
     }
-    //console.log(playerObject);
-    //console.log(tableId);
-    //console.log(name);
   }, [name, tableId, gameSettings]); 
 /* 
   if(gameId && name && goToRoom == true){
@@ -117,13 +116,36 @@ function App(){
   } else { */
     
     return (
-        <SocketProvider>
-          <Router>
-            <Route path='/table'><Table client={playerObject} tableId={tableId} gameSettings={gameSettings}></Table></Route>
-            <Route path='/' exact><InitialScreen submitPlayerObject={setPlayerObject} submitName={setName} submitGameId={setTableId} /></Route>
-            <Route path='/createTable'><CreateTable name={name} submitGoToRoom={letsGoToRoom} submitGameId={setTableId} defaultSettings={defaultSettings} submitGameSettings={setGameSettings}></CreateTable></Route>
-          </Router>
-        </SocketProvider>
+      <SocketProvider>
+        <Router>
+          <Route path='/table'>
+            <Table
+              submitClient={setPlayerObject}
+              client={playerObject}
+              tableId={tableId}
+              gameSettings={gameSettings}
+            ></Table>
+          </Route>
+
+          <Route path='/' exact>
+            <InitialScreen
+              submitPlayerObject={setPlayerObject}
+              submitName={setName}
+              submitGameId={setTableId}
+            ></InitialScreen>
+          </Route>
+
+          <Route path='/createTable'>
+            <CreateTable
+              name={name}
+              submitGoToRoom={letsGoToRoom}
+              submitGameId={setTableId}
+              defaultSettings={defaultSettings}
+              submitGameSettings={setGameSettings}
+            ></CreateTable>
+          </Route>
+        </Router>
+      </SocketProvider>
   )
 
 }
