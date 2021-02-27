@@ -65,7 +65,7 @@ class PlayersOnScreen extends React.Component{
 }
 
 
-export default function Table({ tableId, gameSettingsProps }) {
+export default function Table({ tableId, gameSettingsProps, client }) {
     const socket = useSocket();
     const classes = useStyles();
     const [players, setPlayers] = useState([]);
@@ -110,7 +110,7 @@ export default function Table({ tableId, gameSettingsProps }) {
                 let x = positions[i][0];
                 let place = positions[i][1];
                 return (
-                    <Player key={i} x={x} placement={place}></Player>
+                    <Player player={player} key={i} x={x} placement={place}></Player>
 
                 )
             })}

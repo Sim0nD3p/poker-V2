@@ -89,7 +89,7 @@ function JoinGame({ submitId, submitBack, name }) {
 * joinGame: ask for game id and join the room with the game id
 * @param {*} param0 
 */
-export default function InitialScreen({ submitName, submitGameId }) {
+export default function InitialScreen({ submitName, submitGameId, submitPlayerObject }) {
     const classes = useStyles();
     const socket = useSocket();
     const [newGame, isNewGame] = useState(true);

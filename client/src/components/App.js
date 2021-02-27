@@ -119,8 +119,8 @@ function App(){
     return (
         <SocketProvider>
           <Router>
-            <Route path='/table'><Table tableId={tableId} gameSettings={gameSettings} playerObject={playerObject}></Table></Route>
-            <Route path='/' exact><InitialScreen submitName={setName} submitGameId={setTableId} /></Route>
+            <Route path='/table'><Table client={playerObject} tableId={tableId} gameSettings={gameSettings}></Table></Route>
+            <Route path='/' exact><InitialScreen submitPlayerObject={setPlayerObject} submitName={setName} submitGameId={setTableId} /></Route>
             <Route path='/createTable'><CreateTable name={name} submitGoToRoom={letsGoToRoom} submitGameId={setTableId} defaultSettings={defaultSettings} submitGameSettings={setGameSettings}></CreateTable></Route>
           </Router>
         </SocketProvider>
