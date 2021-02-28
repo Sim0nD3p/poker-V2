@@ -46,16 +46,13 @@ export default function Player({ key, player, x, placement }){
             console.log(`this is the margins ${margin[0]}, ${margin[1]}`);
             let posObject = findPlayerYPos(x, placement);
             console.log(`this is positions before spacing x: ${posObject[0]}, y: ${posObject[1]}`);
-            
             setYPos(posObject[1] + margin[1]);
             setXPos(posObject[0] + margin[0]);
         }
-        
     }, [margin])
 
     useEffect(() => {
         if(isNaN(xPos) == false && isNaN(yPos) == false){
-
             console.log(`this is positions before style x: ${xPos} y: ${yPos}`);
             setStyle({
                 position: 'fixed',
@@ -66,7 +63,6 @@ export default function Player({ key, player, x, placement }){
                 zIndex: 10000
             })
         }
-
     }, [xPos, yPos])
     
 
@@ -81,7 +77,7 @@ export default function Player({ key, player, x, placement }){
             <Typography
             align='center'
             variant='h4'
-            clasName={classes.playerName}>{player.name}</Typography>
+            className={classes.playerName}>{player.name}</Typography>
         </Box>
     )
  

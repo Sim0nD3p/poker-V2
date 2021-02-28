@@ -14,9 +14,10 @@ const loginContainerSize = [400, 300];
 
 const useStyles = makeStyles({
     tableContainer:{
+        margin:0,
+        padding:0,
         height:'100vh',
         width:'100vw',
-        overflow:'hide',
         //backgroundColor:'blue',
         overflow:'hidden',
     },
@@ -112,14 +113,16 @@ function Login({ submitClient, setHidden, socket }){
         </Paper>
     )
 }
-
+//faut pouvoir call, check d'avance
+//call, raise? faut que ca soit clair et facile(lipoker bug en criss tabarnak)
 
 export default function Table({ tableId, gameSettingsProps, client, submitClient }) {
     const socket = useSocket();
     const classes = useStyles();
     const [players, setPlayers] = useState([]);
-    const [hiddenLogin, setHiddenLogin] = useState();
+    const [hiddenLogin, setHiddenLogin] = useState(true);
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
+    const [clientId, setClientId] = useState();
 
     
     function populateTable(){
@@ -129,26 +132,21 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     function defineClient(){
 
     }
-    useEffect(() => {
-        console.log(client);
+    useEffect(() => {        
         if(client == undefined){
             setHiddenLogin(false);
-        }
-
-        function playersOnScreen() {
-            let content = [];
-
-                
-                return content
-
         }
     }, [players, client])
 
     if(socket){
+        if(clientId == undefined && socket.id !== undefined){
+            console.log(socket.id);
+            setClientId(socket.id);
+        }
         socket.on('players', (players) => {
             console.log(players);
-            setPlayers(players);
-           // alert('new players');
+            
+            setPlayers(players)
             
             
         });
@@ -173,14 +171,11 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
                 let place = positions[i][1];
                 return (
                     <Player player={player} key={i} x={x} placement={place}></Player>
-
                 )
             })}
             
 
             <TableTop className={classes.tableTop}></TableTop>
-            <Typography className={classes.text}>THIS IS ROOM</Typography>
-
 
 
         </Box>
