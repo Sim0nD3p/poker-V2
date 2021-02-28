@@ -143,10 +143,29 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
             console.log(socket.id);
             setClientId(socket.id);
         }
-        socket.on('players', (players) => {
+        socket.on('player-turn', (callback) => {
+            for(let i = 0; i < players.length; i++){
+
+            }
+        })
+        socket.on('players', (callback) => {
+            let players = callback;
             console.log(players);
-            
-            setPlayers(players)
+            let client;
+            for(let i = 0; i < players.length; i++){
+                if(players[i].id == clientId){
+                    client = players[i]
+                    players.splice(i, 1);
+                    players.splice(0, 0, client);
+                }
+            }
+
+
+            console.log(players);
+
+            if(players[0].id == clientId){
+                setPlayers(players)
+            }
             
             
         });
