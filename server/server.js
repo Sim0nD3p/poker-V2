@@ -32,7 +32,8 @@ class Server{
       for(let i = 0; i < this.casino[index].players.length; i++){
         if(this.casino[index].players[i].id == socket.id){
           this.casino[index].players.splice(i, 1);
-          let players = this.casino[index].players
+          let players = this.casino[index].players;
+          //ne pas envoyer les cartes!!!
           io.emit('players', players);
         }
       }
@@ -42,8 +43,6 @@ class Server{
 }
 const server = new Server();
 
-
-//problem
 
 
 
@@ -73,6 +72,9 @@ io.on('connection', (socket) => {
     server.casino[index].players.push(new Player({name, id}));        //add player to table in casino
     io.in(tableId).emit('players', server.casino[index].players);                 //emit players to everyone
     io.in(tableId).emit('game-settings', server.casino[index].gameSettings);      //emit gameSettings to everyone
+
+
+    //playerId socket.it, tableId, 
 
 
 

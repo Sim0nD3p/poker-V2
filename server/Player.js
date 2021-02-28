@@ -19,7 +19,7 @@ class Player{
         this.id = id;
         this.hand = [];
         this.cardsInHand = [];
-        this. playingState = "playing";
+        this.playingState = "playing";
     }
 
     assignCards(card1, card2) {
