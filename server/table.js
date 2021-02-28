@@ -150,7 +150,7 @@ function GetScore(cards)
         pair: cardNums.filter((count) => count === 2).length === 1,
         high_card: true,
     };
-
+    
     let k;
     for(k=0;k+4<13;k++){
         if(cardNums[k] === 1 && cardNums[k+1] === 1 && cardNums[k+2] === 1 && cardNums[k+3] === 1 && cardNums[k+4] === 1){
