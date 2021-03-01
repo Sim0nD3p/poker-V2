@@ -8,6 +8,7 @@ class Table{
     CardsOnTable = [];
     deck;
     totalPot;
+    currentPot=0;
     playerPlaying = 0;
 
     constructor({ tableId, gameSettings, id }){
@@ -73,6 +74,7 @@ class Table{
             this.playerPlaying=0;
         }
     }
+    
     Check(){
         this.NextTurn();
     }
@@ -81,7 +83,9 @@ class Table{
         this.NextTurn();       
     }
     Raise(raise){
-
+        currentPot=currentPot+raise;
+        //raise substracted from players money 
+        this.NextTurn();
     }
 
     SetHands(){
