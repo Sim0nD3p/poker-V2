@@ -7,7 +7,7 @@ class Table{
 
     CardsOnTable = [];
     deck;
-    currentPot;
+    totalPot;
     playerPlaying = 0;
 
     constructor({ tableId, gameSettings, id }){
@@ -16,6 +16,7 @@ class Table{
         this.gameSettings = gameSettings;
         this.deck = new Deck()
         this.players = [];
+
     }
 
     addPlayer(playerObject){
@@ -43,16 +44,16 @@ class Table{
             for(let x=0; x<winners.length; x++){
                 for(let y=0; y<this.players; y++){
                     if(winners[x].id === this.players[y].id){
-                        if(this.currentPot === potTaken){
+                        if(this.totalPot === potTaken){
                             break;
                         }
-                        else if( this.players[y].maxPot <= this.currentPot-potTaken){
+                        else if( this.players[y].maxPot <= this.totalPot-potTaken){
                             this.players[y].balance += this.players[y].maxPot;
                             potTaken+= this.players[y].maxPot;
                         }
                         else {
-                            this.players[y].balance += this.currentPot - potTaken;
-                            potTaken += this.currentPot - potTaken;
+                            this.players[y].balance += this.totalPot - potTaken;
+                            potTaken += this.totalPot - potTaken;
                         }
                     }
                 }
