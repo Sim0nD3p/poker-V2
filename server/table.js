@@ -205,7 +205,8 @@ function GetScore(cards)
     let TwoPairs = false;
     for(let n=0;n<cardNums.length;n++)
     {
-        if(cardNums[n] === 3){
+
+        if(cardNums[n] >= 3){
             score += (n+1)*Math.pow(10, 11);
         }
         if(cardNums[n] === 2){
