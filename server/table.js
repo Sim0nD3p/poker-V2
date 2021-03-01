@@ -7,7 +7,7 @@ class Table{
 
     CardsOnTable = [];
     deck;
-    totalPot;
+    currentPot;
     playerPlaying = 0;
 
     constructor({ tableId, gameSettings, id }){
@@ -16,7 +16,6 @@ class Table{
         this.gameSettings = gameSettings;
         this.deck = new Deck()
         this.players = [];
-
     }
 
     addPlayer(playerObject){
@@ -44,16 +43,16 @@ class Table{
             for(let x=0; x<winners.length; x++){
                 for(let y=0; y<this.players; y++){
                     if(winners[x].id === this.players[y].id){
-                        if(this.totalPot === potTaken){
+                        if(this.currentPot === potTaken){
                             break;
                         }
-                        else if( this.players[y].maxPot <= this.totalPot-potTaken){
+                        else if( this.players[y].maxPot <= this.currentPot-potTaken){
                             this.players[y].balance += this.players[y].maxPot;
                             potTaken+= this.players[y].maxPot;
                         }
                         else {
-                            this.players[y].balance += this.totalPot - potTaken;
-                            potTaken += this.totalPot - potTaken;
+                            this.players[y].balance += this.currentPot - potTaken;
+                            potTaken += this.currentPot - potTaken;
                         }
                     }
                 }
@@ -65,6 +64,24 @@ class Table{
     NewRound(){
         this.deck = new Deck();
         this.players.forEach(Reset);
+    }
+    NextTurn(){
+        if(this.playerPlaying<this.players.length-1){
+            this.playerPlaying++; 
+         } 
+        else{
+            this.playerPlaying=0;
+        }
+    }
+    Check(){
+        this.NextTurn();
+    }
+    Fold(){
+        this.players[this.playerPlaying].isPlaying=false;
+        this.NextTurn();       
+    }
+    Raise(raise){
+
     }
 
     SetHands(){
