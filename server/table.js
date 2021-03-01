@@ -8,6 +8,8 @@ class Table{
     CardsOnTable = [];
     deck;
     currentPot;
+    playerPlaying = 0;
+
     constructor({ tableId, gameSettings, id }){
         this.id = tableId;
         this.host = id;
@@ -67,7 +69,7 @@ class Table{
     SetHands(){
         let score = 0, desc, hand = [];
         for(let x=0;x<this.players.length; x++){
-            [score, desc, hand] = this.findBestHandTexasHoldEm(this.players[x].cardsInHand);
+            [score, desc, hand] = this.FindBestHandTexasHoldEm(this.players[x].cardsInHand);
             this.players[x].bestHand = hand;
             this.players[x].bestHandDesc = desc;
             this.players[x].bestHandScore = score;
@@ -81,7 +83,7 @@ class Table{
         return winners;
     }
 
-    findBestHandTexasHoldEm(holeCards){
+    FindBestHandTexasHoldEm(holeCards){
         let board = this.CardsOnTable;
         const hands = [];
         hands.push(board);
@@ -118,13 +120,35 @@ class Table{
         return maxScore, maxDesc, hands[maxIndex];
     };
 
+    GetClientPlayersArray(){
+        let array = [];
+        for(let x=0; x<this.players.length; x++){
+            array.push({
+                name: this.players.name,
+                balance:this.players.balance,
+                isTurn:(x===this.playerPlaying),
+                isHost : (x===0)});
+        }
+        return array;
+    }
+    GetIndexOfPlayerWithId(id){
+
+        for(let x= 0;x<this.players.length; x++){
+            if(this.players[x].id === id){
+                return x;
+            }
+        }
+        return -1;
+    }
+
+
 }
 function Reset(player){
     player.cardsInHand= [];
     player.bestHand = [];
     player.bestHandDesc = "";
     player.bestHandScore = 0;
-    player.playingState = "playing";
+    player.isPlaying = true;
 
 }
 
@@ -150,7 +174,7 @@ function GetScore(cards)
         pair: cardNums.filter((count) => count === 2).length === 1,
         high_card: true,
     };
-    
+
     let k;
     for(k=0;k+4<13;k++){
         if(cardNums[k] === 1 && cardNums[k+1] === 1 && cardNums[k+2] === 1 && cardNums[k+3] === 1 && cardNums[k+4] === 1){

@@ -24,13 +24,15 @@ class Server{
       }
     }
   }
+
+
   removeDisconnected(socket){
     //transfer host
     let index = this.findTable(socket.tableId);
     console.log(index);
     if(index !== undefined){
       for(let i = 0; i < this.casino[index].players.length; i++){
-        if(this.casino[index].players[i].id == socket.id){
+        if(this.casino[index].players[i].id === socket.id){
           this.casino[index].players.splice(i, 1);
           let players = this.casino[index].players;
           //ne pas envoyer les cartes!!!
@@ -40,6 +42,9 @@ class Server{
     }
     //console.log(`${socket.id} left table ${socket.tableId}`);
   }
+
+  updateClient()
+
 }
 const server = new Server();
 
@@ -79,7 +84,13 @@ io.on('connection', (socket) => {
 
 
   })
-  
+
+  socket.on('start-game', ({tableId}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].NewRound();
+  })
+
+
 
   socket.on('game-settings', (gameSettings) => {
     console.log('received game settings');
