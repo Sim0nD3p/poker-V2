@@ -154,6 +154,7 @@ function Reset(player){
 
 function GetScore(cards)
 {
+    let score = 0;
     let cardNums = [0,0,0,0,0,0,0,0,0,0,0,0,0];
     let cardSorts = [0,0,0,0];
     let lowerAce = false;
@@ -161,6 +162,7 @@ function GetScore(cards)
     for(i=0;i<cards.length;i++) {
         cardNums[cards[i].number-2]++;
         cardSorts[cards[i].suit]++;
+        score += CardValues[cards[i].number-2];
     }
     const ranks = {
         royal_flush: false,
@@ -198,7 +200,7 @@ function GetScore(cards)
         return !ranks[key];
     });
 
-    let score = rankIndex*Math.pow(10, 13);
+    score += rankIndex*Math.pow(10, 13);
     let temp1=0, temp2=0;
     let TwoPairs = false;
     for(let n=0;n<cardNums.length;n++)
