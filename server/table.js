@@ -83,8 +83,14 @@ class Table{
         this.NextTurn();       
     }
     Raise(raise){
-        currentPot=currentPot+raise;
-        //raise substracted from players money 
+        if(this.players[this.playerPlaying].balance>=raise){
+            currentPot=currentPot+raise;
+            this.players[this.playerPlaying].balance=this.players[this.playerPlaying].balance-raise;
+        }
+        else{
+            currentPot=currentPot+this.players[this.playerPlaying].balance;
+            this.players[this.playerPlaying].balance=0;
+        }
         this.NextTurn();
     }
 
