@@ -34,8 +34,8 @@ class Server{
       for(let i = 0; i < this.casino[index].players.length; i++){
         if(this.casino[index].players[i].id === socket.id){
           this.casino[index].players.splice(i, 1);
-          let players = this.casino[index].players;
-          //ne pas envoyer les cartes!!!
+          let players = this.casino[index].GetClientPlayersArray();
+          //ne pas envoyer les cartes!!! Done - ced
           io.emit('players', players);
         }
       }
@@ -43,7 +43,9 @@ class Server{
     //console.log(`${socket.id} left table ${socket.tableId}`);
   }
 
-  updateClient()
+  updateClients(tableId){
+    io.emit('players', this.casino[tableId].GetClientPlayersArray());
+  }
 
 }
 const server = new Server();
