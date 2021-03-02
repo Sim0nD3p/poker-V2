@@ -22,6 +22,7 @@ class Server{
   addPlayerToTable(player, tableId){
     let index = this.findTable(tableId);
     if(index){
+      player.balance = this.casino[index].gameSettings.defaultBuyIn;
       for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
         if(player.name == this.casino[index].disconnectedPlayers[i].name){
           let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
