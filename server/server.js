@@ -17,17 +17,17 @@ class Server{
     this.casino.push(new Table(tableId, gameSettings, id));
     console.log(this.casino);
   }
-  addPlayerToTable(player){
-    for(let i = 0; i < this.disconnectedPlayers.length; i++){
-      if(player.name == this.disconnectedPlayers[i].name && player.tableId == this.disconnectedPlayers[i].tableId){
-        let oldPlayer = this.disconnectedPlayers.splice(i, 1)[0];
+  addPlayerToTable(player, tableId){
+    let index = this.findTable(tableId);
+    for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
+      if(player.name == this.casino[index].disconnectedPlayers[i].name){
+        let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
         oldPlayer.id = player.id;
         player = oldPlayer;
       }
     }
-    let index = this.findTable(player.tableId);
     this.casino[index].players.push(player);
-    this.updateClients(player.tableId)
+    this.updateClients(tableId);
   }
   
   findTable(tableId){
@@ -50,10 +50,10 @@ class Server{
     if(index !== undefined){
       for(let i = 0; i < this.casino[index].players.length; i++){
         if(this.casino[index].players[i].id === socket.id){
-          this.disconnectedPlayers.push(this.casino[index].players[i]);
+          this.casino[index].disconnectedPlayers.push(this.casino[index].players[i]);
           this.casino[index].players.splice(i, 1);
-          if(this.casino[index].host == socket.id){
-            this.casino[index].host = this.casino[index].players[0].id
+          if(this.casino[index].host == socket.id){   //if i==0 ? si tt va comme prevu
+            this.casino[index].host = this.casino[index].players[0].id;   //might be useless
           }
           //ne pas envoyer les cartes!!! Done - ced
           this.updateClients(socket.tableId);
@@ -82,10 +82,10 @@ io.on('connection', (socket) => {
     server.addTable({ tableId, gameSettings, id });                                  //create table
     console.log('ON CREATE-TABLE');
     console.log(name);
-    let player = new Player(name, id, tableId);
+    let player = new Player(name, id);
     console.log('this is player to send');
     console.log(player);
-    server.addPlayerToTable(player)
+    server.addPlayerToTable(player, tableId)
     //io.in(tableId).emit('game-settings', gameSettings);      //emit gameSettings to everyone
 
   })
@@ -95,8 +95,8 @@ io.on('connection', (socket) => {
     let id = socket.id;                                        //add tableId to joinObject
     socket.tableId = tableId;
     socket.join(tableId);   
-    let player = new Player(name, id, tableId);                               //join tableId room socket.io
-    server.addPlayerToTable(player);
+    let player = new Player(name, id);                               //join tableId room socket.io
+    server.addPlayerToTable(player, tableId);
   })
 
   socket.on('start-game', ({tableId}) => {
