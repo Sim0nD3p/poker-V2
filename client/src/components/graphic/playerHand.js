@@ -47,9 +47,9 @@ export default function PlayerHand({ height }){
     let manquant = up*Math.cos(angle) - miniHorizontal
     let big = w/Math.cos(angle)
     let totalWidth = big + manquant + 50;
-    console.log(`This is totalWidth ${totalWidth}`);
-    console.log(`this is totalHeight ${containerHeight}`);
-    console.log(`this is width ${width}`);
+    //console.log(`This is totalWidth ${totalWidth}`);
+    //console.log(`this is totalHeight ${containerHeight}`);
+    //console.log(`this is width ${width}`);
     let padding = 0.5*(height*Math.sin(angle));
 
 

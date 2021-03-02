@@ -144,7 +144,6 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
 
     if(socket){
         if(clientId == undefined && socket.id !== undefined){
-            console.log(socket.id);
             setClientId(socket.id);
         }
         socket.on('player-turn', (callback) => {
@@ -154,7 +153,7 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
         })
         socket.on('players', (callback) => {
             let players = callback;
-            console.log(players);
+            console.log(callback);
             let client;
             for(let i = 0; i < players.length; i++){
                 if(players[i].id == clientId){
@@ -165,7 +164,7 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
             }
 
 
-            console.log(players);
+            //console.log(players);
 
             if(players[0].id == clientId){
                 setPlayers(players)

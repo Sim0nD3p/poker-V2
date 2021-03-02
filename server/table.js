@@ -200,8 +200,8 @@ class Table {
         let array = [];
         for (let x = 0; x < this.players.length; x++) {
             array.push({
-                name: this.players.name,
-                balance: this.players.balance,
+                name: this.players[x].name,
+                balance: this.players[x].balance,
                 isTurn: (x === this.playerPlaying),
                 isHost: (x === 0)
             });
