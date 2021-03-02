@@ -24,5 +24,40 @@ export const theme = createMuiTheme({
             //paper: '#121212',
             //default: '#121212'  //rgba(18, 18, 18, 1)
         },
+    },
+    typography: {
+        h1: {
+
+        },
+        h2: {
+
+        },
+        h3: {
+
+        },
+        h4: {
+
+        },
+        h5: {
+
+        },
+        h6: {
+
+        },
+        body1: {
+
+        },
+        body2:{
+
+        },
+        subtitle1: {
+            fontFamily: 'Roboto',
+            fontWeight:500,
+            fontSize:16
+
+        },
+        subtitle2: {
+        },
+
     }
 })

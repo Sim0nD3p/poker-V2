@@ -26,9 +26,9 @@ export default function setPlayerMargin(x, placement){
         }
     } else{
         if(placement < 0){
-            spaceY = 1 * spacing;
+            spaceY = 1 * spacing / 2;
         } else if(placement > 0){
-            spaceY = -1 * spacing;
+            spaceY = -1 * spacing / 2;
         }
     }
         return [spaceX, spaceY]

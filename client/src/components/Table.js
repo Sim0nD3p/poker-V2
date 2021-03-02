@@ -124,6 +124,10 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
     const [clientId, setClientId] = useState();
 
+    const tempPlayer = {
+        name:'Player1'
+    }
+
     
     function populateTable(){
 
@@ -192,7 +196,6 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
                     <Player player={player} key={i} x={x} placement={place}></Player>
                 )
             })}
-            
 
             <TableTop className={classes.tableTop}></TableTop>
 

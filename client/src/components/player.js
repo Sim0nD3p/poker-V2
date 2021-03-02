@@ -5,23 +5,49 @@ import { tableWidth as W, tableHeight as H } from './graphic/tableTop';
 import findPlayerYPos from '../functions/findPlayerYPos';
 import findRadialPlayerAngle from '../functions/findRadialPlayerAngle';
 import setPlayerMargin from '../functions/setPlayerMargin';
+import { Person } from '@material-ui/icons';
+import PlayerHand from './graphic/playerHand';
 
 const useStyles = makeStyles({
+    container:{
+        display:'flex',
+        //flexDirection:'column',
+    },
     paper:{
-        //width:200,
-        //height:200,
-        backgroundColor:'red',
-        //position:'fixed'
+        height:60,
+        backgroundColor:'#cfcfcf',
+        display:'flex',
+        position:'relative',
+        bottom:0,
+        width:'100%',
+        margin:'auto',
+        marginBottom:0,
     },
     playerName:{
         textAlign:'center',
+    },
+    card:{
+        height:150,
+        width:75,
+        backgroundColor:'blue',
+        zIndex:10000
+    },
+    person:{
+        margin:'auto',
+        marginLeft:5,
+        marginRight:0,
+        fontSize:'48px',
+
+    },
+    playerHandContainer:{
+        position:'relative',
     }
 })
 
 export default function Player({ key, player, x, placement }){
     const classes = useStyles();
     const [position, setPosition] = useState();
-    const [size, setSize] = useState({height:100, width:300});
+    const [size, setSize] = useState({height:50, width:200});
     const [xPos, setXPos] = useState();
     const [yPos, setYPos] = useState();
     const [margin, setMargin] = useState();
@@ -34,7 +60,7 @@ export default function Player({ key, player, x, placement }){
         height: size.height,
         top: yPos - size.height / 2 + window.innerHeight / 2,
         left: xPos - size.width / 2 + window.innerWidth / 2,
-        zIndex: 10000,
+        
 
     });
     useEffect(() => {
@@ -70,37 +96,39 @@ export default function Player({ key, player, x, placement }){
 
     return (
         <Box
-        onClick={console.log('bruh')}
-        className={classes.paper}
-        style={style}
+            onClick={console.log('bruh')}
+            className={classes.container}
+            style={style}
         >
-            <Typography
-            align='center'
-            variant='h4'
-            className={classes.playerName}>{player.name}</Typography>
+            <Box className={classes.paper}>
+
+                <Person
+                className={classes.person}
+                ></Person>
+                <Box>
+                    <Typography
+                        align='center'
+                        variant='h6'
+                        className={classes.playerName}
+                    >{player.name}</Typography>
+
+                    <Typography
+                        variant='body2'
+                        className={classes.balance}
+                    >1200$</Typography>
+
+                </Box>
+                    <PlayerHand height={75}></PlayerHand>
+
+            </Box>
+            
+
+
+
+
+
+
         </Box>
-    )
- 
-
-    
-
-
-
-    /*
-                position:'fixed',
-                width: size.width,
-                height: size.height,
-                top: y - size.height/2 + window.innerHeight/2,
-                left: x - size.width/2 + window.innerWidth/2,
-                zIndex:10000,
-    */
-
-    
-
-    
-    
-
-
-   
+    ) 
 
 }
