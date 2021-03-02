@@ -11,6 +11,7 @@ class Table {
     currentPot = 0;
     playerPlaying = 0;
     maxBet = 0;
+    raiseIndex=10000;
 
     constructor({ tableId, gameSettings, id }) {
         this.id = tableId;
@@ -49,7 +50,7 @@ class Table {
                 let i = y + 1;
                 while (i < this.players.length) {
                     if (this.players[winnersIndex[i]].bestHandScore === this.players[winnersIndex[y]].bestHandScore) {
-                        numberOfEquality++
+                        numberOfEquality++;
                     }
                     else
                         break;
@@ -79,6 +80,16 @@ class Table {
             this.NewRound();
         }
     }
+    Flop(){
+            if(raiseIndex === this.playerPlaying){
+                AddCardToFlop();
+            }
+            else{
+                NextTurn(); 
+            }
+        }
+    }
+
     NewRound() {
         this.deck = new Deck();
         this.players.forEach(Reset);
@@ -93,11 +104,12 @@ class Table {
     }
 
     Check() {
-        this.NextTurn();
+        this.Flop();
+        this.players[this.playerPlaying].playercheck = true;
     }
     Fold() {
         this.players[this.playerPlaying].isPlaying = false;
-        this.NextTurn();
+        this.Flop();
     }
     Raise(raise) {
         if (this.players[this.playerPlaying].balance >= raise) {
@@ -107,13 +119,14 @@ class Table {
             if(this.players[this.playerPlaying].currentBet>this.maxBet){
                 this.maxBet = raise;
             }
+            
         }
         else {
             this.currentPot = this.currentPot + this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].currentBet = this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].balance = 0;
         }
-        this.NextTurn();
+        this.Flop();
     }
 
     Call() {
@@ -123,7 +136,7 @@ class Table {
         else{
             this.Raise(this.maxBet-this.players[this.playerPlaying].currentBet);
         }
-        this.NextTurn();
+        this.Flop();
     }
 
     BuyIn(playerName,buyIn){
