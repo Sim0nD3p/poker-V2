@@ -47,6 +47,7 @@ class Server{
     let index = this.findTable(tableId);
     let clientPlayers = this.casino[index].GetClientPlayersArray();
     io.in(tableId).emit('players', clientPlayers);
+    io.in(tableId).emit('pot', this.casino[index].totalPot);
   }
 
   removeDisconnected(socket){

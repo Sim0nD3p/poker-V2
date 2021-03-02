@@ -15,6 +15,8 @@
  * Gerer egalite Done-ced
  - Ajouter les blinds et dealer
  - Detecter fin des roundes
+ 
+ - emit pot au client
 
 # Fonctionnalites a ajouter
 - sitOutNextRound
