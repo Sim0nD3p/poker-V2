@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
-import { useSocket } from '../contexts/SocketProvider';
+import { useSocket } from '../../contexts/SocketProvider';
 
 const useStyles = makeStyles({
     container:{

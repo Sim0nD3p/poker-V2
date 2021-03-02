@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper, Card, CardMedia, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Cards from './../res/cards/2C.svg'
+import Cards from '../../res/cards/2C.svg'
 
 export default function CardContainer(){
     const ratio = (2.5 / 3.5);

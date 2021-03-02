@@ -1,4 +1,4 @@
-import { tableWidth as W, tableHeight as H } from '../components/graphic/tableTop';
+import { tableWidth as W, tableHeight as H } from '../TableComponents/tableTop';
 
 export default function findRadialPlayerAngle(x){
     let theta;

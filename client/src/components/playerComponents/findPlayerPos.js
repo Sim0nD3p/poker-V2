@@ -1,7 +1,7 @@
-import { tableWidth as W, tableHeight as H } from '../components/graphic/tableTop';
+import { tableWidth as W, tableHeight as H } from '../TableComponents/tableTop';
 import findRadialPlayerAngle from './findRadialPlayerAngle';
 
-export default function findPlayerYPos(x, placement){
+export default function findPlayerPos(x, placement){
     let alpha = (W / 2) - (H / 2);
     let xPos, yPos, y;
     if(Math.abs(x * W / 2) > alpha){        

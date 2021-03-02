@@ -1,9 +1,9 @@
 import React from 'react';
 import { Paper, Typography, Box } from '@material-ui/core';
-import { settings as tableSettings } from './graphic/tableTop';
+import { settings as tableSettings } from './tableTop';
 import { makeStyles } from '@material-ui/core';
-import CardContainer from './cardOnTable';
-import { useSocket } from '../contexts/SocketProvider';
+import CardContainer from './cardContainer';
+import { useSocket } from '../../contexts/SocketProvider';
 
 const useStyles = makeStyles({
     container:{

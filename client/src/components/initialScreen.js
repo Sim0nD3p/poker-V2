@@ -1,6 +1,5 @@
 import React from 'react'
 import { SocketProvider } from '../contexts/SocketProvider';
-import Test from './test'
 import { Container, Button, Input, TextField, Paper } from '@material-ui/core';
 import { v4 as uuidV4 } from 'uuid'
 import { useState, useEffect } from 'react';

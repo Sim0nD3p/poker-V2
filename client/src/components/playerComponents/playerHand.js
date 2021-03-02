@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Card, CardMedia } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Stage, Layer, Rect } from 'react-konva';
-import cardBack from './cardBack.png'
+import cardBack from '../../res/cardBack.png';
 
 
 const useStyle = makeStyles({

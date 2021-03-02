@@ -5,12 +5,12 @@ import store from '../redux/store';
 import { Card, Paper, Typography, TextField, Button, Box } from '@material-ui/core';
 import { updatePlayers } from '../redux/actions/actions';
 import { makeStyles } from '@material-ui/core/styles';
-import { TableTop } from './graphic/tableTop';
+import { TableTop } from './TableComponents/tableTop';
 import Player from './player';
-import playerPosition from './graphic/playerPosition';
+import playerPosition from './playerComponents/playerPosition';
 import queryString from 'querystring';
-import Controls from './Controls';
-import TableContent from './tableContent';
+import Controls from './TableComponents/Controls';
+import TableContent from './TableComponents/tableContent';
 
 const loginContainerSize = [400, 300];
 

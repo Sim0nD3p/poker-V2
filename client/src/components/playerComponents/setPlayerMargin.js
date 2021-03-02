@@ -1,4 +1,4 @@
-import { tableHeight as H, tableWidth as W } from '../components/graphic/tableTop';
+import { tableHeight as H, tableWidth as W } from '../TableComponents/tableTop';
 import findRadialPlayerAngle from './findRadialPlayerAngle';
 
 export default function setPlayerMargin(x, placement){

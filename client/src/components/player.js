@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Paper, Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { tableWidth as W, tableHeight as H } from './graphic/tableTop';
-import findPlayerYPos from '../functions/findPlayerYPos';
-import findRadialPlayerAngle from '../functions/findRadialPlayerAngle';
-import setPlayerMargin from '../functions/setPlayerMargin';
+import { tableWidth as W, tableHeight as H } from './TableComponents/tableTop';
+import findPlayerPos from './playerComponents/findPlayerPos';
+import findRadialPlayerAngle from './playerComponents/findRadialPlayerAngle';
+import setPlayerMargin from './playerComponents/setPlayerMargin';
 import { Person } from '@material-ui/icons';
-import PlayerHand from './graphic/playerHand';
+import PlayerHand from './playerComponents/playerHand';
 
 const useStyles = makeStyles({
     container:{
@@ -65,7 +65,7 @@ export default function Player({ key, player, x, placement }){
 
     useEffect(() => {
         if(margin){
-            let posObject = findPlayerYPos(x, placement);
+            let posObject = findPlayerPos(x, placement);
             setYPos(posObject[1] + margin[1]);
             setXPos(posObject[0] + margin[0]);
         }
@@ -114,11 +114,6 @@ export default function Player({ key, player, x, placement }){
 
             </Box>
             
-
-
-
-
-
 
         </Box>
     ) 
