@@ -172,6 +172,10 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
             
             
         });
+
+        socket.on('casino', (casino) => {
+            console.log(casino);
+        });
         socket.on('game-settings', (gameSettings) => {
             //console.log(gameSettings);
         })

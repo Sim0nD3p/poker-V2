@@ -10,13 +10,26 @@ ids = [];
 class Server{
   constructor(){
     this.casino = []; //tableArray
+    this.disconnectedPlayers = [];
 
   }
-  addTable(table){
-    this.casino.push(new Table(table))
-    console.log('this is casino');
+  addTable(tableId, gameSettings, id){
+    this.casino.push(new Table(tableId, gameSettings, id));
     console.log(this.casino);
   }
+  addPlayerToTable(player){
+    for(let i = 0; i < this.disconnectedPlayers.length; i++){
+      if(player.name == this.disconnectedPlayers[i].name && player.tableId == this.disconnectedPlayers[i].tableId){
+        let oldPlayer = this.disconnectedPlayers.splice(i, 1)[0];
+        oldPlayer.id = player.id;
+        player = oldPlayer;
+      }
+    }
+    let index = this.findTable(player.tableId);
+    this.casino[index].players.push(player);
+    this.updateClients(player.tableId)
+  }
+  
   findTable(tableId){
     for(let i = 0; i < this.casino.length; i++){
       if(this.casino[i].id == tableId){
@@ -32,20 +45,21 @@ class Server{
   }
 
   removeDisconnected(socket){
-    //transfer host
-    console.log(socket.id);
+    //transfer host DONE - SIM
     let index = this.findTable(socket.tableId);
     if(index !== undefined){
       for(let i = 0; i < this.casino[index].players.length; i++){
         if(this.casino[index].players[i].id === socket.id){
+          this.disconnectedPlayers.push(this.casino[index].players[i]);
           this.casino[index].players.splice(i, 1);
-          let players = this.casino[index].GetClientPlayersArray();
+          if(this.casino[index].host == socket.id){
+            this.casino[index].host = this.casino[index].players[0].id
+          }
           //ne pas envoyer les cartes!!! Done - ced
           this.updateClients(socket.tableId);
         }
       }
     }
-    //console.log(`${socket.id} left table ${socket.tableId}`);
   }
 
   
@@ -63,31 +77,26 @@ io.on('connection', (socket) => {
   //gucci
   socket.on('create-table', ({ name, tableId, gameSettings }) => {
     let id = socket.id;                                    //client socket.id
-    server.addTable({ tableId, gameSettings, id });                                  //create table
-    socket.join(tableId);                              //join tableId room socket.io
     socket.tableId = tableId;
-    let index = server.findTable(tableId);               //find index of table in casino
-    server.casino[index].players.push(new Player({ name, id }));    //add player to table
-    io.in(tableId).emit('players', server.casino[index].players);                 //emit players to everyone
-    io.in(tableId).emit('game-settings', gameSettings);      //emit gameSettings to everyone
+    socket.join(tableId);                              //join tableId room socket.io
+    server.addTable({ tableId, gameSettings, id });                                  //create table
+    console.log('ON CREATE-TABLE');
+    console.log(name);
+    let player = new Player(name, id, tableId);
+    console.log('this is player to send');
+    console.log(player);
+    server.addPlayerToTable(player)
+    //io.in(tableId).emit('game-settings', gameSettings);      //emit gameSettings to everyone
 
   })
 
   //cath when player try to join a table that doesnt exist
   socket.on('join-table', ({ name, tableId }) => {
-    socket.join(tableId);                                  //join tableId room socket.io
-    socket.tableId = tableId;
     let id = socket.id;                                        //add tableId to joinObject
-    let index = server.findTable(tableId);                   //find index of table in casino
-    server.casino[index].players.push(new Player({name, id}));        //add player to table in casino
-    io.in(tableId).emit('players', server.casino[index].players);                 //emit players to everyone
-    io.in(tableId).emit('game-settings', server.casino[index].gameSettings);      //emit gameSettings to everyone
-
-
-    //playerId socket.it, tableId, 
-
-
-
+    socket.tableId = tableId;
+    socket.join(tableId);   
+    let player = new Player(name, id, tableId);                               //join tableId room socket.io
+    server.addPlayerToTable(player);
   })
 
   socket.on('start-game', ({tableId}) => {

@@ -4,7 +4,6 @@
 class Player{
 
     name = "Nameless Player";
-    id;
     cardsInHand= [];
     bestHand = [];
     bestHandDesc;
@@ -15,12 +14,13 @@ class Player{
 
     maxPot = 0;
 
-    constructor({name, id}) {
+    constructor(name, id, tableId) {
         this.name = name;
         this.id = id;
         this.hand = [];
         this.cardsInHand = [];
         this.isPlaying = true;
+        this.tableId = tableId;
     }
 
     assignCards(card1, card2) {

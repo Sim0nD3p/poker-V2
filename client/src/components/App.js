@@ -93,6 +93,7 @@ function App(){
   useEffect(() => {
     console.log('update on name or gameId');
     console.log(gameSettings);
+    console.log(name);
 
 
     //maybe only have a playerObject without name and table id passed everywhere is a good idea

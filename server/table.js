@@ -201,6 +201,7 @@ class Table {
         for (let x = 0; x < this.players.length; x++) {
             array.push({
                 name: this.players[x].name,
+                id: this.players[x].id,
                 balance: this.players[x].balance,
                 isTurn: (x === this.playerPlaying),
                 isHost: (x === 0)

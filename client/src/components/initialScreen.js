@@ -101,7 +101,6 @@ export default function InitialScreen({ submitName, submitGameId, submitPlayerOb
         console.log('create game');
         setName(nameStr);
         console.log(nameStr);
-        console.log(name)
         submitName(nameStr);
         //submitGameId('gameId');   //DEAL WITH GAMEID (link?, router?)(randomString?)(displayToUser?)
     }
@@ -119,7 +118,7 @@ export default function InitialScreen({ submitName, submitGameId, submitPlayerOb
     function joinGame() {    //will run 2 times (when the user chose to join game and after he enters the gameId)
         console.log('join game');
         setTableId(idStr);
-        submitGameId(tableId);
+        
         console.log(name);
         console.log(tableId);
         
@@ -127,6 +126,7 @@ export default function InitialScreen({ submitName, submitGameId, submitPlayerOb
     function back() {    //go back if user changes mind
         isNewGame(true);
     }
+    
     //Initial screen with 2 options (createGame, joinGame)
     function Initial() {
         return (
