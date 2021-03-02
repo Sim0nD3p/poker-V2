@@ -126,6 +126,15 @@ class Table {
         this.NextTurn();
     }
 
+    BuyIn(playerName,buyIn){
+        for(let i; i<this.players.length;i++){
+            if(this.players[i].name===playerName){
+                this.players[i].balance += buyIn;
+            }
+        }
+    
+     }
+
     SetHands() {
         let score = 0, desc, hand = [];
         for (let x = 0; x < this.players.length; x++) {

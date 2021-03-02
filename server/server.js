@@ -120,6 +120,10 @@ io.on('connection', (socket) => {
     server.casino[index].Call();
   }) 
 
+  socket.on('buyIn', ({tableId,playerName,buyIn}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].BuyIn(playerName,buyIn);
+  }) 
 
   socket.on('disconnect', (arg) => {
     server.removeDisconnected(socket);

@@ -10,7 +10,7 @@ class Player{
     bestHandDesc;
     bestHandScore;
     isPlaying;
-    balance;
+    balance; //player's money
     currentBet=0;
 
     maxPot = 0;
