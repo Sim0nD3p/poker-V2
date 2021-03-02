@@ -145,7 +145,6 @@ class Table {
             this.bigBlindIndex =  this.PassOn(this.bigBlindIndex);
         }
 
-        this.maxBet = 2*this.smallBlindValue;
         this.playerPlaying = this.smallBlindIndex;
         this.Raise(this.smallBlindValue);
         this.playerPlaying = this.bigBlindIndex;
@@ -180,6 +179,7 @@ class Table {
             this.currentPot = this.currentPot + raise;
             this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
             this.players[this.playerPlaying].currentBet += raise;
+            this.players[this.playerPlaying].totalBet += raise;
             if(this.players[this.playerPlaying].currentBet>this.maxBet){
                 this.maxBet = raise;
             }
@@ -187,7 +187,8 @@ class Table {
         }
         else {
             this.currentPot = this.currentPot + this.players[this.playerPlaying].balance;
-            this.players[this.playerPlaying].currentBet = this.players[this.playerPlaying].balance;
+            this.players[this.playerPlaying].currentBet += this.players[this.playerPlaying].balance;
+            this.players[this.playerPlaying].totalBet += this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].balance = 0;
         }
     }
