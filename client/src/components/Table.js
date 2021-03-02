@@ -65,15 +65,17 @@ const useStyles = makeStyles({
         marginTop:10,
     }
 })
-function Login({ submitClient, setHidden, socket }){
+function Login({ submitClient, setHidden, socket, submitTableId }){
     const classes = useStyles();
     const [name, setName] = useState();
     const [tableId, setTableId] = useState();
 
     useEffect(() => {
+        console.log('getting the tableId from url');
         const parsed = queryString.parse(window.location.search);
         setTableId(parsed["?id"]);
-    })
+        console.log(parsed['?id']);
+    }, [tableId])
     
     function getNameInput(e){
         setName(e.target.value);
@@ -126,7 +128,10 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     const [players, setPlayers] = useState([]);
     const [hiddenLogin, setHiddenLogin] = useState(true);
     const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
+    const [gameOn, setGameOn] = useState(false);
     const [clientId, setClientId] = useState();
+    const [clientIsHost, setClientIsHost] = useState(false);
+    const [tableID, setTableID] = useState(tableId);
 
     const tempPlayer = {
         name:'Player1'
@@ -144,11 +149,12 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     if(socket){
         if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
         socket.on('players', (callback) => {
+            if(callback[0].id == clientId){ setClientIsHost(true) };
             let players = callback;
             let client;
             for(let i = 0; i < players.length; i++){
                 if(players[i].id === clientId){
-                    client = players[i]
+                    client = players[i];
                     players.splice(i, 1);
                     players.splice(0, 0, client);
                 }
@@ -170,6 +176,7 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
         <Box className={classes.tableContainer}>
             {hiddenLogin ? null : <Login
                 socket={socket}
+                submitTableId={setTableID}
                 setHidden={setHiddenLogin}
                 className={classes.login}
                 submitClient={submitClient}
@@ -178,7 +185,12 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
 
             <TableContent></TableContent>
 
-            <Controls></Controls>   {/**props= some kind of state for call/check and raise */}
+            <Controls
+            isHost={clientIsHost}
+            gameOn={gameOn}
+            tableId={tableId}
+            ></Controls>   {/**props= some kind of state for call/check and raise */}
+
             {players.map((player, i) => {
                 let positions = playerPosition(players.length);
                 let x = positions[i][0];

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
 import { useSocket } from '../../contexts/SocketProvider';
@@ -41,9 +41,19 @@ function Button(props) {
 }
 //keyboard shortcuts
 //Client On?
-export default function Controls(call, check, casino){
+export default function Controls(props){
     const classes = useStyles();
     const socket = useSocket();
+
+    useEffect(() => {
+        console.log(props);
+        console.log(props.gameOn);
+        console.log(props.isHost);
+    });
+
+    function startGame(){
+        socket.emit('start-game', props.tableId)
+    }
 
     function test(){
         console.log('casino from control');
@@ -78,6 +88,7 @@ export default function Controls(call, check, casino){
             Raise: To increase the amount of the current bet.
             Check: To not bet, with the option to call or raise later in the betting round
              */}
+             {(props.clientIsHost && !props.gameOn) ? <Button text='Start game!' action={startGame}></Button> : null}
             <Button text='Fold'></Button>
             <Button text='Raise' action={raise}></Button>
             <Button text='Check' action={call}></Button>

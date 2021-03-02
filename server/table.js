@@ -105,14 +105,14 @@ class Table {
     StartGame(){
         if(this.players.length <2)
             return;
-        else if(this.players.length ===2){
+        else if(this.players.length === 2){
             this.dealerIndex = 0;
-            this.smallBlindIndex =1;
+            this.smallBlindIndex = 1;
             this.bigBlindIndex = 0;
         }
         else{
             this.dealerIndex = 0;
-            this.smallBlindIndex =1;
+            this.smallBlindIndex = 1;
             this.bigBlindIndex = 2;
         }
     }

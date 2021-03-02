@@ -35,22 +35,35 @@ const useStyles = makeStyles({
 function JoinGame({ submitId, submitBack, name }) {
     const socket = useSocket();
     const classes = useStyles();
-    const [tableId, setTableId] = useState()
+    const [tableId, setTableId] = useState();
+    const [go, setGo] = useState(false);
+    var tableIdStr = '';
+
+    
+    
     function getGameId(e){
         setTableId(e.target.value);
     }
     function joinGame(){
-        submitId(tableId);
-        let joinObject = {
-            name: name,
-            tableId: tableId
-        };
+        //console.log(tableIdStr);
+        //setTableId(tableIdStr);
+        console.log(tableId)
+        setGo(true)
+        
+
         console.log('should emit from initialScreen');
         socket.emit('join-table', ({ name, tableId }));
     }
     function back(){
         submitBack(true);
     }
+
+    useEffect(() => {
+        if(go === true){
+            submitId(tableId);
+        }
+        console.log(tableId);
+    }, [tableId, go])
     return (
         <Paper
             elevation={5}

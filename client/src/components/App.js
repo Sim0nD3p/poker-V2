@@ -94,6 +94,7 @@ function App(){
     console.log('update on name or gameId');
     console.log(gameSettings);
     console.log(name);
+    console.log(tableId);
 
 
     //maybe only have a playerObject without name and table id passed everywhere is a good idea
