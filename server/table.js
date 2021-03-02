@@ -19,6 +19,7 @@ class Table {
         this.gameSettings = gameSettings;
         this.deck = new Deck()
         this.players = [];
+        this.disconnectedPlayers = [];
     }
 
     addPlayer(playerObject) {

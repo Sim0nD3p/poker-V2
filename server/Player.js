@@ -14,13 +14,12 @@ class Player{
 
     maxPot = 0;
 
-    constructor(name, id, tableId) {
+    constructor(name, id) {
         this.name = name;
         this.id = id;
         this.hand = [];
         this.cardsInHand = [];
         this.isPlaying = true;
-        this.tableId = tableId;
     }
 
     assignCards(card1, card2) {
