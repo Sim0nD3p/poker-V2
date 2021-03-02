@@ -7,7 +7,7 @@ class Table{
 
     CardsOnTable = [];
     deck;
-    totalPot;
+    totalPot=0;
     currentPot=0;
     playerPlaying = 0;
 
@@ -39,28 +39,46 @@ class Table{
         }
         else {
             // METHOD FOR END OF GAME
-            let winners = this.GetWinners();
+            let [winnersIndex, winners] = this.GetWinnersIndex();
             let potTaken = 0;
-            for(let x=0; x<winners.length; x++){
-                for(let y=0; y<this.players; y++){
-                    if(winners[x].id === this.players[y].id){
-                        if(this.totalPot === potTaken){
-                            break;
-                        }
-                        else if( this.players[y].maxPot <= this.totalPot-potTaken){
-                            this.players[y].balance += this.players[y].maxPot;
-                            potTaken+= this.players[y].maxPot;
-                        }
-                        else {
-                            this.players[y].balance += this.totalPot - potTaken;
-                            potTaken += this.totalPot - potTaken;
-                        }
+            let egalite = false;
+            let egaliteNumber=0;
+            for(let y=0; y<this.players.length; y++){
+
+                //get number of equality
+                let numberOfEquality = 0;
+                let i = y+1;
+                while(i<this.players.length){
+                    if(this.players[winnersIndex[i]].bestHandScore === this.players[winnersIndex[y]].bestHandScore){
+                        numberOfEquality++
                     }
+                    else
+                        break;
+                    i++;
                 }
+
+                //assign money
+                if(this.totalPot === potTaken){
+                    break;
+                }
+                else if( this.players[winnersIndex[y]].maxPot*(numberOfEquality+1) <= this.totalPot-potTaken){
+
+                    for(let j=y;j<y+1+numberOfEquality;j++) {
+                        this.players[winnersIndex[j]].balance += this.players[winnersIndex[j]].maxPot;
+                        potTaken+= this.players[winnersIndex[j]].maxPot;
+                    }
+
+                }
+                else {
+                    for(let j=y;j<y+1+numberOfEquality;j++) {
+                        this.players[winnersIndex[j]].balance += (this.totalPot - potTaken)/(1+numberOfEquality);
+                    }
+                    potTaken = this.totalPot;
+                }
+                y+=numberOfEquality;
             }
             this.NewRound();
         }
-
     }
     NewRound(){
         this.deck = new Deck();
@@ -84,11 +102,11 @@ class Table{
     }
     Raise(raise){
         if(this.players[this.playerPlaying].balance>=raise){
-            currentPot=currentPot+raise;
+            this.currentPot=this.currentPot+raise;
             this.players[this.playerPlaying].balance=this.players[this.playerPlaying].balance-raise;
         }
         else{
-            currentPot=currentPot+this.players[this.playerPlaying].balance;
+            this.currentPot=this.currentPot+this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].balance=0;
         }
         this.NextTurn();
@@ -104,11 +122,20 @@ class Table{
         }
     }
 
-    GetWinners(){
+    GetWinnersIndex(){
         this.SetHands()
         let winners = this.players;
         winners.sort(function(a,b){return b.bestHandScore - a.bestHandScore})
-        return winners;
+        let indexArray = [];
+        for(let x=0; x<winners.length; x++) {
+            for (let y = 0; y < this.players; y++) {
+                if (winners[x].id === this.players[y].id) {
+                    indexArray.push(y);
+                }
+            }
+        }
+
+        return [indexArray, winners];
     }
 
     FindBestHandTexasHoldEm(holeCards){
@@ -145,7 +172,7 @@ class Table{
                 maxDesc = desc;
             }
         }
-        return maxScore, maxDesc, hands[maxIndex];
+        return [maxScore, maxDesc, hands[maxIndex]];
     };
 
     GetClientPlayersArray(){
@@ -249,7 +276,7 @@ function GetScore(cards)
         }
 
     }
-    return score, rankDescription;
+    return [score, rankDescription];
 }
 
 module.exports = Table;

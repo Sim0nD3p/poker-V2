@@ -26,7 +26,7 @@ class Server{
   }
 
 
-  removeDisconnected(socket){
+  removeDisconnected(socket, tableId){
     //transfer host
     let index = this.findTable(socket.tableId);
     console.log(index);
@@ -36,7 +36,7 @@ class Server{
           this.casino[index].players.splice(i, 1);
           let players = this.casino[index].GetClientPlayersArray();
           //ne pas envoyer les cartes!!! Done - ced
-          io.emit('players', players);
+          io.in(tableId).emit('players', players);
         }
       }
     }
@@ -44,7 +44,7 @@ class Server{
   }
 
   updateClients(tableId){
-    io.emit('players', this.casino[tableId].GetClientPlayersArray());
+    io.in(tabledId).emit('players', this.casino[tableId].GetClientPlayersArray());
   }
 
 }
@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('disconnect', (arg) => {
-    server.removeDisconnected(socket);
+    server.removeDisconnected(socket, socket.tableId);
     /* let index = server.findTable(socket.tableId);
     let players = server.casino[index].players;
     for(let i = 0; i < players.length; i++){

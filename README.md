@@ -9,7 +9,7 @@
 - players object design (Sim, player.js)
 
 # In server
- - Gerer egalite
+ * Gerer egalite Done-ced
  - Ajouter les blinds et dealer
  - Detecter fin des roundes
 
