@@ -10,6 +10,7 @@ import Player from './player';
 import playerPosition from './graphic/playerPosition';
 import queryString from 'querystring';
 import Controls from './Controls';
+import TableContent from './tableContent';
 
 const loginContainerSize = [400, 300];
 
@@ -130,7 +131,7 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     const tempPlayer = {
         name:'Player1'
     }
-    useEffect(() => { if (client == undefined) { setHiddenLogin(true) } }, [players, client]);
+    useEffect(() => { if (client == undefined) { setHiddenLogin(false) } }, [players, client]);
 
     function call(){
         console.log('call')
@@ -173,6 +174,8 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
                 ></Login>
             }
 
+            <TableContent></TableContent>
+
             <Controls
             call={call}
             ></Controls>
@@ -184,7 +187,6 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
                     <Player player={player} key={i} x={x} placement={place}></Player>
                 )
             })}
-            <Player player={tempPlayer} key={1} x={0} placement={-1}></Player>
 
             <TableTop className={classes.tableTop}></TableTop>
 

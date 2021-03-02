@@ -4,16 +4,18 @@ import { Stage, Layer, Rect } from 'react-konva';
 import { theme } from '../../theme';
 
 const aspectRatio = (1920 / 1080);
-export const tableWidth = 0.7 * window.innerHeight;
-export const tableHeight = 0.35 * window.innerHeight;
+export const tableWidth = 0.8 * window.innerHeight;
+export const tableHeight = 0.4 * window.innerHeight;
 
-const settings = {
+export const settings = {
     bgColorStage: theme.palette.background.default,
     tableWidth: tableWidth,
     tableHeight: tableHeight,
     tableColors: [theme.palette.primary.main, theme.palette.primary.dark],
     strokeColor: theme.palette.secondary.main,
     strokeWidth: 10,
+    offsetX:0,
+    offsetY:0,
 
 }
 
@@ -27,8 +29,6 @@ const useStyles = makeStyles({
 
 export const TableTop = () => {
     const classes = useStyles();
-    let offsetX = 0;
-    let offsetY = 0;    //75
     return (
         <Stage 
         className={classes.stage}
@@ -39,8 +39,8 @@ export const TableTop = () => {
                 <Rect
                 width={tableWidth}
                 height={tableHeight}
-                offsetX={offsetX + tableWidth/2}
-                offsetY={offsetY + tableHeight/2}
+                offsetX={settings.offsetX + tableWidth/2}
+                offsetY={settings.offsetY + tableHeight/2}
                 x={window.innerWidth/2}
                 y={window.innerHeight/2}
                 cornerRadius={tableHeight/2}
