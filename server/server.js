@@ -52,7 +52,7 @@ class Server{
         if(this.casino[index].players[i].id === socket.id){
           this.casino[index].disconnectedPlayers.push(this.casino[index].players[i]);
           this.casino[index].players.splice(i, 1);
-          if(this.casino[index].host == socket.id){   //if i==0 ? si tt va comme prevu
+          if(this.casino[index].host == socket.id && this.casino[index].players.length !== 0){   //if i==0 ? si tt va comme prevu
             this.casino[index].host = this.casino[index].players[0].id;   //might be useless
           }
           //ne pas envoyer les cartes!!! Done - ced

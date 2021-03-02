@@ -60,26 +60,19 @@ export default function Player({ key, player, x, placement }){
         height: size.height,
         top: yPos - size.height / 2 + window.innerHeight / 2,
         left: xPos - size.width / 2 + window.innerWidth / 2,
-        
-
     });
-    useEffect(() => {
-        setMargin(setPlayerMargin(x, placement));
-    }, [x, placement]);
+    useEffect(() => { setMargin(setPlayerMargin(x, placement)) }, [x, placement]);
 
     useEffect(() => {
         if(margin){
-            //console.log(`this is the margins ${margin[0]}, ${margin[1]}`);
             let posObject = findPlayerYPos(x, placement);
-            //console.log(`this is positions before spacing x: ${posObject[0]}, y: ${posObject[1]}`);
             setYPos(posObject[1] + margin[1]);
             setXPos(posObject[0] + margin[0]);
         }
-    }, [margin])
+    }, [margin]);
 
     useEffect(() => {
         if(isNaN(xPos) == false && isNaN(yPos) == false){
-            //console.log(`this is positions before style x: ${xPos} y: ${yPos}`);
             setStyle({
                 position: 'fixed',
                 width: size.width,
@@ -96,7 +89,6 @@ export default function Player({ key, player, x, placement }){
 
     return (
         <Box
-            onClick={console.log('bruh')}
             className={classes.container}
             style={style}
         >

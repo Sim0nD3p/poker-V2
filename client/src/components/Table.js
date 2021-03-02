@@ -9,6 +9,7 @@ import { TableTop } from './graphic/tableTop';
 import Player from './player';
 import playerPosition from './graphic/playerPosition';
 import queryString from 'querystring';
+import Controls from './Controls';
 
 const loginContainerSize = [400, 300];
 
@@ -18,6 +19,8 @@ const useStyles = makeStyles({
         padding:0,
         height:'100vh',
         width:'100vw',
+        display:'flex',
+        flexDirection:'column',
         //backgroundColor:'blue',
         overflow:'hidden',
     },
@@ -127,52 +130,31 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     const tempPlayer = {
         name:'Player1'
     }
+    useEffect(() => { if (client == undefined) { setHiddenLogin(true) } }, [players, client]);
 
-    
-    function populateTable(){
-
-
+    function call(){
+        console.log('call')
     }
-    function defineClient(){
-
-    }
-    useEffect(() => {        
-        if(client == undefined){
-            setHiddenLogin(false);
-        }
-    }, [players, client])
 
     if(socket){
-        if(clientId == undefined && socket.id !== undefined){
-            setClientId(socket.id);
-        }
-        socket.on('player-turn', (callback) => {
-            for(let i = 0; i < players.length; i++){
-
-            }
-        })
+        if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
         socket.on('players', (callback) => {
             let players = callback;
-            console.log(callback);
             let client;
             for(let i = 0; i < players.length; i++){
-                if(players[i].id == clientId){
+                if(players[i].id === clientId){
                     client = players[i]
                     players.splice(i, 1);
                     players.splice(0, 0, client);
                 }
             }
-
-
-            //console.log(players);
-
             if(players[0].id == clientId){
                 setPlayers(players)
             }
-            
-            
         });
-
+        socket.on('player-turn', (callback) => {
+            console.log('playerTurn ' + callback);
+        })
         socket.on('casino', (casino) => {
             console.log(casino);
         });
@@ -188,9 +170,12 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
                 setHidden={setHiddenLogin}
                 className={classes.login}
                 submitClient={submitClient}
-            ></Login>
+                ></Login>
             }
 
+            <Controls
+            call={call}
+            ></Controls>
             {players.map((player, i) => {
                 let positions = playerPosition(players.length);
                 let x = positions[i][0];
@@ -199,8 +184,10 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
                     <Player player={player} key={i} x={x} placement={place}></Player>
                 )
             })}
+            <Player player={tempPlayer} key={1} x={0} placement={-1}></Player>
 
             <TableTop className={classes.tableTop}></TableTop>
+
 
 
         </Box>

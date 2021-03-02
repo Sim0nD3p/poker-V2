@@ -57,18 +57,20 @@ function JoinGame({ submitId, submitBack, name }) {
             elevation={5}
             className={classes.container}
         >
-            <ArrowBack onClick={back}></ArrowBack>
+            <ArrowBack onClick={back} color='primary'></ArrowBack>
 
             <TextField
                 onChange={getGameId}
                 className={classes.textField}
-                variant='outlined'>
+                variant='outlined'
+                color='primary'>
 
             </TextField>
             <Link onClick={event => (!tableId) ? event.preventDefault() : null} to={`/table?id=${tableId}`}>
                 <Button
                     className={classes.button}
                     variant='outlined'
+                    color="primary"
                     onClick={joinGame}>Join game</Button>
 
 
@@ -135,10 +137,12 @@ export default function InitialScreen({ submitName, submitGameId, submitPlayerOb
                     className={classes.textField}
                     onChange={getName}
                     label='Name'
-                    variant='outlined'></TextField>
+                    variant='outlined'
+                    color='primary'></TextField>
                 <Button
                     className={classes.button}
                     variant='outlined'
+                    color='primary'
                     onClick={saveName}
                 >Join game</Button>
                 <Link onClick={event => (!nameStr) ? event.preventDefault() : null} to={'/createTable'}>
@@ -146,6 +150,7 @@ export default function InitialScreen({ submitName, submitGameId, submitPlayerOb
                         className={classes.button}
                         onClick={createGame}
                         variant='outlined'
+                        color='primary'
                     >Create new game</Button>
                 </Link>
             </Paper>
