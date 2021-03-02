@@ -24,7 +24,7 @@ class Server{
     if(index){
       player.balance = this.casino[index].gameSettings.defaultBuyIn;
       for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
-        if(player.name == this.casino[index].disconnectedPlayers[i].name){
+        if(player.name === this.casino[index].disconnectedPlayers[i].name){
           let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
           oldPlayer.id = player.id;
           player = oldPlayer;
@@ -37,7 +37,7 @@ class Server{
   
   findTable(tableId){
     for(let i = 0; i < this.casino.length; i++){
-      if(this.casino[i].id == tableId){
+      if(this.casino[i].id === tableId){
         return i;
       }
     }
