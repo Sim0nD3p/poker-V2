@@ -26,8 +26,9 @@ class Server{
   }
 
 
-  removeDisconnected(socket, tableId){
+  removeDisconnected(socket){
     //transfer host
+    console.log(socket.id);
     let index = this.findTable(socket.tableId);
     console.log(index);
     if(index !== undefined){
@@ -101,7 +102,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('disconnect', (arg) => {
-    server.removeDisconnected(socket, socket.tableId);
+    server.removeDisconnected(socket);
     /* let index = server.findTable(socket.tableId);
     let players = server.casino[index].players;
     for(let i = 0; i < players.length; i++){
