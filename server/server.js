@@ -100,6 +100,26 @@ io.on('connection', (socket) => {
     console.log(gameSettings);
   })
 
+  socket.on('check', ({tableId}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].Check();
+  }) 
+
+  socket.on('fold', ({tableId}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].Fold();
+  }) 
+
+  socket.on('raise', ({tableId,raise}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].Raise(raise);
+  }) 
+
+  socket.on('call', ({tableId,raise}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].Call();
+  }) 
+
 
   socket.on('disconnect', (arg) => {
     server.removeDisconnected(socket);

@@ -11,6 +11,7 @@ class Player{
     bestHandScore;
     isPlaying;
     balance;
+    currentBet=0;
 
     maxPot = 0;
 

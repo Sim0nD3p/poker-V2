@@ -1,17 +1,18 @@
 //import class deck
 const Deck = require('./Deck');
 const CardValues = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192];
-const suitsEnum = Object.freeze({"spades":0, "clubs":1, "hearts":2, "diamonds":3});
+const suitsEnum = Object.freeze({ "spades": 0, "clubs": 1, "hearts": 2, "diamonds": 3 });
 
-class Table{
+class Table {
 
     CardsOnTable = [];
     deck;
-    totalPot=0;
-    currentPot=0;
+    totalPot = 0;
+    currentPot = 0;
     playerPlaying = 0;
+    maxBet = 0;
 
-    constructor({ tableId, gameSettings, id }){
+    constructor({ tableId, gameSettings, id }) {
         this.id = tableId;
         this.host = id;
         this.gameSettings = gameSettings;
@@ -19,21 +20,19 @@ class Table{
         this.players = [];
     }
 
-    addPlayer(playerObject){
+    addPlayer(playerObject) {
         console.log(playerObject);
 
     }
 
-    AddCardToFlop()
-    {
-        if(this.CardsOnTable.length === 0)
-        {
+    AddCardToFlop() {
+        if (this.CardsOnTable.length === 0) {
             this.deck.pop();
             this.CardsOnTable.push(this.deck.pop());
             this.CardsOnTable.push(this.deck.pop());
             this.CardsOnTable.push(this.deck.pop());
         }
-        else if(this.CardsOnTable.length === 3 || this.CardsOnTable.length === 4){
+        else if (this.CardsOnTable.length === 3 || this.CardsOnTable.length === 4) {
             this.deck.pop();
             this.CardsOnTable.push(this.deck.pop());
         }
@@ -42,14 +41,14 @@ class Table{
             let [winnersIndex, winners] = this.GetWinnersIndex();
             let potTaken = 0;
             let egalite = false;
-            let egaliteNumber=0;
-            for(let y=0; y<this.players.length; y++){
+            let egaliteNumber = 0;
+            for (let y = 0; y < this.players.length; y++) {
 
                 //get number of equality
                 let numberOfEquality = 0;
-                let i = y+1;
-                while(i<this.players.length){
-                    if(this.players[winnersIndex[i]].bestHandScore === this.players[winnersIndex[y]].bestHandScore){
+                let i = y + 1;
+                while (i < this.players.length) {
+                    if (this.players[winnersIndex[i]].bestHandScore === this.players[winnersIndex[y]].bestHandScore) {
                         numberOfEquality++
                     }
                     else
@@ -58,63 +57,78 @@ class Table{
                 }
 
                 //assign money
-                if(this.totalPot === potTaken){
+                if (this.totalPot === potTaken) {
                     break;
                 }
-                else if( this.players[winnersIndex[y]].maxPot*(numberOfEquality+1) <= this.totalPot-potTaken){
+                else if (this.players[winnersIndex[y]].maxPot * (numberOfEquality + 1) <= this.totalPot - potTaken) {
 
-                    for(let j=y;j<y+1+numberOfEquality;j++) {
+                    for (let j = y; j < y + 1 + numberOfEquality; j++) {
                         this.players[winnersIndex[j]].balance += this.players[winnersIndex[j]].maxPot;
-                        potTaken+= this.players[winnersIndex[j]].maxPot;
+                        potTaken += this.players[winnersIndex[j]].maxPot;
                     }
 
                 }
                 else {
-                    for(let j=y;j<y+1+numberOfEquality;j++) {
-                        this.players[winnersIndex[j]].balance += (this.totalPot - potTaken)/(1+numberOfEquality);
+                    for (let j = y; j < y + 1 + numberOfEquality; j++) {
+                        this.players[winnersIndex[j]].balance += (this.totalPot - potTaken) / (1 + numberOfEquality);
                     }
                     potTaken = this.totalPot;
                 }
-                y+=numberOfEquality;
+                y += numberOfEquality;
             }
             this.NewRound();
         }
     }
-    NewRound(){
+    NewRound() {
         this.deck = new Deck();
         this.players.forEach(Reset);
     }
-    NextTurn(){
-        if(this.playerPlaying<this.players.length-1){
-            this.playerPlaying++; 
-         } 
-        else{
-            this.playerPlaying=0;
+    NextTurn() {
+        if (this.playerPlaying < this.players.length - 1) {
+            this.playerPlaying++;
+        }
+        else {
+            this.playerPlaying = 0;
         }
     }
-    
-    Check(){
+
+    Check() {
         this.NextTurn();
     }
-    Fold(){
-        this.players[this.playerPlaying].isPlaying=false;
-        this.NextTurn();       
+    Fold() {
+        this.players[this.playerPlaying].isPlaying = false;
+        this.NextTurn();
     }
-    Raise(raise){
-        if(this.players[this.playerPlaying].balance>=raise){
-            this.currentPot=this.currentPot+raise;
-            this.players[this.playerPlaying].balance=this.players[this.playerPlaying].balance-raise;
+    Raise(raise) {
+        if (this.players[this.playerPlaying].balance >= raise) {
+            this.currentPot = this.currentPot + raise;
+            this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
+            this.players[this.playerPlaying].currentBet += raise;
+            if(this.players[this.playerPlaying].currentBet>this.maxBet){
+                this.maxBet = raise;
+            }
         }
-        else{
-            this.currentPot=this.currentPot+this.players[this.playerPlaying].balance;
-            this.players[this.playerPlaying].balance=0;
+        else {
+            this.currentPot = this.currentPot + this.players[this.playerPlaying].balance;
+            this.players[this.playerPlaying].currentBet = this.players[this.playerPlaying].balance;
+            this.players[this.playerPlaying].balance = 0;
         }
         this.NextTurn();
     }
 
-    SetHands(){
+    Call() {
+        if (this.maxBet === 0) { 
+            this.Check();
+        }
+        else{
+            this.Raise(this.maxBet-this.players[this.playerPlaying].currentBet);
+        }
+        this.NextTurn();
+    }
+
+    SetHands() {
         let score = 0, desc, hand = [];
-        for(let x=0;x<this.players.length; x++){
+        for (let x = 0; x < this.players.length; x++) {
             [score, desc, hand] = this.FindBestHandTexasHoldEm(this.players[x].cardsInHand);
             this.players[x].bestHand = hand;
             this.players[x].bestHandDesc = desc;
@@ -122,12 +136,12 @@ class Table{
         }
     }
 
-    GetWinnersIndex(){
+    GetWinnersIndex() {
         this.SetHands()
         let winners = this.players;
-        winners.sort(function(a,b){return b.bestHandScore - a.bestHandScore})
+        winners.sort(function (a, b) { return b.bestHandScore - a.bestHandScore })
         let indexArray = [];
-        for(let x=0; x<winners.length; x++) {
+        for (let x = 0; x < winners.length; x++) {
             for (let y = 0; y < this.players; y++) {
                 if (winners[x].id === this.players[y].id) {
                     indexArray.push(y);
@@ -138,7 +152,7 @@ class Table{
         return [indexArray, winners];
     }
 
-    FindBestHandTexasHoldEm(holeCards){
+    FindBestHandTexasHoldEm(holeCards) {
         let board = this.CardsOnTable;
         const hands = [];
         hands.push(board);
@@ -157,16 +171,14 @@ class Table{
                 hands.push(newHand);
             }
         }
-        let maxScore=0;
+        let maxScore = 0;
         let maxDesc;
         let maxIndex;
         let score = 0;
         let desc;
-        for(let k=0;k<hands.length;k++)
-        {
+        for (let k = 0; k < hands.length; k++) {
             [score, desc] = GetScore(hands[k])
-            if(maxScore<score)
-            {
+            if (maxScore < score) {
                 maxScore = score;
                 maxIndex = k;
                 maxDesc = desc;
@@ -175,21 +187,22 @@ class Table{
         return [maxScore, maxDesc, hands[maxIndex]];
     };
 
-    GetClientPlayersArray(){
+    GetClientPlayersArray() {
         let array = [];
-        for(let x=0; x<this.players.length; x++){
+        for (let x = 0; x < this.players.length; x++) {
             array.push({
                 name: this.players.name,
-                balance:this.players.balance,
-                isTurn:(x===this.playerPlaying),
-                isHost : (x===0)});
+                balance: this.players.balance,
+                isTurn: (x === this.playerPlaying),
+                isHost: (x === 0)
+            });
         }
         return array;
     }
-    GetIndexOfPlayerWithId(id){
+    GetIndexOfPlayerWithId(id) {
 
-        for(let x= 0;x<this.players.length; x++){
-            if(this.players[x].id === id){
+        for (let x = 0; x < this.players.length; x++) {
+            if (this.players[x].id === id) {
                 return x;
             }
         }
@@ -198,8 +211,8 @@ class Table{
 
 
 }
-function Reset(player){
-    player.cardsInHand= [];
+function Reset(player) {
+    player.cardsInHand = [];
     player.bestHand = [];
     player.bestHandDesc = "";
     player.bestHandScore = 0;
@@ -207,17 +220,16 @@ function Reset(player){
 
 }
 
-function GetScore(cards)
-{
+function GetScore(cards) {
     let score = 0;
-    let cardNums = [0,0,0,0,0,0,0,0,0,0,0,0,0];
-    let cardSorts = [0,0,0,0];
+    let cardNums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let cardSorts = [0, 0, 0, 0];
     let lowerAce = false;
     let i;
-    for(i=0;i<cards.length;i++) {
-        cardNums[cards[i].number-2]++;
+    for (i = 0; i < cards.length; i++) {
+        cardNums[cards[i].number - 2]++;
         cardSorts[cards[i].suit]++;
-        score += CardValues[cards[i].number-2];
+        score += CardValues[cards[i].number - 2];
     }
     const ranks = {
         royal_flush: false,
@@ -233,13 +245,13 @@ function GetScore(cards)
     };
 
     let k;
-    for(k=0;k+4<13;k++){
-        if(cardNums[k] === 1 && cardNums[k+1] === 1 && cardNums[k+2] === 1 && cardNums[k+3] === 1 && cardNums[k+4] === 1){
+    for (k = 0; k + 4 < 13; k++) {
+        if (cardNums[k] === 1 && cardNums[k + 1] === 1 && cardNums[k + 2] === 1 && cardNums[k + 3] === 1 && cardNums[k + 4] === 1) {
             ranks.straight = true;
             break;
         }
     }
-    if(cardNums[0] === 1 && cardNums[1] === 1 && cardNums[2] === 1 && cardNums[3] === 1 && cardNums[12] === 1){
+    if (cardNums[0] === 1 && cardNums[1] === 1 && cardNums[2] === 1 && cardNums[3] === 1 && cardNums[12] === 1) {
         ranks.straight = true;
         lowerAce = true;
     }
@@ -255,22 +267,21 @@ function GetScore(cards)
         return !ranks[key];
     });
 
-    score += rankIndex*Math.pow(10, 13);
-    let temp1=0, temp2=0;
+    score += rankIndex * Math.pow(10, 13);
+    let temp1 = 0, temp2 = 0;
     let TwoPairs = false;
-    for(let n=0;n<cardNums.length;n++)
-    {
+    for (let n = 0; n < cardNums.length; n++) {
 
-        if(cardNums[n] >= 3){
-            score += (n+1)*Math.pow(10, 11);
+        if (cardNums[n] >= 3) {
+            score += (n + 1) * Math.pow(10, 11);
         }
-        if(cardNums[n] === 2){
-            if(!TwoPairs){
-                score+= (n+1)*Math.pow(10, 9)
+        if (cardNums[n] === 2) {
+            if (!TwoPairs) {
+                score += (n + 1) * Math.pow(10, 9)
                 TwoPairs = true;
             }
-            else{
-                score += (n+1)*Math.pow(10, 11);
+            else {
+                score += (n + 1) * Math.pow(10, 11);
             }
 
         }
