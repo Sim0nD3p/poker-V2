@@ -87,7 +87,7 @@ class Table {
             else{
                 NextTurn(); 
             }
-        }
+
     }
 
     NewRound() {
@@ -100,6 +100,9 @@ class Table {
         }
         else {
             this.playerPlaying = 0;
+        }
+        if(this.playerPlaying === this.raiseIndex){
+            this.AddCardToFlop();
         }
     }
 
