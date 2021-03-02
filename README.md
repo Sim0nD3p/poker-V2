@@ -8,6 +8,11 @@
 - array = table.getClientPlayersArray();
 - players object design (Sim, player.js)
 
+# In server
+ * Gerer egalite Done-ced
+ - Ajouter les blinds et dealer
+ - Detecter fin des roundes
+
 # Fonctionnalites a ajouter
 - sitOutNextRound
 - keyboard shortcut

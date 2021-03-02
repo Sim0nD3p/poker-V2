@@ -24,22 +24,29 @@ class Server{
       }
     }
   }
-  removeDisconnected(socket){
+
+
+  removeDisconnected(socket, tableId){
     //transfer host
     let index = this.findTable(socket.tableId);
     console.log(index);
     if(index !== undefined){
       for(let i = 0; i < this.casino[index].players.length; i++){
-        if(this.casino[index].players[i].id == socket.id){
+        if(this.casino[index].players[i].id === socket.id){
           this.casino[index].players.splice(i, 1);
-          let players = this.casino[index].players;
-          //ne pas envoyer les cartes!!!
-          io.emit('players', players);
+          let players = this.casino[index].GetClientPlayersArray();
+          //ne pas envoyer les cartes!!! Done - ced
+          io.in(tableId).emit('players', players);
         }
       }
     }
     //console.log(`${socket.id} left table ${socket.tableId}`);
   }
+
+  updateClients(tableId){
+    io.in(tabledId).emit('players', this.casino[tableId].GetClientPlayersArray());
+  }
+
 }
 const server = new Server();
 
@@ -79,7 +86,13 @@ io.on('connection', (socket) => {
 
 
   })
-  
+
+  socket.on('start-game', ({tableId}) => {
+    let index = server.findTable(tableId);
+    server.casino[index].NewRound();
+  })
+
+
 
   socket.on('game-settings', (gameSettings) => {
     console.log('received game settings');
@@ -88,7 +101,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('disconnect', (arg) => {
-    server.removeDisconnected(socket);
+    server.removeDisconnected(socket, socket.tableId);
     /* let index = server.findTable(socket.tableId);
     let players = server.casino[index].players;
     for(let i = 0; i < players.length; i++){

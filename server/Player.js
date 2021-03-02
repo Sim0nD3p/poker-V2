@@ -9,7 +9,7 @@ class Player{
     bestHand = [];
     bestHandDesc;
     bestHandScore;
-    playingState;
+    isPlaying;
     balance;
 
     maxPot = 0;
@@ -19,7 +19,7 @@ class Player{
         this.id = id;
         this.hand = [];
         this.cardsInHand = [];
-        this.playingState = "playing";
+        this.isPlaying = true;
     }
 
     assignCards(card1, card2) {
