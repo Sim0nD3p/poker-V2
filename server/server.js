@@ -25,28 +25,30 @@ class Server{
     }
   }
 
+  updateClients(tableId){
+    let index = this.findTable(tableId);
+    let clientPlayers = this.casino[index].GetClientPlayersArray();
+    io.in(tableId).emit('players', clientPlayers);
+  }
 
   removeDisconnected(socket){
     //transfer host
     console.log(socket.id);
     let index = this.findTable(socket.tableId);
-    console.log(index);
     if(index !== undefined){
       for(let i = 0; i < this.casino[index].players.length; i++){
         if(this.casino[index].players[i].id === socket.id){
           this.casino[index].players.splice(i, 1);
           let players = this.casino[index].GetClientPlayersArray();
           //ne pas envoyer les cartes!!! Done - ced
-          io.in(tableId).emit('players', players);
+          this.updateClients(socket.tableId);
         }
       }
     }
     //console.log(`${socket.id} left table ${socket.tableId}`);
   }
 
-  updateClients(tableId){
-    io.in(tabledId).emit('players', this.casino[tableId].GetClientPlayersArray());
-  }
+  
 
 }
 const server = new Server();
