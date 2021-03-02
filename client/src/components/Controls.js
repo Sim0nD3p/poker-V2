@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
+import { useSocket } from '../contexts/SocketProvider';
 
 const useStyles = makeStyles({
     container:{
@@ -10,10 +11,14 @@ const useStyles = makeStyles({
         marginBottom:10,
         display:'flex',
         justifyContent:'flex-end',
+        zIndex:10000,
     },
     button: {
         borderWidth:3,
-        margin:10
+        margin:10,
+        '&:hover':{
+            borderWidth:3
+        }
     }
 })
 
@@ -25,8 +30,8 @@ function Button(props) {
             className={classes.gridItem}
         >
             <ButtonMUi
-            color='primary'
-            size='large'
+                color='primary'
+                size='large'
                 variant='outlined'
                 onClick={props.action}
                 className={classes.button}
@@ -36,9 +41,30 @@ function Button(props) {
 }
 //keyboard shortcuts
 //Client On?
-export default function Controls(call, check){
+export default function Controls(call, check, casino){
     const classes = useStyles();
+    const socket = useSocket();
 
+    function test(){
+        console.log('casino from control');
+        socket.emit('casino', 'test');
+    }
+    function call(){
+        console.log('call');
+    }
+    function raise(){
+        console.log('raise');
+    }
+    function check(){
+        console.log('check')
+    }
+
+    if(socket){
+
+        socket.on('casinoCallback', (casino) => {
+            console.log(casino);
+        });
+    }
 
     return (
         <Grid
@@ -52,9 +78,10 @@ export default function Controls(call, check){
             Raise: To increase the amount of the current bet.
             Check: To not bet, with the option to call or raise later in the betting round
              */}
-             <Button text='Fold'></Button>
-            <Button text='Raise' action={call}></Button>
-            <Button text='Check' action={check}></Button>
+            <Button text='Fold'></Button>
+            <Button text='Raise' action={raise}></Button>
+            <Button text='Check' action={call}></Button>
+            <Button text='casino' action={test}></Button>
 
         </Grid>
 

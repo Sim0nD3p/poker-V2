@@ -74,8 +74,9 @@ function SocketEnv({ playerObject, newGameId }) {
 //define host
 
 const defaultSettings = {
-  gameMode: 'drink', //drink, cash
+  gameMode: 'cash', //drink, cash
   timer: null,  //whatever timer
+  smallB: 1
   defaultBuyIn: 100,
 }
 

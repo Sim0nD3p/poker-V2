@@ -17,15 +17,17 @@ class Server{
     this.casino.push(new Table(tableId, gameSettings, id));
     console.log(this.casino);
   }
+
+  //crash si table n<existe pas
   addPlayerToTable(player, tableId){
     let index = this.findTable(tableId);
-    player.balance = this.casino[index].gameSettings.defaultBuyIn;
-
-    for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
-      if(player.name === this.casino[index].disconnectedPlayers[i].name){
-        let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
-        oldPlayer.id = player.id;
-        player = oldPlayer;
+    if(index){
+      for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
+        if(player.name == this.casino[index].disconnectedPlayers[i].name){
+          let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
+          oldPlayer.id = player.id;
+          player = oldPlayer;
+        }
       }
     }
     this.casino[index].players.push(player);
@@ -100,6 +102,14 @@ io.on('connection', (socket) => {
     let player = new Player(name, id);                               //join tableId room socket.io
     server.addPlayerToTable(player, tableId);
   })
+
+
+  socket.on('casino', () => {
+    console.log('should send back casino');
+    socket.emit('casinoCallback', server.casino);
+  })
+
+
 
   socket.on('start-game', ({tableId}) => {
     let index = server.findTable(tableId);

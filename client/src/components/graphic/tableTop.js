@@ -34,6 +34,7 @@ export const TableTop = () => {
         className={classes.stage}
         width={window.innerWidth}
         height={window.innerHeight}
+        style={{ zIndex:10 }}
         >
             <Layer>
                 <Rect

@@ -4,33 +4,37 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Cards from './../res/cards/2C.svg'
 
-const useStyles = makeStyles({
-    container:{
-        height:100,
-        width:71,
-        margin:10,
-    },
-    cardMedia:{
-        heihgt:'100%',
-        width:'100%',
-    }
-})
-
-
 export default function CardContainer(){
-    const classes = useStyles();
+    const ratio = (2.5 / 3.5);
+    const cardHeight = 100;
+    const cardWidth = cardHeight * ratio;
 
-    console.log(Cards);
-    let card;
+
     return (
-        <Card
+        <img
+            style={{
+                height: cardHeight,
+                width: cardWidth,
+                margin: 10,
+                borderRadius: 7,
+                overflow: 'show'
+            }}
+            src={Cards}>
+        </img>
+    )
+}
+/*
+<Card
         className={classes.container}
-        >
+        style={{
+            height: cardHeight,
+            width: cardWidth
+        }}>
             <CardMedia
             component='img'
             className={classes.cardMedia}
             src={Cards}
             ></CardMedia>
         </Card>
-    )
-}
+
+ */

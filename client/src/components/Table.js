@@ -136,6 +136,10 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
     function call(){
         console.log('call')
     }
+    function callCasino(){
+        console.log('calling casino');
+        socket.emit('casino', socket);
+    }
 
     if(socket){
         if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
@@ -156,9 +160,7 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
         socket.on('player-turn', (callback) => {
             console.log('playerTurn ' + callback);
         })
-        socket.on('casino', (casino) => {
-            console.log(casino);
-        });
+        
         socket.on('game-settings', (gameSettings) => {
             //console.log(gameSettings);
         })
@@ -176,9 +178,7 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
 
             <TableContent></TableContent>
 
-            <Controls
-            call={call}
-            ></Controls>
+            <Controls></Controls>   {/**props= some kind of state for call/check and raise */}
             {players.map((player, i) => {
                 let positions = playerPosition(players.length);
                 let x = positions[i][0];
@@ -189,9 +189,6 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
             })}
 
             <TableTop className={classes.tableTop}></TableTop>
-
-
-
         </Box>
     )
 }
