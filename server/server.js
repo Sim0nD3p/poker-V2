@@ -19,8 +19,10 @@ class Server{
   }
   addPlayerToTable(player, tableId){
     let index = this.findTable(tableId);
+    player.balance = this.casino[index].gameSettings.defaultBuyIn;
+
     for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
-      if(player.name == this.casino[index].disconnectedPlayers[i].name){
+      if(player.name === this.casino[index].disconnectedPlayers[i].name){
         let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
         oldPlayer.id = player.id;
         player = oldPlayer;
@@ -52,7 +54,7 @@ class Server{
         if(this.casino[index].players[i].id === socket.id){
           this.casino[index].disconnectedPlayers.push(this.casino[index].players[i]);
           this.casino[index].players.splice(i, 1);
-          if(this.casino[index].host == socket.id && this.casino[index].players.length !== 0){   //if i==0 ? si tt va comme prevu
+          if(this.casino[index].host === socket.id && this.casino[index].players.length !== 0){   //if i==0 ? si tt va comme prevu
             this.casino[index].host = this.casino[index].players[0].id;   //might be useless
           }
           //ne pas envoyer les cartes!!! Done - ced
@@ -114,22 +116,30 @@ io.on('connection', (socket) => {
   socket.on('check', ({tableId}) => {
     let index = server.findTable(tableId);
     server.casino[index].Check();
+    server.casino[index].NextTurn();
+    server.updateClients(tableId);
   }) 
 
   socket.on('fold', ({tableId}) => {
     let index = server.findTable(tableId);
     server.casino[index].Fold();
+    server.casino[index].NextTurn();
+    server.updateClients(tableId);
   }) 
 
   socket.on('raise', ({tableId,raise}) => {
     let index = server.findTable(tableId);
     server.casino[index].Raise(raise);
+    server.casino[index].NextTurn();
+    server.updateClients(tableId);
   }) 
 
   socket.on('call', ({tableId,raise}) => {
     let index = server.findTable(tableId);
     server.casino[index].Call();
-  }) 
+    server.casino[index].NextTurn();
+    server.updateClients(tableId);
+  })
 
   socket.on('buyIn', ({tableId,playerName,buyIn}) => {
     let index = server.findTable(tableId);

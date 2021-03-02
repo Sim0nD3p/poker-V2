@@ -11,7 +11,19 @@ class Table {
     currentPot = 0;
     playerPlaying = 0;
     maxBet = 0;
-    raiseIndex=10000;
+    raiseIndex=0;
+    bigBlindIndex = 0;
+    smallBlindIndex = 0;
+    dealerIndex = 0;
+    smallBlindValue = 0;
+
+    /*
+    const defaultSettings = {
+    gameMode: 'drink', //drink, cash
+    timer: null,  //whatever timer
+    defaultBuyIn: 100,
+    }
+    */
 
     constructor({ tableId, gameSettings, id }) {
         this.id = tableId;
@@ -86,34 +98,82 @@ class Table {
                 AddCardToFlop();
             }
             else{
-                NextTurn(); 
+                this.NextTurn();
             }
 
+    }
+    StartGame(){
+        if(this.players.length <2)
+            return;
+        else if(this.players.length ===2){
+            this.dealerIndex = 0;
+            this.smallBlindIndex =1;
+            this.bigBlindIndex = 0;
+        }
+        else{
+            this.dealerIndex = 0;
+            this.smallBlindIndex =1;
+            this.bigBlindIndex = 2;
+        }
     }
 
     NewRound() {
         this.deck = new Deck();
         this.players.forEach(Reset);
+        for(let i = 0;i<this.players.length; i++){
+            this.players[i].assignCards(this.deck.pop(), this.deck.pop());
+        }
+        if(this.players.length===1) {
+            //END GAME
+            return;
+        }
+
+        //Checks if number of players increased from 2
+        if(this.players.length>2 && this.dealerIndex === this.bigBlindIndex){
+            this.bigBlindIndex = this.PassOn(this.smallBlindIndex);
+        }
+
+        //Passes on Dealer BB and SB
+        if(this.players.length===2){
+            this.smallBlindIndex = this.PassOn(this.smallBlindIndex);
+            this.dealerIndex = this.PassOn(this.dealerIndex);
+            this.bigBlindIndex =  this.dealerIndex;
+        }
+        else{
+            this.smallBlindIndex = this.PassOn(this.smallBlindIndex);
+            this.dealerIndex = this.PassOn(this.dealerIndex);
+            this.bigBlindIndex =  this.PassOn(this.bigBlindIndex);
+        }
+
+        this.maxBet = 2*this.smallBlindValue;
+        this.playerPlaying = this.smallBlindIndex;
+        this.Raise(this.smallBlindValue);
+        this.playerPlaying = this.bigBlindIndex;
+        this.Raise(this.smallBlindValue*2);
+        this.playerPlaying = this.PassOn(this.bigBlindIndex);
+        this.raiseIndex = this.playerPlaying;
+
     }
     NextTurn() {
-        if (this.playerPlaying < this.players.length - 1) {
-            this.playerPlaying++;
-        }
-        else {
-            this.playerPlaying = 0;
-        }
+        this.playerPlaying = this.PassOn(this.playerPlaying);
         if(this.playerPlaying === this.raiseIndex){
             this.AddCardToFlop();
         }
     }
+    PassOn(element){
+        if (element < this.players.length - 1) {
+            element++;
+        }
+        else {
+            element = 0;
+        }
+    }
 
     Check() {
-        this.Flop();
-        this.players[this.playerPlaying].playercheck = true;
+
     }
     Fold() {
         this.players[this.playerPlaying].isPlaying = false;
-        this.Flop();
     }
     Raise(raise) {
         if (this.players[this.playerPlaying].balance >= raise) {
@@ -130,7 +190,6 @@ class Table {
             this.players[this.playerPlaying].currentBet = this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].balance = 0;
         }
-        this.Flop();
     }
 
     Call() {
@@ -140,7 +199,6 @@ class Table {
         else{
             this.Raise(this.maxBet-this.players[this.playerPlaying].currentBet);
         }
-        this.Flop();
     }
 
     BuyIn(playerName,buyIn){
@@ -221,7 +279,10 @@ class Table {
                 id: this.players[x].id,
                 balance: this.players[x].balance,
                 isTurn: (x === this.playerPlaying),
-                isHost: (x === 0)
+                isHost: (x === 0),
+                isBB: (x === this.bigBlindIndex),
+                isSB: (x === this.smallBlindIndex),
+                isDealer: (x === this.smallBlindIndex)
             });
         }
         return array;
