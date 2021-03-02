@@ -7,6 +7,7 @@
 - method to get from table clientPlayersArray (name, balance, isPlaying, isHost) (table.js)
 - array = table.getClientPlayersArray();
 - players object design (Sim, player.js)
+- fix affichage players on update (sim)
 
 # In server
  * Gerer egalite Done-ced

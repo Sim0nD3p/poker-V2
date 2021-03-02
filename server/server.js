@@ -37,7 +37,7 @@ class Server{
           this.casino[index].players.splice(i, 1);
           let players = this.casino[index].GetClientPlayersArray();
           //ne pas envoyer les cartes!!! Done - ced
-          io.in(tableId).emit('players', players);
+          io.in(socket.tableId).emit('players', players);
         }
       }
     }
