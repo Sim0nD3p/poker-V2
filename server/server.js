@@ -21,18 +21,22 @@ class Server{
   //crash si table n<existe pas
   addPlayerToTable(player, tableId){
     let index = this.findTable(tableId);
-    if(index){
+    if(index) {
       player.balance = this.casino[index].gameSettings.defaultBuyIn;
-      for(let i = 0; i < this.casino[index].disconnectedPlayers.length; i++){
-        if(player.name === this.casino[index].disconnectedPlayers[i].name){
+      for (let i = 0; i < this.casino[index].disconnectedPlayers.length; i++) {
+        if (player.name === this.casino[index].disconnectedPlayers[i].name) {
           let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
           oldPlayer.id = player.id;
           player = oldPlayer;
         }
       }
+
+      this.casino[index].players.push(player);
+      this.updateClients(tableId);
     }
-    this.casino[index].players.push(player);
-    this.updateClients(tableId);
+    else{
+      console.log("Error in addPlayerToTable");
+    }
   }
   
   findTable(tableId){
@@ -41,6 +45,7 @@ class Server{
         return i;
       }
     }
+    return -1;
   }
 
   updateClients(tableId){

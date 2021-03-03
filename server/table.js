@@ -25,13 +25,14 @@ class Table {
     }
     */
 
-    constructor({ tableId, gameSettings, id }) {
+    constructor( tableId, gameSettings, id ) {
         this.id = tableId;
         this.host = id;
         this.gameSettings = gameSettings;
         this.deck = new Deck()
         this.players = [];
         this.disconnectedPlayers = [];
+        this.playerPlaying = 0;
     }
 
     addPlayer(playerObject) {
@@ -175,6 +176,8 @@ class Table {
         this.players[this.playerPlaying].isPlaying = false;
     }
     Raise(raise) {
+        console.log(this.playerPlaying);
+        console.log(this.players);
         if (this.players[this.playerPlaying].balance >= raise) {
             this.currentPot = this.currentPot + raise;
             this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
