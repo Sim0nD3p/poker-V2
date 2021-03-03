@@ -66,60 +66,6 @@ const useStyles = makeStyles({
         marginTop:10,
     }
 })
-function Login({ submitClient, setHidden, socket, submitTableId }){
-    const classes = useStyles();
-    const [name, setName] = useState();
-    const [tableId, setTableId] = useState();
-
-    useEffect(() => {
-        console.log('getting the tableId from url');
-        const parsed = queryString.parse(window.location.search);
-        setTableId(parsed["?id"]);
-        console.log(parsed['?id']);
-    }, [tableId])
-    
-    function getNameInput(e){
-        setName(e.target.value);
-    }
-    function joinTable(){
-        /* let client = {
-            name: name,
-            tableId: tableId,
-        }
-        submitClient(client); */
-        socket.emit('join-table', ({ name, tableId }));
-        setHidden(true);
-
-    }
-
-    return(
-        <Paper
-            elevation={5}
-            className={classes.loginContainer}>
-            <Typography
-                variant='h4'
-                className={classes.header}
-            >Join table</Typography>
-            <Typography
-                variant='body1'
-                style={{ margin: 'auto', marginTop: 10, marginBottom: 10 }}
-            >Enter your user infos</Typography>
-            <TextField
-                variant='outlined'
-                color='primary'
-                label='name'
-                onChange={getNameInput}
-                className={classes.nameInput}
-            ></TextField>
-            <Button
-            color='primary'
-            variant='contained'
-            onClick={joinTable}
-            className={classes.joinButton}
-            >PLAY</Button>
-        </Paper>
-    )
-}
 //faut pouvoir call, check d'avance
 //call, raise? faut que ca soit clair et facile(lipoker bug en criss tabarnak)
 
@@ -130,8 +76,8 @@ export default function Table(props) {
     const [clientIsHost, setClientIsHost] = useState(false);
     const [clientId, setClientId] = useState();
     
-    const [tableId, setTableId] = useState();
-    const [hiddenLogin, setHiddenLogin] = useState(true);
+    //const [tableId, setTableId] = useState();
+    //const [hiddenLogin, setHiddenLogin] = useState(true);
     const [gameOn, setGameOn] = useState(false);
     //const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
@@ -142,12 +88,6 @@ export default function Table(props) {
         console.log(`This is clientName in Table.js ${props.clientName}`);
         console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
-
-    
-    function callCasino(){
-        console.log('calling casino');
-        socket.emit('casino', socket);
-    }
 
     if(socket){
         if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
@@ -180,19 +120,18 @@ export default function Table(props) {
     return (
         <Box className={classes.tableContainer}>
 
-
-
             {props.clientName ? null : <LoginFromUrl
                 submitName={props.submitName}
-                submitTableId={props.submitTableId}></LoginFromUrl>}
+                submitTableId={props.submitTableId}></LoginFromUrl>
+            }
             
-
             <TableContent></TableContent>
 
             <Controls
-            isHost={clientIsHost}
+            clientIsHost={clientIsHost}
             gameOn={gameOn}
-            tableId={tableId}
+            tableId={props.tableId}
+            players = {players}
             ></Controls>   {/**props= some kind of state for call/check and raise */}
 
             {players.map((player, i) => {

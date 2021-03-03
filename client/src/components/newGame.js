@@ -50,10 +50,11 @@ const useStyles = makeStyles({
 })
 
 const defaultSettings = {
-    gameMode: 'cash', //drink, cash
-    timer: null,  //whatever timer
-    smallB: 1,
-    defaultBuyIn: 100,
+    gameMode: 'cash',
+    timerDisabled: true,
+    timer: null,  
+    smallBlind: 1,
+    buyIn: 100,
 }
 
 //finir gameSetting implementation with defaultGameSettings and emit(game-settings) to server
@@ -61,48 +62,59 @@ const defaultSettings = {
 export default function NewGame(props){
     const classes = useStyles();
     const socket = useSocket();
-    const [gameMode, setGameMode] = useState('cash');
-    const [ timerToggle, setTimerToggle] = useState(false);
-    const [timerTime, setTimerTime] = useState();
-    const [defaultBuyIn, setDefaultBuyIn] = useState();
+    const [gameMode, setGameMode] = useState(defaultSettings.gameMode);
+    const [ timerDisabled, setTimerDisabled] = useState(defaultSettings.timerDisabled);
+    const [timerTime, setTimerTime] = useState(60);
+    const [buyIn, setBuyIn] = useState(defaultSettings.buyIn);
+    const [smallBlind, setSmallBlind] = useState(defaultSettings.smallBlind)
     const [userStr, setUserStr] = useState();
     const randomStr = genRandomStr(10);
-    const [gameSettings, setGameSettings] = useState();
 
     function handleUsernameChange(e){
         setUserStr(e.target.value);
     }
     function handleGameModeChange(e){
         setGameMode(e.target.value)
-        console.log(`gameMode: ${e.target.value}`);
     }
-    function handleDefaultBuyInChange(e){
-        setDefaultBuyIn(e.target.value);
+    function handleBuyInChange(e){
+        setBuyIn(parseInt(e.target.value));
     }
     function handleTimerToggleChange(e){
-        console.log('handleTimerToggleChange');
-        console.log(e.target.checked)
         if(e.target.checked === true){
-            setTimerToggle(false);
+            setTimerDisabled(false);
         } else if(e.target.checked === false){
-            setTimerToggle(true);
+            setTimerDisabled(true);
             setTimerTime(null)
         }
     }
     function handleTimerChange(event, value){
-        console.log(value);
-        setTimerTime(value);
+        setTimerTime(parseInt(value));
+    }
+    function handleSmallBlindChange(e){
+        setSmallBlind(parseInt(e.target.value));
     }
     function createGame(){
-        props.submitTableId(randomStr);
-        props.submitName(userStr);
-        let name = userStr; let tableId = randomStr;
-        let gameSettings = {
-            gameMode: gameMode,
-            timer: timerTime,
-            defaultBuyIn: defaultBuyIn
+        if(userStr){
+
+            props.submitTableId(randomStr);
+            props.submitName(userStr);
+            let name = userStr; let tableId = randomStr;
+            let timer;
+            if(timerDisabled == true){
+                timer = null;
+            } else {
+                timer = timerTime;
+                
+            }
+            let gameSettings = {
+                gameMode: gameMode,
+                timerDisabled: timerDisabled,
+                timer: timer,
+                buyIn: buyIn,
+                smallBlind: smallBlind,
+            }
+            socket.emit('create-table', ({ name, tableId, gameSettings }));
         }
-        socket.emit('create-table', ({ name, tableId, gameSettings }));
     };
     return (
         <Paper
@@ -150,8 +162,19 @@ export default function NewGame(props){
                     className={classes.textField}
                     disabled={gameMode == 'cash' ? false : true}
                     defaultValue='100'
-                    label='Default buy in'
-                    onChange={handleDefaultBuyInChange}
+                    label='Buy in'
+                    onChange={handleBuyInChange}
+                    fullWidth='true'
+                ></TextField>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+                <TextField
+                    variant='outlined'
+                    color='primary'
+                    className={classes.textField}
+                    label='Small blind'
+                    onChange={handleSmallBlindChange}
                     fullWidth='true'
                 ></TextField>
             </FormControl>
@@ -169,7 +192,7 @@ export default function NewGame(props){
                         className={classes.slider}
                         value={timerTime}
                         onChange={handleTimerChange}
-                        disabled={timerToggle}
+                        disabled={timerDisabled}
                         defaultValue={timerTime}
                         step={5}
                         min={10}
@@ -178,11 +201,11 @@ export default function NewGame(props){
                     <Typography
                     className={classes.sliderValue}
                     variant='body1'
-                    >{timerToggle ? 'infinite' : timerTime}</Typography>
+                    >{timerDisabled ? 'infinite' : timerTime}</Typography>
                 </Box>
             </FormControl>
 
-            <Link to={`/table?id=${randomStr}`}>
+            <Link to={`/table?id=${randomStr}`} onClick={e => (!userStr) ? e.preventDefault() : null}>
                 <Button
                     className={classes.button}
                     variant='contained'

@@ -73,19 +73,13 @@ function SocketEnv({ playerObject, newGameId }) {
 //share id du socket
 //define host
 
-const defaultSettings = {
-  gameMode: 'cash', //drink, cash
-  timer: null,  //whatever timer
-  smallB: 1,
-  defaultBuyIn: 100,
-}
 
 
 function App(){
   //const [id, setId] = useState('thisIsIdBruh');
   const [clientName, setClientName] = useState();
   const [tableId, setTableId] = useState();
-  const [gameSettings, setGameSettings] = useState(defaultSettings);  //not necessary here?
+  //const [gameSettings, setGameSettings] = useState(defaultSettings);  //not necessary here?
   //const [playerObject, setPlayerObject] = useState();
   const socket = useSocket();
 
@@ -106,7 +100,7 @@ function App(){
             submitTableId={setTableId}
             tableId={tableId}
             clientName={clientName}
-            gameSettings={gameSettings}
+            //gameSettings={gameSettings}
             ></Table>
           </Route>
           <Route path='/' exact>
@@ -123,14 +117,14 @@ function App(){
             ></InitialScreen>
           </Route> */}
 
-          <Route path='/createTable'>
+          {/* <Route path='/createTable'>
             <CreateTable
               name={clientName}
               submitGameId={setTableId}
               defaultSettings={defaultSettings}
               submitGameSettings={setGameSettings}
             ></CreateTable>
-          </Route>
+          </Route> */}
         </Router>
       </SocketProvider>
   )

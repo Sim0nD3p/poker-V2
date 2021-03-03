@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
 import { useSocket } from '../../contexts/SocketProvider';
+import { theme } from '../../theme';
 
 const useStyles = makeStyles({
     container:{
@@ -15,6 +16,8 @@ const useStyles = makeStyles({
     },
     button: {
         borderWidth:3,
+        color: theme.palette.primary.light,
+        borderColor: theme.palette.primary.light,
         margin:10,
         '&:hover':{
             borderWidth:3
@@ -30,7 +33,7 @@ function Button(props) {
             className={classes.gridItem}
         >
             <ButtonMUi
-                color='primary'
+                
                 size='large'
                 variant='outlined'
                 onClick={props.action}
@@ -46,13 +49,14 @@ export default function Controls(props){
     const socket = useSocket();
 
     useEffect(() => {
-        console.log(props);
+        console.log(props.clientIsHost);
         console.log(props.gameOn);
-        console.log(props.isHost);
     });
 
     function startGame(){
-        socket.emit('start-game', props.tableId)
+        if(props.players.length >= 2){
+            socket.emit('start-game', props.tableId)
+        }
     }
 
     function test(){
@@ -75,6 +79,7 @@ export default function Controls(props){
             console.log(casino);
         });
     }
+    console.log(props.clientIsHost);
 
     return (
         <Grid
@@ -88,11 +93,11 @@ export default function Controls(props){
             Raise: To increase the amount of the current bet.
             Check: To not bet, with the option to call or raise later in the betting round
              */}
-             {(props.clientIsHost && !props.gameOn) ? <Button text='Start game!' action={startGame}></Button> : null}
+             {(!props.clientIsHost && !props.gameOn) ? null : <Button text='Start game' action={startGame}></Button>}
+            <Button text='casino' action={test}></Button>
             <Button text='Fold'></Button>
             <Button text='Raise' action={raise}></Button>
             <Button text='Check' action={call}></Button>
-            <Button text='casino' action={test}></Button>
 
         </Grid>
 

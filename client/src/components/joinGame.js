@@ -45,10 +45,12 @@ export default function JoinGame(props){
         setTableStr(e.target.value);
     }
     function joinGame(){
-        props.submitName(userStr);
-        props.submitTableId(tableStr);
-        let name = userStr; let tableId = tableStr;
-        socket.emit('join-table', ({name, tableId}));
+        if(userStr && tableStr){
+            props.submitName(userStr);
+            props.submitTableId(tableStr);
+            let name = userStr; let tableId = tableStr;
+            socket.emit('join-table', ({name, tableId}));
+        }
     }
 
     return (
@@ -82,7 +84,7 @@ export default function JoinGame(props){
                 className={classes.textField}
             ></TextField>
 
-            <Link to={`/table?id=${tableStr}`}>
+            <Link to={`/table?id=${tableStr}`} onClick={e => (!userStr || !tableStr) ? e.preventDefault() : null}>
                 <Button
                     variant='contained'
                     color='primary'
