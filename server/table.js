@@ -121,7 +121,7 @@ class Table {
         this.deck = new Deck();
         this.players.forEach(Reset);
         for(let i = 0;i<this.players.length; i++){
-            this.players[i].assignCards(this.deck.pop(), this.deck.pop());
+            this.players[i].assignCards(this.deck.GetNextCard(), this.GetNextCard());
         }
         if(this.players.length===1) {
             //END GAME
