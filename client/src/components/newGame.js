@@ -113,7 +113,7 @@ export default function NewGame(props){
                 buyIn: buyIn,
                 smallBlind: smallBlind,
             }
-            socket.emit('create-table', ({ name, tableId, gameSettings }));
+            socket.emit('create-table', name, tableId, gameSettings);
         }
     };
     return (

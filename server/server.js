@@ -21,7 +21,8 @@ class Server{
   //crash si table n<existe pas
   addPlayerToTable(player, tableId){
     let index = this.findTable(tableId);
-    if(index) {
+    console.log(index);
+    if(index >= 0) {
       player.balance = this.casino[index].gameSettings.defaultBuyIn;
       for (let i = 0; i < this.casino[index].disconnectedPlayers.length; i++) {
         if (player.name === this.casino[index].disconnectedPlayers[i].name) {
@@ -40,25 +41,28 @@ class Server{
   }
   
   findTable(tableId){
+    let tableIndex = -1;
     for(let i = 0; i < this.casino.length; i++){
-      if(this.casino[i].id === tableId){
-        return i;
+      if(this.casino[i].id == tableId){
+        tableIndex = i;
       }
     }
-    return -1;
+    return tableIndex
   }
 
   updateClients(tableId){
     let index = this.findTable(tableId);
     let clientPlayers = this.casino[index].GetClientPlayersArray();
-    io.in(tableId).emit('players', clientPlayers);
+    let hostId = this.casino[index].host;
+    io.in(tableId).emit('players', clientPlayers, hostId);
     io.in(tableId).emit('pot', this.casino[index].totalPot);
   }
 
   removeDisconnected(socket){
     //transfer host DONE - SIM
+    //remove table if no one is left
     let index = this.findTable(socket.tableId);
-    if(index !== undefined){
+    if(index >= 0){
       for(let i = 0; i < this.casino[index].players.length; i++){
         if(this.casino[index].players[i].id === socket.id){
           this.casino[index].disconnectedPlayers.push(this.casino[index].players[i]);
@@ -86,11 +90,11 @@ io.on('connection', (socket) => {
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
   //gucci
-  socket.on('create-table', ({ name, tableId, gameSettings }) => {
+  socket.on('create-table', (name, tableId, gameSettings) => {
     let id = socket.id;                                    //client socket.id
     socket.tableId = tableId;
     socket.join(tableId);                              //join tableId room socket.io
-    server.addTable({ tableId, gameSettings, id });                                  //create table
+    server.addTable(tableId, gameSettings, id);                                  //create table
     console.log('ON CREATE-TABLE');
     console.log(name);
     let player = new Player(name, id);

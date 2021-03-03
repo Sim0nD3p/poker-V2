@@ -91,19 +91,20 @@ export default function Table(props) {
 
     if(socket){
         if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
-        socket.on('players', (callback) => {
-            if(callback[0].id == clientId){ setClientIsHost(true) };
-            let players = callback;
+        socket.on('players', (clientPlayers, hostId) => {
+            //let list = clientPlayers;
             let client;
-            for(let i = 0; i < players.length; i++){
-                if(players[i].id === clientId){
-                    client = players[i];
-                    players.splice(i, 1);
-                    players.splice(0, 0, client);
-                }
+            if(clientId === hostId){
+                setClientIsHost(true);
             }
-            if(players[0].id == clientId){
-                setPlayers(players)
+            for(let i = 0; i < clientPlayers.length; i++){
+                console.log(i);
+                if(clientPlayers[i].id === clientId){
+                    client = clientPlayers.splice(i, 1)[0];
+                    clientPlayers.splice(0, 0, client);
+                    setPlayers(clientPlayers);
+                    break;
+                }
             }
         });
         socket.on('player-turn', (callback) => {
