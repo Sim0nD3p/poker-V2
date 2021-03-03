@@ -135,7 +135,6 @@ export default function CreateTable({ name, defaultSettings, submitGameSettings,
             </FormControl>
             <FormControl className={classes.formControl}>
 
-                {/* <FormLabel disabled={gameMode == 'cash' ? false : true}>Balance on start</FormLabel> */}
                 <TextField
                     variant='outlined'
                     color='primary'

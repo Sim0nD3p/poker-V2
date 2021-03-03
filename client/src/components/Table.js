@@ -81,11 +81,11 @@ function Login({ submitClient, setHidden, socket, submitTableId }){
         setName(e.target.value);
     }
     function joinTable(){
-        let client = {
+        /* let client = {
             name: name,
             tableId: tableId,
         }
-        submitClient(client);
+        submitClient(client); */
         socket.emit('join-table', ({ name, tableId }));
         setHidden(true);
 
@@ -122,25 +122,27 @@ function Login({ submitClient, setHidden, socket, submitTableId }){
 //faut pouvoir call, check d'avance
 //call, raise? faut que ca soit clair et facile(lipoker bug en criss tabarnak)
 
-export default function Table({ tableId, gameSettingsProps, client, submitClient }) {
+export default function Table(props) {
     const socket = useSocket();
     const classes = useStyles();
-    const [players, setPlayers] = useState([]);
-    const [hiddenLogin, setHiddenLogin] = useState(true);
-    const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
-    const [gameOn, setGameOn] = useState(false);
+    const [tableId, setTableId] = useState();
     const [clientId, setClientId] = useState();
+    const [players, setPlayers] = useState([]);
     const [clientIsHost, setClientIsHost] = useState(false);
-    const [tableID, setTableID] = useState(tableId);
+
+    const [hiddenLogin, setHiddenLogin] = useState(true);
+    const [gameOn, setGameOn] = useState(false);
+    //const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
     const tempPlayer = {
         name:'Player1'
     }
-    useEffect(() => { if (client == undefined) { setHiddenLogin(false) } }, [players, client]);
+    useEffect(() => {
+        console.log(`This is clientName in Table.js ${props.clientName}`);
+        console.log(`This is tableId in Table.js ${props.tableId}`);
+    }, [props.clientName, props.tableId]);
 
-    function call(){
-        console.log('call')
-    }
+    
     function callCasino(){
         console.log('calling casino');
         socket.emit('casino', socket);
@@ -167,19 +169,17 @@ export default function Table({ tableId, gameSettingsProps, client, submitClient
             console.log('playerTurn ' + callback);
         })
         
-        socket.on('game-settings', (gameSettings) => {
+        /* socket.on('game-settings', (gameSettings) => {
             //console.log(gameSettings);
-        })
+        }) */
     }
 
     return (
         <Box className={classes.tableContainer}>
             {hiddenLogin ? null : <Login
                 socket={socket}
-                submitTableId={setTableID}
                 setHidden={setHiddenLogin}
                 className={classes.login}
-                submitClient={submitClient}
                 ></Login>
             }
 

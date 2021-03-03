@@ -14,6 +14,7 @@ import InitialScreen from './initialScreen';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import CreateTable from './createTable';
+import Initial from './initial';
 
 
 
@@ -82,65 +83,47 @@ const defaultSettings = {
 
 function App(){
   //const [id, setId] = useState('thisIsIdBruh');
-  const [name, setName] = useState();
+  const [clientName, setClientName] = useState();
   const [tableId, setTableId] = useState();
-  const [gameSettings, setGameSettings] = useState(defaultSettings);
-  const [goToRoom, letsGoToRoom] = useState(false);
-  const [playerObject, setPlayerObject] = useState();
+  const [gameSettings, setGameSettings] = useState(defaultSettings);  //not necessary here?
+  //const [playerObject, setPlayerObject] = useState();
   const socket = useSocket();
 
-  //runs everytime name or gameId get updated
   useEffect(() => {
-    console.log('update on name or gameId');
-    console.log(gameSettings);
-    console.log(name);
-    console.log(tableId);
+    console.log(`This is clientName in useEffect ${clientName}`);
+    console.log(`This is tableId in useEffect ${tableId}`);
 
+  }, [clientName, tableId])
+  
 
-    //maybe only have a playerObject without name and table id passed everywhere is a good idea
-    setPlayerObject({
-      //id: id,
-      name, name,
-      gameId: tableId
-    });
-    if(tableId){
-      store.dispatch(addPlayer(playerObject));
-      console.log(store.getState());  
-    }
-  }, [name, tableId, gameSettings]); 
-/* 
-  if(gameId && name && goToRoom == true){
-    return (
-      <SocketProvider>
-        <SocketEnv newGameId={gameId} playerObject={playerObject}></SocketEnv>
-      </SocketProvider> 
-    )
-  } else { */
     
     return (
       <SocketProvider>
         <Router>
           <Route path='/table'>
             <Table
-              submitClient={setPlayerObject}
-              client={playerObject}
-              tableId={tableId}
-              gameSettings={gameSettings}
+            tableId={tableId}
+            clientName={clientName}
+            gameSettings={gameSettings}
             ></Table>
           </Route>
-
           <Route path='/' exact>
+            <Initial
+            submitName={setClientName}
+            submitTableId={setTableId}
+            ></Initial>
+          </Route>
+
+          <Route path='/d' exact>
             <InitialScreen
-              submitPlayerObject={setPlayerObject}
-              submitName={setName}
+              submitName={setClientName}
               submitGameId={setTableId}
             ></InitialScreen>
           </Route>
 
           <Route path='/createTable'>
             <CreateTable
-              name={name}
-              submitGoToRoom={letsGoToRoom}
+              name={clientName}
               submitGameId={setTableId}
               defaultSettings={defaultSettings}
               submitGameSettings={setGameSettings}
