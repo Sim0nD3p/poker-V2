@@ -55,7 +55,9 @@ export default function Controls(props){
 
     function startGame(){
         if(props.players.length >= 2){
-            socket.emit('start-game', props.tableId)
+            console.log(props.tableId);
+            let tableId = props.tableId;
+            socket.emit('start-game', (tableId));
         }
     }
 

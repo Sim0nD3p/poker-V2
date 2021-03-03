@@ -113,7 +113,8 @@ io.on('connection', (socket) => {
 
 
 
-  socket.on('start-game', ({tableId}) => {
+  socket.on('start-game', (tableId) => {
+    console.log(tableId);
     let index = server.findTable(tableId);
     server.casino[index].NewRound();
     console.log('start game');
