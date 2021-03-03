@@ -68,6 +68,7 @@ const useStyles = makeStyles({
 })
 //faut pouvoir call, check d'avance
 //call, raise? faut que ca soit clair et facile(lipoker bug en criss tabarnak)
+const tempFlop = ['03S', '12H', '05D', '13C', '14S'];
 
 export default function Table(props) {
     const socket = useSocket();
@@ -75,6 +76,7 @@ export default function Table(props) {
     const [players, setPlayers] = useState([]);
     const [clientIsHost, setClientIsHost] = useState(false);
     const [clientId, setClientId] = useState();
+    const [flop, setFlop] = useState(tempFlop);
     
     //const [tableId, setTableId] = useState();
     //const [hiddenLogin, setHiddenLogin] = useState(true);
@@ -110,12 +112,6 @@ export default function Table(props) {
         socket.on('player-turn', (callback) => {
             console.log('playerTurn ' + callback);
         })
-        
-        /* socket.on('game-settings', (gameSettings) => {
-            //console.log(gameSettings);
-
-            
-        }) */
     }
 
     return (
@@ -126,8 +122,11 @@ export default function Table(props) {
                 submitTableId={props.submitTableId}></LoginFromUrl>
             }
             
-            <TableContent></TableContent>
-
+            <TableContent
+            pot='pot'
+            flop={flop}
+            ></TableContent>
+            
             <Controls
             clientIsHost={clientIsHost}
             gameOn={gameOn}

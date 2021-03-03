@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     }
 })
 
-export default function TableContent(cards){
+export default function TableContent(props){
     const classes = useStyles();
     const socket = useSocket();
 
@@ -44,11 +44,11 @@ export default function TableContent(cards){
                     marginTop: 0,
                     display: 'flex'
                 }}>
-                <CardContainer></CardContainer>
-                <CardContainer></CardContainer>
-                <CardContainer></CardContainer>
-                <CardContainer></CardContainer>
-                <CardContainer></CardContainer>
+                <CardContainer card={props.flop[0]}></CardContainer>
+                <CardContainer card={props.flop[1]}></CardContainer>
+                <CardContainer card={props.flop[2]}></CardContainer>
+                <CardContainer card={props.flop[3]}></CardContainer>
+                <CardContainer card={props.flop[4]}></CardContainer>
             </Box>
         </Box>
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Paper, Card, CardMedia, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Deck } from './deck';
 
-import Cards from '../../res/cards/2C.svg'
+const deck = new Deck();
 
-export default function CardContainer(){
+export default function CardContainer(props){
     const ratio = (2.5 / 3.5);
     const cardHeight = 100;
     const cardWidth = cardHeight * ratio;
@@ -19,7 +20,7 @@ export default function CardContainer(){
                 borderRadius: 7,
                 overflow: 'show'
             }}
-            src={Cards}>
+            src={deck.card(props.card)}>
         </img>
     )
 }

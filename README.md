@@ -1,16 +1,16 @@
 # poker-V2
 
 # To-do list:
-- interface controls (client/table.js)
-- fix affichage players on update (sim)
-- big/small blind et dealer, index du biggest raise
+- big/small blind et dealer, index du biggest raise (ced)
 
 # In server
- * Gerer egalite Done-ced
  - Ajouter les blinds et dealer
- - Detecter fin des roundes
- 
- - emit pot au client
+ - Detecter fin des rounds
+
+# In client
+- listen pot client (sim)
+- interface controls (client/table.js)
+- fix affichage players on update (sim)
 
 # Fonctionnalites a ajouter
 - sitOutNextRound
