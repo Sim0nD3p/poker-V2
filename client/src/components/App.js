@@ -102,6 +102,8 @@ function App(){
         <Router>
           <Route path='/table'>
             <Table
+            submitName={setClientName}
+            submitTableId={setTableId}
             tableId={tableId}
             clientName={clientName}
             gameSettings={gameSettings}
@@ -114,12 +116,12 @@ function App(){
             ></Initial>
           </Route>
 
-          <Route path='/d' exact>
+          {/* <Route path='/d' exact>
             <InitialScreen
               submitName={setClientName}
               submitGameId={setTableId}
             ></InitialScreen>
-          </Route>
+          </Route> */}
 
           <Route path='/createTable'>
             <CreateTable

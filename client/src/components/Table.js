@@ -11,6 +11,7 @@ import playerPosition from './playerComponents/playerPosition';
 import queryString from 'querystring';
 import Controls from './TableComponents/Controls';
 import TableContent from './TableComponents/tableContent';
+import LoginFromUrl from './loginFromUrl';
 
 const loginContainerSize = [400, 300];
 
@@ -125,11 +126,11 @@ function Login({ submitClient, setHidden, socket, submitTableId }){
 export default function Table(props) {
     const socket = useSocket();
     const classes = useStyles();
-    const [tableId, setTableId] = useState();
-    const [clientId, setClientId] = useState();
     const [players, setPlayers] = useState([]);
     const [clientIsHost, setClientIsHost] = useState(false);
-
+    const [clientId, setClientId] = useState();
+    
+    const [tableId, setTableId] = useState();
     const [hiddenLogin, setHiddenLogin] = useState(true);
     const [gameOn, setGameOn] = useState(false);
     //const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
@@ -171,17 +172,20 @@ export default function Table(props) {
         
         /* socket.on('game-settings', (gameSettings) => {
             //console.log(gameSettings);
+
+            
         }) */
     }
 
     return (
         <Box className={classes.tableContainer}>
-            {hiddenLogin ? null : <Login
-                socket={socket}
-                setHidden={setHiddenLogin}
-                className={classes.login}
-                ></Login>
-            }
+
+
+
+            {props.clientName ? null : <LoginFromUrl
+                submitName={props.submitName}
+                submitTableId={props.submitTableId}></LoginFromUrl>}
+            
 
             <TableContent></TableContent>
 
@@ -204,3 +208,13 @@ export default function Table(props) {
         </Box>
     )
 }
+
+
+/*
+{hiddenLogin ? null : <Login
+                socket={socket}
+                setHidden={setHiddenLogin}
+                className={classes.login}
+                ></Login>
+            }
+*/
