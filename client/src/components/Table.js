@@ -12,6 +12,7 @@ import queryString from 'querystring';
 import Controls from './TableComponents/Controls';
 import TableContent from './TableComponents/tableContent';
 import LoginFromUrl from './loginFromUrl';
+import { theme } from '../theme';
 
 const loginContainerSize = [400, 300];
 
@@ -106,6 +107,7 @@ export default function Table(props) {
                 if(clientPlayers[i].id === clientId){
                     client = clientPlayers.splice(i, 1)[0];
                     clientPlayers.splice(0, 0, client);
+                    setClientIsTurn(client.isTurn);
                     setPlayers(clientPlayers);
                     break;
                 }
@@ -133,6 +135,7 @@ export default function Table(props) {
             clientIsHost={clientIsHost}
             gameOn={gameOn}
             tableId={props.tableId}
+            clientIsTurn={clientIsTurn}
             players = {players}
             ></Controls>   {/**props= some kind of state for call/check and raise */}
 

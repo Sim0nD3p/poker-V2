@@ -47,9 +47,11 @@ function Button(props) {
 export default function Controls(props){
     const classes = useStyles();
     const socket = useSocket();
+    const [action, setAction] = useState();
 
     useEffect(() => {
-    });
+        console.log(action);
+    }, [action]);
 
     function startGame(){
         if(props.players.length >= 2){
@@ -62,15 +64,9 @@ export default function Controls(props){
         console.log('casino from control');
         socket.emit('casino', 'test');
     }
-    function call(){
-        console.log('cadll');
-    }
-    function raise(){
-        console.log('raise');
-    }
-    function check(){
-        console.log('check')
-    }
+    function call(){ setAction('call') };
+    function raise(){ setAction('raise') };
+    function fold(){ setAction('fold') };
 
     if(socket){
 
@@ -94,7 +90,7 @@ export default function Controls(props){
              */}
              {(!props.clientIsHost && !props.gameOn) ? null : <Button text='Start game' action={startGame}></Button>}
             <Button text='casino' action={test}></Button>
-            <Button text='Fold'></Button>
+            <Button text='Fold' action={fold}></Button>
             <Button text='Raise' action={raise}></Button>
             <Button text='Check' action={call}></Button>
 

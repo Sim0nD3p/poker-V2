@@ -7,6 +7,8 @@ import findRadialPlayerAngle from './playerComponents/findRadialPlayerAngle';
 import setPlayerMargin from './playerComponents/setPlayerMargin';
 import { Person } from '@material-ui/icons';
 import PlayerHand from './playerComponents/playerHand';
+import { theme } from '../theme';
+
 
 const useStyles = makeStyles({
     container:{
@@ -22,9 +24,11 @@ const useStyles = makeStyles({
         width:'100%',
         margin:'auto',
         marginBottom:0,
+        color: theme.palette.playerObject.text,
     },
     playerName:{
         textAlign:'center',
+        
     },
     card:{
         height:150,
@@ -37,7 +41,6 @@ const useStyles = makeStyles({
         marginLeft:5,
         marginRight:0,
         fontSize:'48px',
-
     },
     playerHandContainer:{
         position:'relative',
@@ -96,7 +99,7 @@ export default function Player(props){
             <Box
             className={classes.paper}
             style={{
-                backgroundColor: props.player.isTurn ? 'red' : 'green',
+                backgroundColor: props.player.isTurn ? theme.palette.playerObject.active : theme.palette.playerObject.inactive,
             }}>
 
                 <Person

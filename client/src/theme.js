@@ -22,8 +22,14 @@ export const theme = createMuiTheme({
         },
         background: {
             paper: '#ffffff',
-            default: 'rgba(0, 0, 0, 0.85)'  //rgba(18, 18, 18, 1)
+            default: '#E0E0E0', //'rgba(0, 0, 0, 0.85)'  //rgba(18, 18, 18, 1)
         },
+        playerObject:{
+            inactive: '#383838',//'#262626',
+            active: '#121212',
+            text: '#ffffff',
+
+        }
     },
     typography: {
         h1: {

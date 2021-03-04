@@ -137,14 +137,14 @@ io.on('connection', (socket) => {
     console.log(gameSettings);
   })
 
-  socket.on('check', ({tableId}) => {
+  socket.on('check', (tableId) => {
     let index = server.findTable(tableId);
     server.casino[index].Check();
     server.casino[index].NextTurn();
     server.updateClients(tableId);
   }) 
 
-  socket.on('fold', ({tableId}) => {
+  socket.on('fold', (tableId) => {
     let index = server.findTable(tableId);
     server.casino[index].Fold();
     server.casino[index].NextTurn();
