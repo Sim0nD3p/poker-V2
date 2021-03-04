@@ -49,13 +49,10 @@ export default function Controls(props){
     const socket = useSocket();
 
     useEffect(() => {
-        console.log(props.clientIsHost);
-        console.log(props.gameOn);
     });
 
     function startGame(){
         if(props.players.length >= 2){
-            console.log(props.tableId);
             let tableId = props.tableId;
             socket.emit('start-game', (tableId));
         }
@@ -66,7 +63,7 @@ export default function Controls(props){
         socket.emit('casino', 'test');
     }
     function call(){
-        console.log('call');
+        console.log('cadll');
     }
     function raise(){
         console.log('raise');

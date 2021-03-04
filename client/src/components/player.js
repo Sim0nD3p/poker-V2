@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     }
 })
 
-export default function Player({ key, player, x, placement }){
+export default function Player(props){
     const classes = useStyles();
     const [position, setPosition] = useState();
     const [size, setSize] = useState({height:50, width:200});
@@ -61,19 +61,21 @@ export default function Player({ key, player, x, placement }){
         top: yPos - size.height / 2 + window.innerHeight / 2,
         left: xPos - size.width / 2 + window.innerWidth / 2,
     });
-    useEffect(() => { setMargin(setPlayerMargin(x, placement)) }, [x, placement]);
+    useEffect(() => { setMargin(setPlayerMargin(props.x, props.placement)) }, [props.x, props.placement]);
 
     useEffect(() => {
         if(margin){
-            let posObject = findPlayerPos(x, placement);
+            let posObject = findPlayerPos(props.x, props.placement);
             setYPos(posObject[1] + margin[1]);
             setXPos(posObject[0] + margin[0]);
         }
     }, [margin]);
 
     useEffect(() => {
+        console.log(props.player.isTurn);
         if(isNaN(xPos) == false && isNaN(yPos) == false){
             setStyle({
+                backgroundColor: props.isTurn ? 'blue' : null,
                 position: 'fixed',
                 width: size.width,
                 height: size.height,
@@ -82,7 +84,7 @@ export default function Player({ key, player, x, placement }){
                 zIndex: 10000
             })
         }
-    }, [xPos, yPos])
+    }, [xPos, yPos, props.player])
     
 
 
@@ -102,7 +104,7 @@ export default function Player({ key, player, x, placement }){
                         align='center'
                         variant='h6'
                         className={classes.playerName}
-                    >{player.name}</Typography>
+                    >{props.player.name}</Typography>
 
                     <Typography
                         variant='body2'
