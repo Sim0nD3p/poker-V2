@@ -177,6 +177,7 @@ class Table {
         this.players[this.playerPlaying].isPlaying = false;
     }
     Raise(raise) {
+        this.Call();
         if (this.players[this.playerPlaying].balance >= raise) {
             this.currentPot = this.currentPot + raise;
             this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
