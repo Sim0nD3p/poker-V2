@@ -23,7 +23,7 @@ class Server{
     let index = this.findTable(tableId);
     console.log(index);
     if(index >= 0) {
-      player.balance = this.casino[index].gameSettings.defaultBuyIn;
+      player.balance = this.casino[index].gameSettings.buyIn;
       for (let i = 0; i < this.casino[index].disconnectedPlayers.length; i++) {
         if (player.name === this.casino[index].disconnectedPlayers[i].name) {
           let oldPlayer = this.casino[index].disconnectedPlayers.splice(i, 1)[0];
@@ -127,7 +127,7 @@ io.on('connection', (socket) => {
     let index = server.findTable(tableId);
     server.casino[index].NewRound();
     console.log('start game');
-    server.updateClients();
+    server.updateClients(tableId);
   })
 
 
