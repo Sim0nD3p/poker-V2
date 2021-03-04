@@ -31,7 +31,7 @@ class Server{
           player = oldPlayer;
         }
       }
-
+      console.log(this.casino[index]);
       this.casino[index].players.push(player);
       this.updateClients(tableId);
     }

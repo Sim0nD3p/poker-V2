@@ -145,7 +145,7 @@ class Table {
             this.dealerIndex = this.PassOn(this.dealerIndex);
             this.bigBlindIndex =  this.PassOn(this.bigBlindIndex);
         }
-
+        console.log("")
         this.playerPlaying = this.smallBlindIndex;
         this.Raise(this.smallBlindValue);
         this.playerPlaying = this.bigBlindIndex;
@@ -167,6 +167,7 @@ class Table {
         else {
             element = 0;
         }
+        return element;
     }
 
     Check() {
@@ -176,8 +177,6 @@ class Table {
         this.players[this.playerPlaying].isPlaying = false;
     }
     Raise(raise) {
-        console.log(this.playerPlaying);
-        console.log(this.players);
         if (this.players[this.playerPlaying].balance >= raise) {
             this.currentPot = this.currentPot + raise;
             this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
