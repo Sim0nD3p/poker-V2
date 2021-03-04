@@ -95,6 +95,7 @@ export default function Table(props) {
     if(socket){
         if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
         socket.on('players', (clientPlayers, hostId) => {
+            console.log(clientPlayers);
             //loop to check if game is on
             let client;
             if(clientId === hostId){

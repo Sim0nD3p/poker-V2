@@ -75,7 +75,6 @@ export default function Player(props){
         console.log(props.player.isTurn);
         if(isNaN(xPos) == false && isNaN(yPos) == false){
             setStyle({
-                backgroundColor: props.isTurn ? 'blue' : null,
                 position: 'fixed',
                 width: size.width,
                 height: size.height,
@@ -94,7 +93,11 @@ export default function Player(props){
             className={classes.container}
             style={style}
         >
-            <Box className={classes.paper}>
+            <Box
+            className={classes.paper}
+            style={{
+                backgroundColor: props.player.isTurn ? 'red' : 'green',
+            }}>
 
                 <Person
                 className={classes.person}
