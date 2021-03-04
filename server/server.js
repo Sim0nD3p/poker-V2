@@ -151,7 +151,7 @@ io.on('connection', (socket) => {
     server.updateClients(tableId);
   }) 
 
-  socket.on('raise', ({tableId,raise}) => {
+  socket.on('raise', (tableId, raise) => {
     let index = server.findTable(tableId);
     server.casino[index].Raise(raise);
     server.casino[index].NextTurn();

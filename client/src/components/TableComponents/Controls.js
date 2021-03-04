@@ -53,6 +53,24 @@ export default function Controls(props){
         console.log(action);
     }, [action]);
 
+    useEffect(() => {
+        console.log('client turn');
+        if(clientIsTurn === true){
+            if(action === 'call'){
+                socket.emit('call', tableId);
+            }
+            else if(action === 'raise'){
+                socket.emit('raise', tableId, 50);
+            }
+            else if(action === 'check'){
+                socket.emit('check', tableId)
+            }
+            else if(action === 'fold'){
+                socket.emit('fold', tableId)
+            }
+        }
+    }, [props.clientIsTurn])
+
     function startGame(){
         if(props.players.length >= 2){
             let tableId = props.tableId;
@@ -64,7 +82,13 @@ export default function Controls(props){
         console.log('casino from control');
         socket.emit('casino', 'test');
     }
-    function call(){ setAction('call') };
+
+    function call(){
+        if(action === 'call'){
+            setAction(null);
+        } else {
+            setAction('call') };
+        }
     function raise(){ setAction('raise') };
     function fold(){ setAction('fold') };
 

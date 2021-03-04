@@ -79,6 +79,7 @@ export default function Table(props) {
     const [clientId, setClientId] = useState();
     const [flop, setFlop] = useState(tempFlop);
     const [clientIsTurn, setClientIsTurn] = useState(false);
+    const [bet, setBet] = useState(0);
     
     //const [tableId, setTableId] = useState();
     //const [hiddenLogin, setHiddenLogin] = useState(true);
