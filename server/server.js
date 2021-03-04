@@ -127,6 +127,7 @@ io.on('connection', (socket) => {
     let index = server.findTable(tableId);
     server.casino[index].NewRound();
     console.log('start game');
+    server.updateClients();
   })
 
 

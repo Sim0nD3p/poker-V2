@@ -33,6 +33,7 @@ class Table {
         this.players = [];
         this.disconnectedPlayers = [];
         this.playerPlaying = 0;
+        console.log(this.gameSettings);
     }
 
     addPlayer(playerObject) {
