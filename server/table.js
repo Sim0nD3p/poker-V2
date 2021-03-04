@@ -146,7 +146,6 @@ class Table {
             this.dealerIndex = this.PassOn(this.dealerIndex);
             this.bigBlindIndex =  this.PassOn(this.bigBlindIndex);
         }
-        console.log("")
         this.playerPlaying = this.smallBlindIndex;
         this.Raise(this.smallBlindValue);
         this.playerPlaying = this.bigBlindIndex;
@@ -283,6 +282,7 @@ class Table {
                 name: this.players[x].name,
                 id: this.players[x].id,
                 balance: this.players[x].balance,
+                currentBet: this.players[x].currentBet,
                 isTurn: (x === this.playerPlaying),
                 isHost: (x === 0),
                 isBB: (x === this.bigBlindIndex),
