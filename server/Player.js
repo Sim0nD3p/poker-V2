@@ -4,11 +4,11 @@
 class Player{
 
     name = "Nameless Player";
+    id;
     cardsInHand= [];
     bestHand = [];
-    bestHandDesc;
-    bestHandScore;
-    isPlaying;
+    bestHandDesc = "";
+    bestHandScore =0;
     balance=0; //player's money
     currentBet=0;
 
