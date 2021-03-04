@@ -77,6 +77,7 @@ export default function Table(props) {
     const [clientIsHost, setClientIsHost] = useState(false);
     const [clientId, setClientId] = useState();
     const [flop, setFlop] = useState(tempFlop);
+    const [clientIsTurn, setClientIsTurn] = useState(false);
     
     //const [tableId, setTableId] = useState();
     //const [hiddenLogin, setHiddenLogin] = useState(true);
@@ -94,7 +95,7 @@ export default function Table(props) {
     if(socket){
         if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
         socket.on('players', (clientPlayers, hostId) => {
-            //let list = clientPlayers;
+            //loop to check if game is on
             let client;
             if(clientId === hostId){
                 setClientIsHost(true);
@@ -139,7 +140,7 @@ export default function Table(props) {
                 let x = positions[i][0];
                 let place = positions[i][1];
                 return (
-                    <Player player={player} key={i} x={x} placement={place}></Player>
+                    <Player player={player} isTurn={player.isTurn} key={i} x={x} placement={place}></Player>
                 )
             })}
 
