@@ -9,7 +9,7 @@ class Table {
     deck;
     totalPot = 0;
     currentPot = 0;
-    playerPlaying = 0;
+    playerPlaying = -1;
     maxBet = 0;
     raiseIndex=0;
     bigBlindIndex = 0;
@@ -105,6 +105,7 @@ class Table {
 
     }
     StartGame(){
+        this.playerPlaying = 0;
         if(this.players.length <2)
             return;
         else if(this.players.length === 2){
