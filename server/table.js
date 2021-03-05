@@ -94,15 +94,6 @@ class Table {
             this.NewRound();
         }
     }
-    Flop(){
-            if(raiseIndex === this.playerPlaying){
-                AddCardToFlop();
-            }
-            else{
-                this.NextTurn();
-            }
-
-    }
     StartGame(){
         this.playerPlaying = 0;
         if(this.players.length <2)
@@ -147,14 +138,17 @@ class Table {
             this.bigBlindIndex =  this.PassOn(this.bigBlindIndex);
         }
         this.playerPlaying = this.smallBlindIndex;
-        this.Raise(this.smallBlindValue);
+        this.Raise(this.smallBlindValue, this.players[this.playerPlaying].id);
         this.playerPlaying = this.bigBlindIndex;
-        this.Raise(this.smallBlindValue*2);
+        this.Raise(this.smallBlindValue*2, this.players[this.playerPlaying].id);
         this.playerPlaying = this.PassOn(this.bigBlindIndex);
         this.raiseIndex = this.playerPlaying;
 
     }
-    NextTurn() {
+    NextTurn(id) {
+        if(id !== this.players[this.playerPlaying].id){
+            return;
+        }
         this.playerPlaying = this.PassOn(this.playerPlaying);
         if(this.playerPlaying === this.raiseIndex){
             this.AddCardToFlop();
@@ -170,14 +164,23 @@ class Table {
         return element;
     }
 
-    Check() {
+    Check(id) {
+        if(id !== this.players[this.playerPlaying].id){
+            return;
+        }
 
     }
-    Fold() {
+    Fold(id) {
+        if(id !== this.players[this.playerPlaying].id){
+            return;
+        }
         this.players[this.playerPlaying].isPlaying = false;
     }
-    Raise(raise) {
-        this.Call();
+    Raise(raise, id) {
+        if(id !== this.players[this.playerPlaying].id){
+            return;
+        }
+
         if (this.players[this.playerPlaying].balance >= raise) {
             this.currentPot = this.currentPot + raise;
             this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
@@ -197,12 +200,15 @@ class Table {
         }
     }
 
-    Call() {
+    Call(id) {
+        if(id !== this.players[this.playerPlaying].id){
+            return;
+        }
         if (this.maxBet === 0) { 
-            this.Check();
+            this.Check(id);
         }
         else{
-            this.Raise(this.maxBet-this.players[this.playerPlaying].currentBet);
+            this.Raise(this.maxBet-this.players[this.playerPlaying].currentBet, id);
         }
     }
 

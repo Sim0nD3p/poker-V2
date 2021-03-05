@@ -139,29 +139,30 @@ io.on('connection', (socket) => {
 
   socket.on('check', (tableId) => {
     let index = server.findTable(tableId);
-    server.casino[index].Check();
-    server.casino[index].NextTurn();
+    server.casino[index].Check(socket.id);
+    server.casino[index].NextTurn(socket.id);
     server.updateClients(tableId);
   }) 
 
   socket.on('fold', (tableId) => {
     let index = server.findTable(tableId);
-    server.casino[index].Fold();
-    server.casino[index].NextTurn();
+    server.casino[index].Fold(socket.id);
+    server.casino[index].NextTurn(socket.id);
     server.updateClients(tableId);
   }) 
 
   socket.on('raise', (tableId, raise) => {
     let index = server.findTable(tableId);
-    server.casino[index].Raise(raise);
-    server.casino[index].NextTurn();
+    server.casino[index].Call(socket.id)
+    server.casino[index].Raise(raise, socket.id);
+    server.casino[index].NextTurn(socket.id);
     server.updateClients(tableId);
   }) 
 
   socket.on('call', ({tableId,raise}) => {
     let index = server.findTable(tableId);
-    server.casino[index].Call();
-    server.casino[index].NextTurn();
+    server.casino[index].Call(socket.id);
+    server.casino[index].NextTurn(socket.id);
     server.updateClients(tableId);
   })
 
