@@ -55,18 +55,18 @@ export default function Controls(props){
 
     useEffect(() => {
         console.log('client turn');
-        if(clientIsTurn === true){
+        if(props.clientIsTurn === true){
             if(action === 'call'){
-                socket.emit('call', tableId);
+                socket.emit('call', props.tableId);
             }
             else if(action === 'raise'){
-                socket.emit('raise', tableId, 50);
+                socket.emit('raise', props.tableId, 50);
             }
             else if(action === 'check'){
-                socket.emit('check', tableId)
+                socket.emit('check', props.tableId)
             }
             else if(action === 'fold'){
-                socket.emit('fold', tableId)
+                socket.emit('fold', props.tableId)
             }
         }
     }, [props.clientIsTurn])
@@ -91,6 +91,7 @@ export default function Controls(props){
         }
     function raise(){ setAction('raise') };
     function fold(){ setAction('fold') };
+    function check(){ setAction('check') };
 
     if(socket){
 
@@ -113,10 +114,12 @@ export default function Controls(props){
             Check: To not bet, with the option to call or raise later in the betting round
              */}
              {(!props.clientIsHost && !props.gameOn) ? null : <Button text='Start game' action={startGame}></Button>}
+            {(props.call === null) ? <Button text='Check' action={check}></Button> :
+                <Button text='call' action={call(props.call)}></Button>}
+                
             <Button text='casino' action={test}></Button>
             <Button text='Fold' action={fold}></Button>
             <Button text='Raise' action={raise}></Button>
-            <Button text='Check' action={call}></Button>
 
         </Grid>
 

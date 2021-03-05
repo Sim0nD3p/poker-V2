@@ -79,7 +79,8 @@ export default function Table(props) {
     const [clientId, setClientId] = useState();
     const [flop, setFlop] = useState(tempFlop);
     const [clientIsTurn, setClientIsTurn] = useState(false);
-    const [bet, setBet] = useState(0);
+    const [currentBet, setCurrentBet] = useState(0);
+    const [call, setCall] = useState(null);
     
     //const [tableId, setTableId] = useState();
     //const [hiddenLogin, setHiddenLogin] = useState(true);
@@ -94,32 +95,80 @@ export default function Table(props) {
         console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
 
-    if(socket){
-        if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
-        socket.on('players', (clientPlayers, hostId) => {
-            console.log(clientPlayers);
-            //loop to check if game is on
-            let client;
-            if(clientId === hostId){
-                setClientIsHost(true);
-            }
-            for(let i = 0; i < clientPlayers.length; i++){
-                console.log(i);
-                if(clientPlayers[i].id === clientId){
-                    client = clientPlayers.splice(i, 1)[0];
-                    clientPlayers.splice(0, 0, client);
-                    setClientIsTurn(client.isTurn);
-                    setPlayers(clientPlayers);
-                    break;
-                }
-            }
-        });
-        socket.on('player-turn', (callback) => {
-            console.log('playerTurn ' + callback);
-        })
+    function gameLogic(players, clientIndex, highestBet){
+
     }
 
-    return (
+    if(socket){
+        if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
+        if(clientId){
+
+            socket.on('players', (clientPlayers, hostId) => {
+                console.log(clientPlayers);
+                if(clientId === hostId){ setClientIsHost(true) };
+                //loop to check if game is on
+                /* 
+                let list = clientPlayers;
+                let client;
+                let bet = currentBet;
+                for(let i = 0; i < clientPlayers.length; i++){
+                    if(clientPlayers[i].currentBet > bet){
+                        bet = clientPlayers[i].currentBet;
+                    }
+                }
+                //call/check
+                if(bet > currentBet){
+                    setCall(bet);
+                } else {
+                    setCall(null);
+                }
+                */
+
+                //setPlayers
+                //setCurrentBet
+                //setClientIsTurn
+                //put clientPlayer in first position while keeping players playing order
+                //setCall: null if no need to call(currentBet >= highestBet), to call amount if need to call
+               let clientIndex;
+               let highestBet = 0;
+               for(let i = 0; i < clientPlayers.length; i++){
+                   if(clientPlayers[i].id === clientId){
+                       clientIndex = i;
+                       //setClientIsTurn(clientPlayers[i].isTurn);
+                       //setCurrentBet(clientPlayers[i].currentBet);
+                    }
+                    if(clientPlayers[i].currentBet > highestBet){
+                        highestBet = clientPlayers[i].currentBet;
+                    }
+                }
+
+                //gameLogic(clientPlayers, clientIndex, highestBet);
+                if(clientPlayers[clientIndex].currentBet < highestBet){
+                    setCall(highestBet);
+                }
+                else{
+                    setCall(null);
+                }
+                let client = clientPlayers[clientIndex];
+                setClientIsTurn(client.isTurn);
+                setCurrentBet(client.currentBet);
+                let fromClient = clientPlayers.slice(clientIndex);
+                let toClient = clientPlayers.slice(0, clientIndex);
+                let players = fromClient.concat(toClient);
+                setPlayers(players);
+
+                
+                //add bet/raise on table when a player bet/raise
+                //set current bet and client infos before checking call/check shit
+                //send info call/check to control and display button accordingly
+                //button logic (faire les call d'avance), disable raison when isTurn==false
+                //change this to keep the playing order right
+                
+            });
+        }
+    }
+        
+        return (
         <Box className={classes.tableContainer}>
 
             {props.clientName ? null : <LoginFromUrl
@@ -133,6 +182,7 @@ export default function Table(props) {
             ></TableContent>
             
             <Controls
+            call={call}
             clientIsHost={clientIsHost}
             gameOn={gameOn}
             tableId={props.tableId}
@@ -145,7 +195,12 @@ export default function Table(props) {
                 let x = positions[i][0];
                 let place = positions[i][1];
                 return (
-                    <Player player={player} isTurn={player.isTurn} key={i} x={x} placement={place}></Player>
+                    <Player
+                    player={player}
+                    key={i}
+                    x={x}
+                    placement={place}
+                    ></Player>
                 )
             })}
 
