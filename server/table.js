@@ -42,14 +42,14 @@ class Table {
 
     AddCardToFlop() {
         if (this.CardsOnTable.length === 0) {
-            this.deck.pop();
-            this.CardsOnTable.push(this.deck.pop());
-            this.CardsOnTable.push(this.deck.pop());
-            this.CardsOnTable.push(this.deck.pop());
+            this.deck.GetNextCard();
+            this.CardsOnTable.push(this.deck.GetNextCard());
+            this.CardsOnTable.push(this.deck.GetNextCard());
+            this.CardsOnTable.push(this.deck.GetNextCard());
         }
         else if (this.CardsOnTable.length === 3 || this.CardsOnTable.length === 4) {
-            this.deck.pop();
-            this.CardsOnTable.push(this.deck.pop());
+            this.deck.GetNextCard();
+            this.CardsOnTable.push(this.deck.GetNextCard());
         }
         else {
             // METHOD FOR END OF GAME
