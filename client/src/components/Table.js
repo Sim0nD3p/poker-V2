@@ -13,6 +13,7 @@ import Controls from './TableComponents/Controls';
 import TableContent from './TableComponents/tableContent';
 import LoginFromUrl from './loginFromUrl';
 import { theme } from '../theme';
+import socketIOClient from "socket.io-client";
 
 const loginContainerSize = [400, 300];
 
@@ -65,14 +66,20 @@ const useStyles = makeStyles({
         width:'65%',
         margin:'auto',
         marginTop:10,
+    },
+    button:{
+        zIndex:1000
     }
 })
+
+const io = require("socket.io-client");
+
 //faut pouvoir call, check d'avance
 //call, raise? faut que ca soit clair et facile(lipoker bug en criss tabarnak)
 const tempFlop = ['03S', '12H', '05D', '13C', '14S'];
+const ENDPOINT = 'http://192.168.1.13:5000/';
 
 export default function Table(props) {
-    const socket = useSocket();
     const classes = useStyles();
     const [players, setPlayers] = useState([]);
     const [clientIsHost, setClientIsHost] = useState(false);
@@ -87,86 +94,62 @@ export default function Table(props) {
     const [gameOn, setGameOn] = useState(false);
     //const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
+    console.log('render table.js');
     const tempPlayer = {
         name:'Player1'
     }
+    function shitDick(e){
+        console.log('IT WORKED!!!');
+        console.log(e);
+    }
+    useEffect(() => {
+        console.log('useEffect Table.js');
+        const socket = io("http://localhost:5000", {
+            withCredentials: true,
+        });
+        console.log(socket);
+        socket.on('connect', () => {
+            console.log(socket.id);
+            
+        })
+        socket.on('players', (players) => {
+            shitDick(players);
+            console.log(players);
+        })
+        //socket.emit('update-players', 'players');
+    }, [])
     useEffect(() => {
         console.log(`This is clientName in Table.js ${props.clientName}`);
         console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
-
-    function gameLogic(players, clientIndex, highestBet){
+    
+    
+    function testFunction(){
+        console.log('this is testFunction');
+        setGameOn(true);
+        console.log(gameOn);
 
     }
 
-    if(socket){
-        if (clientId == undefined && socket.id !== undefined) { setClientId(socket.id); };
-        if(clientId){
+   
+            
 
-            socket.on('players', (clientPlayers, hostId) => {
-                console.log(clientPlayers);
-                if(clientId === hostId){ setClientIsHost(true) };
-                //loop to check if game is on
-                /* 
-                let list = clientPlayers;
-                let client;
-                let bet = currentBet;
-                for(let i = 0; i < clientPlayers.length; i++){
-                    if(clientPlayers[i].currentBet > bet){
-                        bet = clientPlayers[i].currentBet;
-                    }
-                }
-                //call/check
-                if(bet > currentBet){
-                    setCall(bet);
-                } else {
-                    setCall(null);
-                }
-                */
 
-                //setPlayers
-                //setCurrentBet
-                //setClientIsTurn
-                //put clientPlayer in first position while keeping players playing order
-                //setCall: null if no need to call(currentBet >= highestBet), to call amount if need to call
-               let clientIndex;
-               let highestBet = 0;
-               for(let i = 0; i < clientPlayers.length; i++){
-                   if(clientPlayers[i].id === clientId){
-                       clientIndex = i;
-                       //setClientIsTurn(clientPlayers[i].isTurn);
-                       //setCurrentBet(clientPlayers[i].currentBet);
-                    }
-                    if(clientPlayers[i].currentBet > highestBet){
-                        highestBet = clientPlayers[i].currentBet;
-                    }
-                }
+                //let client = clientPlayers[clientIndex];
+                //setClientIsTurn(client.isTurn);
+                //setCurrentBet(client.currentBet);
+                //let fromClient = clientPlayers.slice(clientIndex);
+                //let toClient = clientPlayers.slice(0, clientIndex);
+                //let players = fromClient.concat(toClient);
+                //setPlayers(players);
 
-                //gameLogic(clientPlayers, clientIndex, highestBet);
-                if(clientPlayers[clientIndex].currentBet < highestBet){
-                    setCall(highestBet);
-                }
-                else{
-                    setCall(null);
-                }
-                let client = clientPlayers[clientIndex];
-                setClientIsTurn(client.isTurn);
-                setCurrentBet(client.currentBet);
-                let fromClient = clientPlayers.slice(clientIndex);
-                let toClient = clientPlayers.slice(0, clientIndex);
-                let players = fromClient.concat(toClient);
-                setPlayers(players);
-
+                
                 
                 //add bet/raise on table when a player bet/raise
                 //set current bet and client infos before checking call/check shit
                 //send info call/check to control and display button accordingly
                 //button logic (faire les call d'avance), disable raison when isTurn==false
                 //change this to keep the playing order right
-                
-            });
-        }
-    }
         
         return (
         <Box className={classes.tableContainer}>
@@ -188,6 +171,7 @@ export default function Table(props) {
             tableId={props.tableId}
             clientIsTurn={clientIsTurn}
             players = {players}
+            testFunction={testFunction}
             ></Controls>   {/**props= some kind of state for call/check and raise */}
 
             {players.map((player, i) => {
@@ -203,18 +187,8 @@ export default function Table(props) {
                     ></Player>
                 )
             })}
-
             <TableTop className={classes.tableTop}></TableTop>
         </Box>
     )
 }
 
-
-/*
-{hiddenLogin ? null : <Login
-                socket={socket}
-                setHidden={setHiddenLogin}
-                className={classes.login}
-                ></Login>
-            }
-*/

@@ -1,7 +1,15 @@
 const Table = require('./table');
 const Player = require('./Player');
 
-const io = require('socket.io')(5000)
+//const io = require('socket.io')(5000)
+const io = require("socket.io")(5000, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    //allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
+});
 
 let players = [];
 playersDisconnected = [];
@@ -21,7 +29,6 @@ class Server{
   //crash si table n<existe pas
   addPlayerToTable(player, tableId){
     let index = this.findTable(tableId);
-    console.log(index);
     if(index >= 0) {
       player.balance = this.casino[index].gameSettings.buyIn;
       for (let i = 0; i < this.casino[index].disconnectedPlayers.length; i++) {
@@ -31,7 +38,7 @@ class Server{
           player = oldPlayer;
         }
       }
-      console.log(this.casino[index]);
+      console.log(player);
       this.casino[index].players.push(player);
       this.updateClients(tableId);
     }
@@ -54,7 +61,10 @@ class Server{
     let index = this.findTable(tableId);
     let clientPlayers = this.casino[index].GetClientPlayersArray();
     let hostId = this.casino[index].host;
-    io.in(tableId).emit('players', clientPlayers, hostId);
+    console.log('update clients');
+    io.in(tableId).emit('players', clientPlayers);
+    io.in('casino').emit('players', clientPlayers);
+
     io.in(tableId).emit('pot', this.casino[index].totalPot);
   }
 
@@ -105,6 +115,11 @@ io.on('connection', (socket) => {
 
   })
 
+  socket.on('update-players', (tableId) => {
+    server.updateClients(tableId);
+    console.log('client ask to be updated');
+  })
+
   //cath when player try to join a table that doesnt exist
   socket.on('join-table', ({ name, tableId }) => {
     let id = socket.id;                                        //add tableId to joinObject
@@ -134,7 +149,6 @@ io.on('connection', (socket) => {
 
   socket.on('game-settings', (gameSettings) => {
     console.log('received game settings');
-    console.log(gameSettings);
   })
 
   socket.on('check', (tableId) => {
