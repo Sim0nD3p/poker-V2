@@ -103,33 +103,39 @@ export default function Table(props) {
         const socket = io("http://localhost:5000", {
             withCredentials: true,
         });
-        console.log(socket);
-        //check if socket has the same id after each rendering
-        // check cleanup function socket.disconned (necessary?)
-        //add socket.join(tableId), logic for multiple socket per player??
         socket.on('connect', () => {
             console.log(socket.id);
+            console.log('connect to tableID ' + props.tableId);
             
         })
+        socket.emit('join-socket-room', (props.tableId));   //should it be here?
         socket.on('players', (players) => {
             console.log(players);
-            console.log(socket.id);
             setPlayers(players);
         });
         socket.on('casinoCallback', (casino) => {
             console.log(casino);
         })
-        //socket.emit('update-players', 'players');
-    }, [])
+        
+        return () => {
+            socket.disconnect();    //don't know if necessary
+        }
+    }, [props.tableId])
     useEffect(() => {
-        console.log(`This is clientName in Table.js ${props.clientName}`);
-        console.log(`This is tableId in Table.js ${props.tableId}`);
+        //console.log(`This is clientName in Table.js ${props.clientName}`);
+        //console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
     
     
-    function testFunction(){
-        console.log('this is testFunction');
-        setGameOn(true);
+    function renderTest(){
+        console.log('renderTest');
+        if(gameOn === true){
+            setGameOn(false);
+        } else if(gameOn === false){
+            setGameOn(true);
+        }
+
+
         console.log(gameOn);
 
     }
@@ -171,10 +177,10 @@ export default function Table(props) {
             call={call}
             clientIsHost={clientIsHost}
             gameOn={gameOn}
+            renderTest={renderTest}
             tableId={props.tableId}
             clientIsTurn={clientIsTurn}
             players = {players}
-            testFunction={testFunction}
             ></Controls>   {/**props= some kind of state for call/check and raise */}
 
             {players.map((player, i) => {

@@ -48,8 +48,6 @@ export default function Controls(props){
     const classes = useStyles();
     //const socket = useSocket();
     const [action, setAction] = useState();
-    console.log('controls');
-
 
     
     
@@ -80,7 +78,7 @@ export default function Controls(props){
                 
             <Button text='casino' action={casino}></Button>
             <Button text='Fold' action={test}></Button>
-            <Button text='Raise' action={props.testFunction}></Button>
+            <Button text='renderTest' action={props.renderTest}></Button>
 
         </Grid>
 

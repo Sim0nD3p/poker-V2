@@ -84,8 +84,8 @@ function App(){
   const socket = useSocket();
 
   useEffect(() => {
-    console.log(`This is clientName in useEffect ${clientName}`);
-    console.log(`This is tableId in useEffect ${tableId}`);
+    //console.log(`This is clientName in useEffect ${clientName}`);
+    //console.log(`This is tableId in useEffect ${tableId}`);
 
   }, [clientName, tableId])
   

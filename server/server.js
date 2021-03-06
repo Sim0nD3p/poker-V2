@@ -40,7 +40,7 @@ class Server{
       }
       console.log(player);
       this.casino[index].players.push(player);
-      this.updateClients(tableId);
+      //this.updateClients(tableId);  ->clients updated when socket joins in Table.js
     }
     else{
       console.log("Error in addPlayerToTable");
@@ -59,13 +59,14 @@ class Server{
 
   updateClients(tableId){
     let index = this.findTable(tableId);
-    let clientPlayers = this.casino[index].GetClientPlayersArray();
-    let hostId = this.casino[index].host;
-    console.log('update clients');
-    io.in(tableId).emit('players', clientPlayers);
-    io.in('casino').emit('players', clientPlayers);
-
-    io.in(tableId).emit('pot', this.casino[index].totalPot);
+    console.log(index);
+    if(index >= 0){
+      let clientPlayers = this.casino[index].GetClientPlayersArray();
+      //let hostId = this.casino[index].host;
+      console.log('update clients');
+      io.in(tableId).emit('players', clientPlayers);
+      io.in(tableId).emit('pot', this.casino[index].totalPot);
+    }
   }
 
   removeDisconnected(socket){
@@ -98,6 +99,12 @@ const server = new Server();
 io.on('connection', (socket) => {
   console.log('New connection!!!');
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
+
+  //get client upon connection of socket listener in Table.js
+  socket.on('join-socket-room', (tableId) => {
+    socket.join(tableId);
+    server.updateClients(tableId);
+  })
 
 
   //gucci
