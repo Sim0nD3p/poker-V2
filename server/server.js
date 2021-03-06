@@ -98,6 +98,7 @@ const server = new Server();
 io.on('connection', (socket) => {
   console.log('New connection!!!');
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
+  
 
   //gucci
   socket.on('create-table', (name, tableId, gameSettings) => {
@@ -148,7 +149,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('game-settings', (gameSettings) => {
-    console.log('received game settings');
+    //console.log('received game settings');
   })
 
   socket.on('check', (tableId) => {

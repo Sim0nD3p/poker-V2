@@ -98,10 +98,6 @@ export default function Table(props) {
     const tempPlayer = {
         name:'Player1'
     }
-    function shitDick(e){
-        console.log('IT WORKED!!!');
-        console.log(e);
-    }
     useEffect(() => {
         console.log('useEffect Table.js');
         const socket = io("http://localhost:5000", {
@@ -113,8 +109,9 @@ export default function Table(props) {
             
         })
         socket.on('players', (players) => {
-            shitDick(players);
             console.log(players);
+            console.log(socket.id);
+            setPlayers(players);
         })
         //socket.emit('update-players', 'players');
     }, [])

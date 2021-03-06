@@ -55,10 +55,7 @@ export default function Controls(props){
     
     const socket = useSocket();
     function test(){
-        console.log('test');
-        console.log(socket);
-        socket.emit('casino', (props.tableId));
-        //socket.emit('update-players', props.tableId);
+        socket.emit('update-players', (props.tableId));
     }
 
     return (

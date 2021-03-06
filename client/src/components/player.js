@@ -75,7 +75,6 @@ export default function Player(props){
     }, [margin]);
 
     useEffect(() => {
-        console.log(props.player.isTurn);
         if(isNaN(xPos) == false && isNaN(yPos) == false){
             setStyle({
                 position: 'fixed',
