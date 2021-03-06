@@ -98,7 +98,7 @@ const server = new Server();
 io.on('connection', (socket) => {
   console.log('New connection!!!');
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
-  
+
 
   //gucci
   socket.on('create-table', (name, tableId, gameSettings) => {
@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
 
   socket.on('casino', () => {
     console.log('should send back casino');
-    socket.emit('casinoCallback', server.casino);
+    socket.in('casino').emit('casinoCallback', server.casino);
   })
 
 

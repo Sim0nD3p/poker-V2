@@ -104,6 +104,9 @@ export default function Table(props) {
             withCredentials: true,
         });
         console.log(socket);
+        //check if socket has the same id after each rendering
+        // check cleanup function socket.disconned (necessary?)
+        //add socket.join(tableId), logic for multiple socket per player??
         socket.on('connect', () => {
             console.log(socket.id);
             
@@ -112,6 +115,9 @@ export default function Table(props) {
             console.log(players);
             console.log(socket.id);
             setPlayers(players);
+        });
+        socket.on('casinoCallback', (casino) => {
+            console.log(casino);
         })
         //socket.emit('update-players', 'players');
     }, [])

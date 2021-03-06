@@ -57,6 +57,10 @@ export default function Controls(props){
     function test(){
         socket.emit('update-players', (props.tableId));
     }
+    function casino(){
+        console.log('casino');
+        socket.emit('casino', `test`);
+    }
 
     return (
         <Grid
@@ -74,7 +78,7 @@ export default function Controls(props){
             {(props.call === null) ? <Button text='Check' action={test}></Button> :
                 <Button text='call' action={test}></Button>}
                 
-            <Button text='casino' action={test}></Button>
+            <Button text='casino' action={casino}></Button>
             <Button text='Fold' action={test}></Button>
             <Button text='Raise' action={props.testFunction}></Button>
 
