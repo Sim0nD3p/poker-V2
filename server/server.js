@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
   console.log('New connection!!!');
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
-  //get client upon connection of socket listener in Table.js
+  //get client upon connection of socket listener in Table.js, send players to client(as soon when we can)
   socket.on('join-socket-room', (tableId) => {
     socket.join(tableId);
     server.updateClients(tableId);

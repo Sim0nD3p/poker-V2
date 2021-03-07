@@ -15,6 +15,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import CreateTable from './createTable';
 import Initial from './initial';
+import socketIOClient from "socket.io-client";
+
 
 
 
@@ -74,14 +76,19 @@ function SocketEnv({ playerObject, newGameId }) {
 //define host
 
 
-
+const io = require("socket.io-client");
 function App(){
   //const [id, setId] = useState('thisIsIdBruh');
   const [clientName, setClientName] = useState();
   const [tableId, setTableId] = useState();
   //const [gameSettings, setGameSettings] = useState(defaultSettings);  //not necessary here?
   //const [playerObject, setPlayerObject] = useState();
-  const socket = useSocket();
+
+
+  const socket = io("http://localhost:5000", {
+    withCredentials: true,
+  });
+
 
   useEffect(() => {
     //console.log(`This is clientName in useEffect ${clientName}`);
@@ -100,11 +107,13 @@ function App(){
             submitTableId={setTableId}
             tableId={tableId}
             clientName={clientName}
+            socket={socket}
             //gameSettings={gameSettings}
             ></Table>
           </Route>
           <Route path='/' exact>
             <Initial
+            socket={socket}
             submitName={setClientName}
             submitTableId={setTableId}
             ></Initial>

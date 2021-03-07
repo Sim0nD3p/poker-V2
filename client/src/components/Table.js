@@ -88,6 +88,7 @@ export default function Table(props) {
     const [clientIsTurn, setClientIsTurn] = useState(false);
     const [currentBet, setCurrentBet] = useState(0);
     const [call, setCall] = useState(null);
+    const socket = props.socket;
     
     //const [tableId, setTableId] = useState();
     //const [hiddenLogin, setHiddenLogin] = useState(true);
@@ -98,20 +99,15 @@ export default function Table(props) {
     const tempPlayer = {
         name:'Player1'
     }
+    
+
+
     useEffect(() => {
         console.log('useEffect Table.js');
-        const socket = io("http://localhost:5000", {
-            withCredentials: true,
-        });
-        socket.on('connect', () => {
-            console.log(socket.id);
-            console.log('connect to tableID ' + props.tableId);
-            
-        })
-        socket.emit('join-socket-room', (props.tableId));   //should it be here?
+        
+        socket.emit('join-socket-room', (props.tableId));   //should it be here or in socket.on(`connection`)?
         socket.on('players', (players) => {
-            console.log(players);
-            setPlayers(players);
+            playersReception(players);
         });
         socket.on('casinoCallback', (casino) => {
             console.log(casino);
@@ -125,6 +121,13 @@ export default function Table(props) {
         //console.log(`This is clientName in Table.js ${props.clientName}`);
         //console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
+    
+
+    function playersReception(players){
+        console.log(players);
+        setPlayers(players);
+
+    }
     
     
     function renderTest(){

@@ -34,7 +34,7 @@ export default function JoinGame(props){
     const classes = useStyles();
     const [tableStr, setTableStr] = useState();
     const [userStr, setUserStr] = useState();
-    const socket = useSocket();
+    const socket = props.socket;
 
     function handleNameChange(e){
         console.log(e.target.value);

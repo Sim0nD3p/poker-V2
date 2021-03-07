@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 export default function Initial(props){
     const classes = useStyles();
     const [newGame, isNewGame] = useState(false);
-    const [joinGame, isJoinGame] = useState(false)
+    const [joinGame, isJoinGame] = useState(false);
 
     function gameNew(){
         isNewGame(true);
@@ -74,8 +74,8 @@ export default function Initial(props){
                     >Create new game</Button>
                 </Box>
             }
-            {!joinGame ? null : <JoinGame submitName={props.submitName} submitTableId={props.submitTableId}></JoinGame>}
-            {!newGame ? null : <NewGame submitName={props.submitName} submitTableId={props.submitTableId}></NewGame>}
+            {!joinGame ? null : <JoinGame submitName={props.submitName} submitTableId={props.submitTableId} socket={props.socket}></JoinGame>}
+            {!newGame ? null : <NewGame submitName={props.submitName} submitTableId={props.submitTableId} socket={props.socket}></NewGame>}
 
         </Paper>
     )

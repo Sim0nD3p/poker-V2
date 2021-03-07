@@ -61,7 +61,7 @@ const defaultSettings = {
 
 export default function NewGame(props){
     const classes = useStyles();
-    const socket = useSocket();
+    const socket = props.socket;
     const [gameMode, setGameMode] = useState(defaultSettings.gameMode);
     const [ timerDisabled, setTimerDisabled] = useState(defaultSettings.timerDisabled);
     const [timerTime, setTimerTime] = useState(60);
