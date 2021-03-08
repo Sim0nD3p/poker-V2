@@ -64,7 +64,7 @@ class Server{
       let clientPlayers = this.casino[index].GetClientPlayersArray();
       //let hostId = this.casino[index].host;
       console.log('update clients');
-      io.in(tableId).emit('players', clientPlayers);
+      io.in('casino').emit('players', clientPlayers);
       io.in(tableId).emit('pot', this.casino[index].totalPot);
     }
   }
@@ -98,6 +98,7 @@ const server = new Server();
 
 io.on('connection', (socket) => {
   console.log('New connection!!!');
+  console.log(socket.id);
   socket.join('casino')   //see roome for differents channels => https://socket.io/docs/v3/rooms/
 
   //get client upon connection of socket listener in Table.js, send players to client(as soon when we can)
@@ -111,6 +112,7 @@ io.on('connection', (socket) => {
   socket.on('create-table', (name, tableId, gameSettings) => {
     let id = socket.id;                                    //client socket.id
     socket.tableId = tableId;
+    console.log(socket.id);
     socket.join(tableId);                              //join tableId room socket.io
     server.addTable(tableId, gameSettings, id);                                  //create table
     console.log('ON CREATE-TABLE');

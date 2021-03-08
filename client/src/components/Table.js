@@ -72,6 +72,9 @@ const useStyles = makeStyles({
     }
 })
 
+const tempPlayer = {
+    name:'Player1'
+}
 const io = require("socket.io-client");
 
 //faut pouvoir call, check d'avance
@@ -82,50 +85,52 @@ const ENDPOINT = 'http://192.168.1.13:5000/';
 export default function Table(props) {
     const classes = useStyles();
     const [players, setPlayers] = useState([]);
+    const socket = props.socket;
+
     const [clientIsHost, setClientIsHost] = useState(false);
-    const [clientId, setClientId] = useState();
     const [flop, setFlop] = useState(tempFlop);
     const [clientIsTurn, setClientIsTurn] = useState(false);
     const [currentBet, setCurrentBet] = useState(0);
     const [call, setCall] = useState(null);
-    const socket = props.socket;
-    
-    //const [tableId, setTableId] = useState();
-    //const [hiddenLogin, setHiddenLogin] = useState(true);
     const [gameOn, setGameOn] = useState(false);
-    //const [gameSettings, updateGameSettings] = useState(gameSettingsProps);
 
     console.log('render table.js');
-    const tempPlayer = {
-        name:'Player1'
-    }
     
-
-
     useEffect(() => {
-        console.log('useEffect Table.js');
-        
-        socket.emit('join-socket-room', (props.tableId));   //should it be here or in socket.on(`connection`)?
+        console.log('listeners setup');
         socket.on('players', (players) => {
-            playersReception(players);
+            let clientId = socket.id
+            playersReception(players, clientId);
         });
         socket.on('casinoCallback', (casino) => {
             console.log(casino);
-        })
+        });
         
-        return () => {
-            socket.disconnect();    //don't know if necessary
-        }
+        
+    }, [])
+    useEffect(() => {
+        console.log('joinning tableRoom');
+        socket.emit('join-socket-room', (props.tableId));
     }, [props.tableId])
+
     useEffect(() => {
         //console.log(`This is clientName in Table.js ${props.clientName}`);
         //console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
     
 
-    function playersReception(players){
+    //keep playing order put client in first pos of array
+    //call check, setCall
+    function playersReception(players, clientId){
         console.log(players);
         setPlayers(players);
+        for(let i = 0; i < players.length; i++){
+            console.log(i);
+            if(players[i].id == clientId){
+                console.log('going someWhere');
+
+            }
+        }
 
     }
     
@@ -168,7 +173,8 @@ export default function Table(props) {
 
             {props.clientName ? null : <LoginFromUrl
                 submitName={props.submitName}
-                submitTableId={props.submitTableId}></LoginFromUrl>
+                submitTableId={props.submitTableId}
+                socket={socket}></LoginFromUrl>
             }
             
             <TableContent
@@ -184,6 +190,7 @@ export default function Table(props) {
             tableId={props.tableId}
             clientIsTurn={clientIsTurn}
             players = {players}
+            socket={props.socket}
             ></Controls>   {/**props= some kind of state for call/check and raise */}
 
             {players.map((player, i) => {

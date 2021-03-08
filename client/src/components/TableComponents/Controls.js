@@ -46,13 +46,13 @@ function Button(props) {
 //Client On?
 export default function Controls(props){
     const classes = useStyles();
-    //const socket = useSocket();
+    const socket = props.socket;
     const [action, setAction] = useState();
 
     
     
-    const socket = useSocket();
     function test(){
+        console.log('players');
         socket.emit('update-players', (props.tableId));
     }
     function casino(){

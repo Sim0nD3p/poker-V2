@@ -46,60 +46,47 @@ const useStyles = makeStyles({
 
 
 
-function SocketEnv({ playerObject, newGameId }) {
-  //id might be useless
-  console.log(playerObject);
-  const socket = useSocket();
-  console.log(newGameId);
-  
-  const url = `/table?id=${newGameId}`
-  console.log('Creating route ' + url);
-
-  
-  socket.on('new-game', (arg) => {
-    console.log('this is new-game');
-    console.log(arg);
-});
-//path={`/table?id=${newGameId}`}
-
-  
-  return (
-    null
-    
-      
-  )
-}
 
 //screen => createGame
 //url de la game
 //share id du socket
 //define host
-
-
 const io = require("socket.io-client");
-function App(){
+const socket = io("http://localhost:5000", {
+    withCredentials: true,
+  });
+
+
+  function App(){
   //const [id, setId] = useState('thisIsIdBruh');
   const [clientName, setClientName] = useState();
   const [tableId, setTableId] = useState();
+  const [clientId, setClientId] = useState();
   //const [gameSettings, setGameSettings] = useState(defaultSettings);  //not necessary here?
   //const [playerObject, setPlayerObject] = useState();
 
+useEffect(() => {
+  setClientId(socket.id)
 
-  const socket = io("http://localhost:5000", {
-    withCredentials: true,
-  });
+}, [])
+
+useEffect(() => {
+  console.log(clientId);
+}, [clientId]);
+  console.log(socket.id);
 
 
   useEffect(() => {
     //console.log(`This is clientName in useEffect ${clientName}`);
     //console.log(`This is tableId in useEffect ${tableId}`);
+    
 
   }, [clientName, tableId])
   
 
     
     return (
-      <SocketProvider>
+      //<SocketProvider>
         <Router>
           <Route path='/table'>
             <Table
@@ -107,6 +94,7 @@ function App(){
             submitTableId={setTableId}
             tableId={tableId}
             clientName={clientName}
+            clientId={clientId}
             socket={socket}
             //gameSettings={gameSettings}
             ></Table>
@@ -135,7 +123,7 @@ function App(){
             ></CreateTable>
           </Route> */}
         </Router>
-      </SocketProvider>
+      //</SocketProvider>
   )
 
 }

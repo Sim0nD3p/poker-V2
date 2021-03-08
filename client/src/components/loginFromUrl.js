@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 
 export default function LoginFromUrl(props){
     const classes = useStyles();
-    const socket = useSocket();
+    const socket = props.socket;
     const [userStr, setUserStr] = useState();
     const [tableStr, setTableStr] = useState();
 
