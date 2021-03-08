@@ -123,30 +123,36 @@ export default function Table(props) {
     //call check, setCall
     function playersReception(players, clientId){
         console.log(players);
-        setPlayers(players);
+        let clientIndex;
+        let highestBet = 0;
         for(let i = 0; i < players.length; i++){
-            console.log(i);
             if(players[i].id == clientId){
-                console.log('going someWhere');
-
+                clientIndex = i;
+                if(players[i].isHost !== clientIsHost){
+                    setClientIsHost(players[i].isHost);
+                }
+            }
+            if(players[i].currentBet > highestBet){
+                highestBet = players[i].currentBet
             }
         }
-
-    }
-    
-    
-    function renderTest(){
-        console.log('renderTest');
-        if(gameOn === true){
-            setGameOn(false);
-        } else if(gameOn === false){
-            setGameOn(true);
+        if(highestBet > currentBet){
+            setCall(highestBet);
+        } else if(highestBet <= currentBet){
+            setCall(null);
         }
 
+        let fromClient = players.slice(clientIndex);
+        let toClient = players.slice(0, clientIndex);
+        players = fromClient.concat(toClient)
+        setPlayers(players);
+        console.log(players);
 
-        console.log(gameOn);
 
     }
+    
+    
+    
 
    
             
@@ -186,7 +192,6 @@ export default function Table(props) {
             call={call}
             clientIsHost={clientIsHost}
             gameOn={gameOn}
-            renderTest={renderTest}
             tableId={props.tableId}
             clientIsTurn={clientIsTurn}
             players = {players}

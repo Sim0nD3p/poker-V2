@@ -50,7 +50,19 @@ export default function Controls(props){
     const [action, setAction] = useState();
 
     
-    
+    function startGame(){
+        console.log(props.tableId);
+        socket.emit('start-game', (props.tableId));
+    }
+    function fold(){
+        socket.emit('fold', (props.tableId));
+    }
+    function check(){
+        socket.emit('check', (props.tableId));
+    }
+    function call(){
+        socket.emit('call', (props.tableId, props.call))
+    }
     function test(){
         console.log('players');
         socket.emit('update-players', (props.tableId));
@@ -72,12 +84,12 @@ export default function Controls(props){
             Raise: To increase the amount of the current bet.
             Check: To not bet, with the option to call or raise later in the betting round
              */}
-             {(!props.clientIsHost && !props.gameOn) ? null : <Button text='Start game' action={test}></Button>}
-            {(props.call === null) ? <Button text='Check' action={test}></Button> :
+             <Button text='casino' action={casino}></Button>
+             {(!props.clientIsHost && !props.gameOn) ? null : <Button text='Start game' action={startGame}></Button>}
+            {(props.call === null) ? <Button text='Check' action={startGame}></Button> :
                 <Button text='call' action={test}></Button>}
                 
-            <Button text='casino' action={casino}></Button>
-            <Button text='Fold' action={test}></Button>
+            <Button text='Fold' action={fold}></Button>
             <Button text='renderTest' action={props.renderTest}></Button>
 
         </Grid>

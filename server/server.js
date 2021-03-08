@@ -124,6 +124,7 @@ io.on('connection', (socket) => {
     //io.in(tableId).emit('game-settings', gameSettings);      //emit gameSettings to everyone
 
   })
+  
 
   socket.on('update-players', (tableId) => {
     server.updateClients(tableId);
