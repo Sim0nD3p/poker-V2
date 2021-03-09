@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     stage:{
         position:'fixed',
         backgroundColor: settings.bgColorStage,
+        zIndex:1,
     }
 })
 

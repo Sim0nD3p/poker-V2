@@ -14,6 +14,7 @@ import TableContent from './TableComponents/tableContent';
 import LoginFromUrl from './loginFromUrl';
 import { theme } from '../theme';
 import socketIOClient from "socket.io-client";
+import SideBar from './sideBar';
 
 const loginContainerSize = [400, 300];
 
@@ -128,6 +129,7 @@ export default function Table(props) {
         for(let i = 0; i < players.length; i++){
             if(players[i].id == clientId){
                 clientIndex = i;
+                setCurrentBet(players[i].currentBet);
                 if(players[i].isHost !== clientIsHost){
                     setClientIsHost(players[i].isHost);
                 }
@@ -187,11 +189,17 @@ export default function Table(props) {
             pot='pot'
             flop={flop}
             ></TableContent>
+
+            <SideBar
+            socket={socket}
+            tableId={props.tableId}></SideBar>
+
             
             <Controls
-            call={call}
             clientIsHost={clientIsHost}
             gameOn={gameOn}
+            call={call}
+            currentBet={currentBet}
             tableId={props.tableId}
             clientIsTurn={clientIsTurn}
             players = {players}
