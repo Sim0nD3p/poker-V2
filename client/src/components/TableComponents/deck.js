@@ -33,7 +33,6 @@ export class Deck {
         this.suits = ['S', 'C', 'H', 'D'];
     }
     back(){
-        console.log(this.cardsBack[0]);
         return this.cardsBack[0]
     }
     cardFromFlop(card){
@@ -44,7 +43,6 @@ export class Deck {
         }
     }
     card(card) {
-        console.log(card);
         if(card){
             let ca;
             if(card.number < 10){
@@ -58,7 +56,6 @@ export class Deck {
             return this.cards[fileName]
         }
         else{
-            console.log(this.cardsBack);
             return this.cardsBack[0];
         }
     }

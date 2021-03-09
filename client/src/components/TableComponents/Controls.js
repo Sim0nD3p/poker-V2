@@ -67,7 +67,7 @@ export default function Controls(props){
     }
     function Raise(){
         console.log(raise);
-        //socket.emit('raise', (props.tableId, raise));
+        socket.emit('raise', (props.tableId, raise));
     }
     
     function casino(){
