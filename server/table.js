@@ -108,6 +108,7 @@ class Table {
             this.smallBlindIndex = 1;
             this.bigBlindIndex = 2;
         }
+        this.NewRound();
     }
 
     NewRound() {
