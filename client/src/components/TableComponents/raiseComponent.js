@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Input, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment } from '@material-ui/core';
+import { Box, Grid, Input, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container:{
@@ -14,15 +14,18 @@ const useStyles = makeStyles({
 
     },
     input:{
-        borderWidth:5,
-
-    }
+        '&.MuiOutlinedInput-input':{
+            borderColor:'red'
+        }
+        
+      }
 })
 function EndAdornment(props){
     return(
-        <InputAdornment>
-        <Button>test</Button>
-         </InputAdornment>
+        <InputAdornment position='end'>
+            <Button variant='outlined'>-</Button>
+            <Button variant='outlined'>+</Button>
+        </InputAdornment>
     )
 }
 
@@ -37,12 +40,15 @@ export default function RaiseComponent(props){
                 item>
                 <OutlinedInput
                 className={classes.input}
-                endAdornment={
-                    <InputAdornment position='end'>
+                    endAdornment= {<InputAdornment position='end'>
                         <Button variant='outlined'>-</Button>
                         <Button variant='outlined'>+</Button>
-                    </InputAdornment>
-                }
+                    </InputAdornment>}
+                        
+
+                    
+
+                
                 ></OutlinedInput>
             </Grid>
 

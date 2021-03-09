@@ -103,6 +103,9 @@ export default function Table(props) {
             let clientId = socket.id
             playersReception(players, clientId);
         });
+        socket.on('flop', (cards) => {
+            putCardsOnTable(cards);
+        })
         socket.on('casinoCallback', (casino) => {
             console.log(casino);
         });
@@ -151,6 +154,10 @@ export default function Table(props) {
         console.log(players);
 
 
+    }
+
+    function putCardsOnTable(cards){
+        setFlop(cards)
     }
     
     
