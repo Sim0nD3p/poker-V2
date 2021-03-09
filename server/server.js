@@ -50,7 +50,7 @@ class Server{
   findTable(tableId){
     let tableIndex = -1;
     for(let i = 0; i < this.casino.length; i++){
-      if(this.casino[i].id == tableId){
+      if(this.casino[i].id === tableId){
         tableIndex = i;
       }
     }
@@ -66,6 +66,7 @@ class Server{
       console.log('update clients');
       io.in('casino').emit('players', clientPlayers);
       io.in(tableId).emit('pot', this.casino[index].totalPot);
+      io.in(tableId).emit('flop', this.casino[index].CardsOnTable);
     }
   }
 
