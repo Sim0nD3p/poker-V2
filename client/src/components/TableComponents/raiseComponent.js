@@ -14,6 +14,9 @@ const useStyles = makeStyles({
 
     },
     input:{
+        '&.MuiOutlinedInput-input':{
+            borderColor:'red'
+        }
         
       }
 })
