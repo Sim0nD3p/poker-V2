@@ -157,19 +157,22 @@ class Table {
         if(id !== this.players[this.playerPlaying].id){
             return;
         }
+        do{
+            this.playerPlaying = this.PassOn(this.playerPlaying);
+        }while(!this.players[this.playerPlaying].isPlaying)
 
-        this.playerPlaying = this.PassOn(this.playerPlaying);
         if(this.playersStillIn === 1){
             console.log("game over, winner");
             this.NewRound();
         }
-        if(!this.players[this.playerPlaying].isPlaying){
-            this.NextTurn(id);
-            return;
-        }
         if(this.playerPlaying === this.raiseIndex){
             this.AddCardToFlop();
         }
+
+        if(!this.players[this.playerPlaying].isPlaying){
+            this.NextTurn(id);
+        }
+
     }
     PassOn(element){
         if (element < this.players.length - 1) {
