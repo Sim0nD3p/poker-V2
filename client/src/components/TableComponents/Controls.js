@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
 import { useSocket } from '../../contexts/SocketProvider';
 import { theme } from '../../theme';
+import RaiseComponent from './raiseComponent';
 
 const useStyles = makeStyles({
     container:{
@@ -63,10 +64,11 @@ export default function Controls(props){
     function call(){
         socket.emit('call', (props.tableId, props.call))
     }
-    function test(){
-        console.log('players');
-        socket.emit('update-players', (props.tableId));
+    function raise(){
+        let raise;
+        socket.emit('raise', (props.tableId, raise));
     }
+    
     function casino(){
         console.log('casino');
         socket.emit('casino', `test`);
@@ -81,16 +83,32 @@ export default function Controls(props){
             {/* 
             Bet: The first chips placed in the pot on any street.
             Call: To put into the pot an amount of money equal to the most recent bet or raise.
-            Raise: To increase the amount of the current bet.
             Check: To not bet, with the option to call or raise later in the betting round
+            Raise: To increase the amount of the current bet.
+
+            if(call == null){
+                display check
+            }
+            if(call !== null){
+                display call
+            }
              */}
-             <Button text='casino' action={casino}></Button>
+             
              {(!props.clientIsHost && !props.gameOn) ? null : <Button text='Start game' action={startGame}></Button>}
-            {(props.call === null) ? <Button text='Check' action={startGame}></Button> :
-                <Button text='call' action={test}></Button>}
+            {(props.call === null) ? <Button text='Check' action={check}></Button> :
+                <Button text='Call' action={call}></Button>}
                 
             <Button text='Fold' action={fold}></Button>
-            <Button text='renderTest' action={props.renderTest}></Button>
+            <Button text='Raise' action={raise}></Button>
+            <Grid
+            item
+            className={classes.gridItem}>
+                <RaiseComponent
+                    currentBet={props.currentBet}
+                    call={props.call}
+                ></RaiseComponent>
+            </Grid>
+
 
         </Grid>
 
