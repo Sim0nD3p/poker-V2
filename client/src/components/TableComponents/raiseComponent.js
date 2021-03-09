@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Input, Paper, Silder, Slider, Typography, InputAdornment } from '@material-ui/core';
+import { Box, Grid, Input, Button, Paper, Silder, Slider, Typography, InputAdornment } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container:{
@@ -17,6 +17,11 @@ const useStyles = makeStyles({
 
     }
 })
+function EndAdornment(props){
+    return(
+        <Button>test</Button>
+    )
+}
 
 export default function RaiseComponent(props){
     const classes = useStyles();
@@ -29,6 +34,7 @@ export default function RaiseComponent(props){
                 item>
                 <Input
                 className={classes.label}
+                endAdornment={EndAdornment}
                 inputProps={{
                     type:'number'
                 }}
