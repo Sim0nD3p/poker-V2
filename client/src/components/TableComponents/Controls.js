@@ -49,6 +49,7 @@ export default function Controls(props){
     const classes = useStyles();
     const socket = props.socket;
     const [action, setAction] = useState();
+    const [raise, setRaise] = useState();
 
     
     function startGame(){
@@ -64,9 +65,9 @@ export default function Controls(props){
     function call(){
         socket.emit('call', (props.tableId, props.call))
     }
-    function raise(){
-        let raise;
-        socket.emit('raise', (props.tableId, raise));
+    function Raise(){
+        console.log(raise);
+        //socket.emit('raise', (props.tableId, raise));
     }
     
     function casino(){
@@ -99,15 +100,13 @@ export default function Controls(props){
                 <Button text='Call' action={call}></Button>}
                 
             <Button text='Fold' action={fold}></Button>
-            <Button text='Raise' action={raise}></Button>
-            <Grid
-            item
-            className={classes.gridItem}>
+            <Button text='Raise' action={Raise}></Button>
+
                 <RaiseComponent
+                    submitRaise={setRaise}
                     currentBet={props.currentBet}
                     call={props.call}
                 ></RaiseComponent>
-            </Grid>
 
 
         </Grid>

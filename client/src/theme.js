@@ -29,6 +29,15 @@ export const theme = createMuiTheme({
             active: '#121212',
             text: '#ffffff',
 
+        },
+        grey:{
+            1: '#000000',
+            2: '#121212',
+            3: '#f35647',
+            4: '#383838',
+        },
+        text: {
+            hint:'rgba(0, 0, 0, 0.38)'
         }
     },
     typography: {
@@ -63,6 +72,8 @@ export const theme = createMuiTheme({
 
         },
         subtitle2: {
+            fontSize:12,
+            fontWeight:400,
         },
 
     }

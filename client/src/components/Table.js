@@ -80,7 +80,7 @@ const io = require("socket.io-client");
 
 //faut pouvoir call, check d'avance
 //call, raise? faut que ca soit clair et facile(lipoker bug en criss tabarnak)
-const tempFlop = ['03S', '12H', '05D', '13C', '14S'];
+const tempFlop = ['null', 'null', 'null', 'null', 'null'];
 const ENDPOINT = 'http://192.168.1.13:5000/';
 
 export default function Table(props) {
@@ -157,6 +157,7 @@ export default function Table(props) {
     }
 
     function putCardsOnTable(cards){
+        console.log(cards);
         setFlop(cards)
     }
     

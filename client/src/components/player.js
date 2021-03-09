@@ -13,7 +13,7 @@ import { theme } from '../theme';
 const useStyles = makeStyles({
     container:{
         display:'flex',
-        //flexDirection:'column',
+        flexDirection:'column',
     },
     paper:{
         height:60,
@@ -44,8 +44,31 @@ const useStyles = makeStyles({
     },
     playerHandContainer:{
         position:'relative',
+    },
+    betPill:{
+        margin:'auto',
+        marginBottom:10,
+        height:24,
+        padding:5,
+        paddingLeft:8,
+        paddingRight:8,
+        backgroundColor: theme.palette.secondary.light,
+        borderRadius:1000
     }
 })
+function CurrentBetPill(props){
+    const classes = useStyles();
+    return(
+        <Box
+        className={classes.betPill}
+        >
+            <Typography
+            variant='subtitle2'
+            >{props.currentBet}$</Typography>
+        </Box>
+
+    )
+}
 
 export default function Player(props){
     const classes = useStyles();
@@ -95,6 +118,7 @@ export default function Player(props){
             className={classes.container}
             style={style}
         >
+            <CurrentBetPill currentBet={props.player.currentBet}></CurrentBetPill>
             <Box
             className={classes.paper}
             style={{

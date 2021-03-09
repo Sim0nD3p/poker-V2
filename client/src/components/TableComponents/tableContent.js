@@ -24,11 +24,6 @@ const useStyles = makeStyles({
 
 export default function TableContent(props){
     const classes = useStyles();
-    const socket = useSocket();
-
-    if(socket){
-        
-    }
     return(
         <Box
             className={classes.container}

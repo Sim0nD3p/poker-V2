@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Box, Card, CardMedia } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Stage, Layer, Rect } from 'react-konva';
-import cardBack from '../../res/cardBack.png';
+//import cardBack from '../../res/cardBack.png';
+import { Deck } from '../TableComponents/deck';
 
 
 const useStyle = makeStyles({
@@ -25,6 +26,7 @@ const useStyle = makeStyles({
     }
 })
 
+const deck = new Deck();
 export default function PlayerHand({ height }){
     const classes = useStyle()
     const ratio = (2.5 / 3.5);
@@ -72,7 +74,7 @@ export default function PlayerHand({ height }){
             }}>
                 <CardMedia
                 className={classes.cardMedia}
-                image={cardBack}
+                image={deck.back()}
                 ></CardMedia>
             </Card>
 
@@ -85,7 +87,7 @@ export default function PlayerHand({ height }){
             }}>
                 <CardMedia
                 className={classes.cardMedia}
-                image={cardBack}
+                image={deck.back()}
                 ></CardMedia>
             </Card>
         </Box>
