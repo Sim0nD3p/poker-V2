@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Input, Button, Paper, Silder, Slider, Typography, InputAdornment } from '@material-ui/core';
+import { Box, Grid, Input, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container:{
@@ -13,13 +13,16 @@ const useStyles = makeStyles({
         width:150
 
     },
-    label:{
+    input:{
+        borderWidth:5,
 
     }
 })
 function EndAdornment(props){
     return(
+        <InputAdornment>
         <Button>test</Button>
+         </InputAdornment>
     )
 }
 
@@ -32,13 +35,15 @@ export default function RaiseComponent(props){
         className={classes.container}>
             <Grid
                 item>
-                <Input
-                className={classes.label}
-                endAdornment={EndAdornment}
-                inputProps={{
-                    type:'number'
-                }}
-                ></Input>
+                <OutlinedInput
+                className={classes.input}
+                endAdornment={
+                    <InputAdornment position='end'>
+                        <Button variant='outlined'>-</Button>
+                        <Button variant='outlined'>+</Button>
+                    </InputAdornment>
+                }
+                ></OutlinedInput>
             </Grid>
 
             <Grid
