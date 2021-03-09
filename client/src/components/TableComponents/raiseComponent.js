@@ -17,6 +17,11 @@ const useStyles = makeStyles({
 
     }
 })
+function EndAdornment(props){
+    return(
+        <Button>test</Button>
+    )
+}
 
 export default function RaiseComponent(props){
     const classes = useStyles();
@@ -29,6 +34,7 @@ export default function RaiseComponent(props){
                 item>
                 <Input
                 className={classes.label}
+                endAdornment={EndAdornment}
                 inputProps={{
                     type:'number'
                 }}
