@@ -11,7 +11,7 @@ class Player{
     bestHandScore =0;
     balance=0; //player's money
     currentBet=0;
-
+    isPlaying = true;
     maxPot = 0;
 
     constructor(name, id) {

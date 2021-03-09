@@ -16,6 +16,7 @@ class Table {
     smallBlindIndex = 0;
     dealerIndex = 0;
     smallBlindValue = 0;
+    playersStillIn = 0;
 
     /*
     const defaultSettings = {
@@ -113,9 +114,15 @@ class Table {
 
     NewRound() {
         this.deck = new Deck();
+        this.playersStillIn=0;
         this.players.forEach(Reset);
         for(let i = 0;i<this.players.length; i++){
-            this.players[i].assignCards(this.deck.GetNextCard(), this.deck.GetNextCard());
+            if(this.players[i].isPlaying){
+                this.players[i].assignCards(this.deck.GetNextCard(), this.deck.GetNextCard());
+                this.playersStillIn++;
+            }
+
+
         }
         if(this.players.length===1) {
             //END GAME
@@ -150,7 +157,16 @@ class Table {
         if(id !== this.players[this.playerPlaying].id){
             return;
         }
+
         this.playerPlaying = this.PassOn(this.playerPlaying);
+        if(this.playersStillIn === 1){
+            console.log("game over, winner");
+            this.NewRound();
+        }
+        if(!this.players[this.playerPlaying].isPlaying){
+            this.NextTurn(id);
+            return;
+        }
         if(this.playerPlaying === this.raiseIndex){
             this.AddCardToFlop();
         }
