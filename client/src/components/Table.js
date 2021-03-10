@@ -106,7 +106,11 @@ export default function Table(props) {
         socket.on('flop', (cards) => {
             console.log(cards);
             setFlop(cards)
-        })
+        });
+        socket.on('game-started', () => {
+            console.log('game started!');
+            setGameOn(true);
+        });
         socket.on('casinoCallback', (casino) => {
             console.log(casino);
         });
