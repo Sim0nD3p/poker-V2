@@ -141,7 +141,7 @@ export default function Player(props){
                     >1200$</Typography>
 
                 </Box>
-                    <PlayerHand height={75}></PlayerHand>
+                    <PlayerHand cards={props.player.cardsInHand} height={75}></PlayerHand>
 
             </Box>
             
