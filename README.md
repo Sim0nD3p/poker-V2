@@ -9,6 +9,7 @@
 
 # In client
 - listen pot client (sim)
+- affichage cartes empty (before reception)
 - interface controls (client/table.js)
 - fix affichage players on update (sim)
 

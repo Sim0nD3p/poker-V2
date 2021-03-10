@@ -3,59 +3,97 @@ import { makeStyles } from '@material-ui/core/styles';
 import { borders } from '@material-ui/system';
 import { theme } from '../../theme'
 import { AddCircleRounded, RemoveCircleRounded } from '@material-ui/icons';
-import { Box, Grid, Input, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment, TextField } from '@material-ui/core';
+import { Box, Grid, Input, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment, TextField, ButtonBase } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container: {
-        width: 200,
+        width: 'auto',
         height: 50,
-        display: 'flex',
+        //display: 'flex',
+        //justifyContent:'flex-end',
+        //alignItems:'flex-end',
+        width:550,
+        
 
     },
-    slider: {
-        width: 150
-
-    },
-    textField: {
-        border: 10,
-        '& .MuiTextField-root': {
-            border: '3px solid green',
-            borderColor: 'red',
-        }
-
-    },
-    border: {
-        color: 'green'
-
+    item:{
+        margin:5
     },
     textField: {
-        width: 125
-
-
+        width:100,
+        height:50,
     },
     cssLabel: {
-        //color : `${theme.palette.primary.light}`
+        color : `${theme.palette.primary.main}`
     },
-
     cssOutlinedInput: {
         '&$cssFocused $notchedOutline': {
-            borderColor: `${theme.palette.primary.light} !important`,
-            borderWidth: '3px'
+            borderColor: `${theme.palette.primary.main} !important`,
+            borderWidth: '3px',
+            height:50,
+
         }
     },
-
     cssFocused: {
         borderWidth: '3px'
     },
-
     notchedOutline: {
+        height:50,
         borderWidth: '3px',
-        borderColor: `${theme.palette.primary.light} !important`
+        borderColor: `${theme.palette.primary.main} !important`
     },
-    icons: {
-        color: theme.palette.text.hint
+    roundContainer:{
+        height:50,
+        width:50,
+        borderRadius:25,
+        padding:0,
+        cursor:'pointer',
+        '&.MuiButtonBase-root':{
+            width:50,
+            backgroundColor: theme.palette.primary.main,
+            '&:hover':{
+                backgroundColor: theme.palette.primary.dark,
+                transitionDuration: '0.4s',
+                transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            }
+
+        }
+        
     },
+    allInButton:{
+        height:50,
+        width:100,
+        //backgroundColor: theme.palette.primary.light
+    },
+    buttonTextColor:{
+        color:theme.palette.background.default
+    },
+    raiseButton:{
+        '&.MuiButton-root':{
+            color:theme.palette.primary.main,
+            height:50,
+            width:100,
+            borderWidth:3,
+            borderColor:theme.palette.primary.main
+        }
+    },
+    slider:{
+    }
 })
+function RoundButton(props){
+    const classes = useStyles();
+    return(
+        <ButtonBase
+            className={classes.roundContainer}
+            variant='contained'
+        >
+                <Typography
+                    className={classes.buttonTextColor}
+                    style={theme.typography.button2}
+                    align='center'>{props.amount}</Typography>
+        </ButtonBase>
+    )
+}
 
 export default function RaiseComponent(props) {
     const classes = useStyles();
@@ -66,55 +104,86 @@ export default function RaiseComponent(props) {
         props.submitRaise(targetValue);
     }, [targetValue]);
 
-    function addToRaise(){
-        let i = parseFloat(targetValue) + 1;
-        setTargetValue(i);
-
-    }
-    function subToRaise(){
-        let i = parseFloat(targetValue) - 1;
-        setTargetValue(i);
-    }
     function handleRaiseChange(e){
         setTargetValue(e.target.value);
-        console.log(e.target.value);
     }
     return (
         <Grid
-            container
-            className={classes.container}>
-            <Box
-                style={{
-                    display: 'flex'
-                }}>
-                <TextField
-                    className={classes.textField}
-                    variant='outlined'
-                    label='Raise'
-                    value={targetValue}
-                    onChange={handleRaiseChange}
-                    InputLabelProps={{
-                        classes: {
-                            root: classes.cssLabel,
-                            focused: classes.cssFocused,
-                        }
+        container
+        direction='column'
+        >
 
-                    }}
-                    InputProps={{
-                        classes: {
-                            root: classes.cssOutlinedInput,
-                            focused: classes.cssFocused,
-                            notchedOutline: classes.notchedOutline,
-                        },
-                        type: 'numeric',
-                        endAdornment: <InputAdornment position='end'>
-                            <AddCircleRounded onClick={addToRaise} className={classes.icons}></AddCircleRounded>
-                            <RemoveCircleRounded onClick={subToRaise} className={classes.icons}></RemoveCircleRounded>
-                        </InputAdornment>,
 
-                    }}
-                ></TextField>
-            </Box>
+            <Grid
+                container
+                justify='flex-end'
+                alignItems='center'
+                className={classes.container}>
+                <Grid
+                    item
+                    className={classes.item}>
+                    <TextField
+                        className={classes.textField}
+                        variant='outlined'
+                        label='Raise'
+                        value={targetValue}
+                        onChange={handleRaiseChange}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.cssLabel,
+                                focused: classes.cssFocused,
+                            }
+                        }}
+                        InputProps={{
+                            classes: {
+                                root: classes.cssOutlinedInput,
+                                focused: classes.cssFocused,
+                                notchedOutline: classes.notchedOutline,
+                            },
+
+                        }}></TextField>
+                </Grid>
+
+                <Grid item className={classes.item}><RoundButton amount='+5'></RoundButton></Grid>
+                <Grid item className={classes.item}><RoundButton amount='+10'></RoundButton></Grid>
+                <Grid item className={classes.item}><RoundButton amount='+25'></RoundButton></Grid>
+                <Grid item className={classes.item}>
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        className={classes.allInButton}>
+                        <Typography className={classes.buttonTextColor} style={theme.typography.button2}>all in</Typography>
+                    </Button>
+                </Grid>
+                <Grid item className={classes.item}>
+                    <Button
+                        variant='outlined'
+                        color='primary'
+                        className={classes.raiseButton}>
+                        <Typography style={theme.typography.button2}>raise</Typography>
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                justify='space-between'
+                className={classes.container}>
+                    <Grid item className={classes.item}>
+                        <RemoveCircleRounded></RemoveCircleRounded>
+                    </Grid>
+                    <Grid item className={classes.item}>
+                        <Slider
+                        className={classes.slider}
+                        color='primary'></Slider>
+                    </Grid>
+
+
+                    <Grid item className={classes.item}>
+                        <AddCircleRounded></AddCircleRounded>
+                    </Grid>
+
+            </Grid>
+
         </Grid>
 
     )

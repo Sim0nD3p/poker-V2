@@ -155,6 +155,7 @@ io.on('connection', (socket) => {
     server.casino[index].StartGame();
     console.log('start game');
     server.updateClients(tableId);
+    io.in(tableId).emit('game-started');
   })
 
 
