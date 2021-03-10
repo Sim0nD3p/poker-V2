@@ -12,9 +12,12 @@ const useStyles = makeStyles({
         marginRight:10,
         //height:120,
         marginBottom:10,
-        display:'flex',
-        justifyContent:'flex-end',
+        //display:'flex',
+       //justifyContent:'flex-end',
         zIndex:10000,
+    },
+    mainButtons:{
+
     },
     button: {
         borderWidth:3,
@@ -51,7 +54,7 @@ export default function Controls(props){
     const socket = props.socket;
     const [action, setAction] = useState();
     const [raise, setRaise] = useState();
-    const [dispRaise, setDispRaise] = useState(false);
+    const [dispRaise, setDispRaise] = useState(true);
 
     
     function startGame(){
@@ -80,7 +83,10 @@ export default function Controls(props){
     function StartGame(props){
         var element;
         if(props.gameOn == false && props.clientIsHost == true){
-            element = <Button text='Start game' action={startGame}></Button>
+            element =
+            //<Grid container>
+                <Button text='Start game' action={startGame}></Button>
+            //</Grid> 
         }
         else {
             element = null
@@ -97,8 +103,11 @@ export default function Controls(props){
         return (
             <Grid
                 container
-                className={classes.container}
+                justify='flex-end'
+                direction='row'
+                className={classes.mainButtons}
             >
+                <StartGame clientIsHost={props.clientIsHost} gameOn={props.gameOn}></StartGame>
                 <CheckCall call={props.call}></CheckCall>
                 <Button text='Fold' action={fold}></Button>
                 <Button text='Raise' action={Raise}></Button>
@@ -126,10 +135,15 @@ export default function Controls(props){
     return (
         <Grid
         container
+        justify='flex-end'
+        alignItems='flex-end'
+        direction='row'
         className={classes.container}
         >
-            <StartGame clientIsHost={props.clientIsHost} gameOn={props.gameOn}></StartGame>
-            {dispRaise ? <RaiseComponent currentBet={props.currentBet} submitRaise={setRaise}></RaiseComponent> : <MainButtons
+            {dispRaise ? <RaiseComponent currentBet={props.currentBet} submitRaise={setRaise}></RaiseComponent>
+            : <MainButtons
+            gameOn={props.gameOn}
+            clientIsHost={props.clientIsHost}
             call={props.call}
             ></MainButtons>}
             
