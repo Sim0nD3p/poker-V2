@@ -118,6 +118,7 @@ class Table {
         this.deck = new Deck();
         this.playersStillIn=0;
         this.players.forEach(Reset);
+        this.CardsOnTable = [];
         for(let i = 0;i<this.players.length; i++){
             if(this.players[i].isPlaying){
                 this.players[i].assignCards(this.deck.GetNextCard(), this.deck.GetNextCard());
