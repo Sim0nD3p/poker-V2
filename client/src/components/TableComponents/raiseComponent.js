@@ -12,25 +12,26 @@ const useStyles = makeStyles({
         //display: 'flex',
         //justifyContent:'flex-end',
         //alignItems:'flex-end',
-        width:550,
-        
+        margin:5,
+        width: 525,
+
 
     },
-    item:{
-        margin:5
+    item: {
+        margin: 5
     },
     textField: {
-        width:100,
-        height:50,
+        width: 100,
+        height: 50,
     },
     cssLabel: {
-        color : `${theme.palette.primary.main}`
+        color: `${theme.palette.primary.main}`
     },
     cssOutlinedInput: {
         '&$cssFocused $notchedOutline': {
             borderColor: `${theme.palette.primary.main} !important`,
             borderWidth: '3px',
-            height:50,
+            height: 50,
 
         }
     },
@@ -38,59 +39,60 @@ const useStyles = makeStyles({
         borderWidth: '3px'
     },
     notchedOutline: {
-        height:50,
+        height: 50,
         borderWidth: '3px',
         borderColor: `${theme.palette.primary.main} !important`
     },
-    roundContainer:{
-        height:50,
-        width:50,
-        borderRadius:25,
-        padding:0,
-        cursor:'pointer',
-        '&.MuiButtonBase-root':{
-            width:50,
+    roundContainer: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        padding: 0,
+        cursor: 'pointer',
+        '&.MuiButtonBase-root': {
+            width: 50,
             backgroundColor: theme.palette.primary.main,
-            '&:hover':{
+            '&:hover': {
                 backgroundColor: theme.palette.primary.dark,
                 transitionDuration: '0.4s',
                 transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
             }
 
         }
-        
+
     },
-    allInButton:{
-        height:50,
-        width:100,
+    allInButton: {
+        height: 50,
+        width: 100,
         //backgroundColor: theme.palette.primary.light
     },
-    buttonTextColor:{
-        color:theme.palette.background.default
+    buttonTextColor: {
+        color: theme.palette.background.default
     },
-    raiseButton:{
-        '&.MuiButton-root':{
-            color:theme.palette.primary.main,
-            height:50,
-            width:100,
-            borderWidth:3,
-            borderColor:theme.palette.primary.main
+    raiseButton: {
+        '&.MuiButton-root': {
+            color: theme.palette.primary.main,
+            height: 50,
+            width: 100,
+            borderWidth: 3,
+            borderColor: theme.palette.primary.main
         }
     },
-    slider:{
+    slider: {
+        width:300,
     }
 })
-function RoundButton(props){
+function RoundButton(props) {
     const classes = useStyles();
-    return(
+    return (
         <ButtonBase
             className={classes.roundContainer}
             variant='contained'
         >
-                <Typography
-                    className={classes.buttonTextColor}
-                    style={theme.typography.button2}
-                    align='center'>{props.amount}</Typography>
+            <Typography
+                className={classes.buttonTextColor}
+                style={theme.typography.button2}
+                align='center'>{props.amount}</Typography>
         </ButtonBase>
     )
 }
@@ -104,19 +106,19 @@ export default function RaiseComponent(props) {
         props.submitRaise(targetValue);
     }, [targetValue]);
 
-    function handleRaiseChange(e){
+    function handleRaiseChange(e) {
         setTargetValue(e.target.value);
     }
     return (
         <Grid
-        container
-        direction='column'
+            container
+            direction='column'
         >
 
 
             <Grid
                 container
-                justify='flex-end'
+                justify='space-between'
                 alignItems='center'
                 className={classes.container}>
                 <Grid
@@ -166,21 +168,33 @@ export default function RaiseComponent(props) {
             </Grid>
             <Grid
                 container
-                justify='space-between'
+                justify='flex-end'
+                alignItems='center'
                 className={classes.container}>
-                    <Grid item className={classes.item}>
-                        <RemoveCircleRounded></RemoveCircleRounded>
-                    </Grid>
-                    <Grid item className={classes.item}>
-                        <Slider
+
+                <Grid item className={classes.item}>
+                    <RemoveCircleRounded></RemoveCircleRounded>
+                </Grid>
+                <Grid item className={classes.item}>
+                    <Slider
                         className={classes.slider}
                         color='primary'></Slider>
-                    </Grid>
+                </Grid>
 
 
-                    <Grid item className={classes.item}>
-                        <AddCircleRounded></AddCircleRounded>
-                    </Grid>
+                <Grid item className={classes.item}>
+                    <AddCircleRounded></AddCircleRounded>
+                </Grid>
+
+                <Grid item className={classes.item}>
+                    <Button
+                        variant='outlined'
+                        color='primary'
+                        className={classes.raiseButton}>
+                        <Typography style={theme.typography.button2}>back</Typography>
+                    </Button>
+
+                </Grid>
 
             </Grid>
 
