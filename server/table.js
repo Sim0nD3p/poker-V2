@@ -55,6 +55,8 @@ class Table {
         else {
             // METHOD FOR END OF GAME
             let [winnersIndex, winners] = this.GetWinnersIndex();
+            console.log("This is winners Index:");
+            console.log(winnersIndex);
             let potTaken = 0;
             let egalite = false;
             let egaliteNumber = 0;
@@ -252,12 +254,15 @@ class Table {
     }
 
     GetWinnersIndex() {
-        this.SetHands()
-        let winners = this.players;
+        this.SetHands();
+        let winners = [];
+        for(let i=0;i<this.players.length;i++){
+            winners.push(this.players[i]);
+        }
         winners.sort(function (a, b) { return b.bestHandScore - a.bestHandScore })
         let indexArray = [];
         for (let x = 0; x < winners.length; x++) {
-            for (let y = 0; y < this.players; y++) {
+            for (let y = 0; y < this.players.length; y++) {
                 if (winners[x].id === this.players[y].id) {
                     indexArray.push(y);
                 }
@@ -346,6 +351,7 @@ function GetScore(cards) {
     let cardSorts = [0, 0, 0, 0];
     let lowerAce = false;
     let i;
+
     for (i = 0; i < cards.length; i++) {
         cardNums[cards[i].number - 2]++;
         cardSorts[cards[i].suit]++;
