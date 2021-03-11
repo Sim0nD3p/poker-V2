@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Card, CardMedia } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Stage, Layer, Rect } from 'react-konva';
@@ -27,20 +27,21 @@ const useStyle = makeStyles({
 })
 
 const deck = new Deck();
-export default function PlayerHand({ height }){
+export default function PlayerHand(props){
     const classes = useStyle()
     const ratio = (2.5 / 3.5);
     //const width = ratio * height;
-    const width = ratio*height;
+    const width = ratio*props.height;
     const cardSpacing = 0.21; //* width
     const translation = (width - cardSpacing * width);
+    const [cards, setCards] = useState([null, null]);
     
     let angle = 10*Math.PI/180;
-    const containerHeight = height * Math.cos(angle) + width * Math.sin(angle);
+    const containerHeight = props.height * Math.cos(angle) + width * Math.sin(angle);
     
     
     let w = width;
-    let h = height;
+    let h = props.height;
     let x = w*Math.sin(angle);
     let rest = x / Math.cos(angle);
     let up = Math.tan(angle*2) * (h-rest);
@@ -52,9 +53,16 @@ export default function PlayerHand({ height }){
     //console.log(`This is totalWidth ${totalWidth}`);
     //console.log(`this is totalHeight ${containerHeight}`);
     //console.log(`this is width ${width}`);
-    let padding = 0.5*(height*Math.sin(angle));
+    let padding = 0.5*(props.height*Math.sin(angle));
 
 
+    useEffect(() => {
+        if(props.cards){
+            setCards(props.cards);
+
+        }
+
+    }, [props.cards])
     
     return (
         <Box
@@ -68,26 +76,26 @@ export default function PlayerHand({ height }){
             <Card
             className={classes.card}
             style={{
-                height:height,
+                height:props.height,
                 width:width,
                 transform:'translate(' + translation + 'px, 0px) rotate(-10deg)',
             }}>
                 <CardMedia
                 className={classes.cardMedia}
-                image={deck.back()}
+                image={cards[0] ? cards[0] : deck.back()}
                 ></CardMedia>
             </Card>
 
             <Card
             className={classes.card}
             style={{
-                height:height,
+                height:props.height,
                 width:width,
                 transform: 'translate(' + 0*translation + 'px, 0px) rotate(10deg)',
             }}>
                 <CardMedia
                 className={classes.cardMedia}
-                image={deck.back()}
+                image={cards[1] ? cards[1] : deck.back()}
                 ></CardMedia>
             </Card>
         </Box>

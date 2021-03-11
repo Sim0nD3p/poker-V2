@@ -94,6 +94,7 @@ export default function Table(props) {
     const [currentBet, setCurrentBet] = useState(0);
     const [call, setCall] = useState(null);
     const [gameOn, setGameOn] = useState(false);
+    const [clientCards, setClientCards] = useState();
 
     console.log('render table.js');
     
@@ -107,6 +108,10 @@ export default function Table(props) {
             console.log(cards);
             setFlop(cards)
         });
+        socket.on('cards-in-hands', (cards) => {
+            setClientCards(cards);
+
+        })
         socket.on('game-started', () => {
             console.log('game started!');
             setGameOn(true);
@@ -218,6 +223,9 @@ export default function Table(props) {
 
             {players.map((player, i) => {
                 let positions = playerPosition(players.length);
+                if(i === 0){
+                    player.cardsInHand = clientCards
+                }
                 let x = positions[i][0];
                 let place = positions[i][1];
                 return (

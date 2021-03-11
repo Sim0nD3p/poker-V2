@@ -197,7 +197,6 @@ export default function RaiseComponent(props) {
                 </Grid>
 
             </Grid>
-
         </Grid>
 
     )
