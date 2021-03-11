@@ -12,8 +12,8 @@ const useStyles = makeStyles({
         //display: 'flex',
         //justifyContent:'flex-end',
         //alignItems:'flex-end',
-        margin:5,
-        width: 525,
+        margin: 5,
+        //width: 525,
 
 
     },
@@ -78,14 +78,18 @@ const useStyles = makeStyles({
             borderColor: theme.palette.primary.main
         }
     },
-    icon:{
-        height:30,
-        fontSize:40,
-        color:theme.palette.primary.main
+    icon: {
+        '&.MuiIcon-root':{
+            height: 30,
+            width:30,
+            fontSize: 150,
+
+        },
+        color: theme.palette.primary.main
 
     },
     slider: {
-        width:300,
+        width: 300,
     }
 })
 function RoundButton(props) {
@@ -119,89 +123,96 @@ export default function RaiseComponent(props) {
         <Grid
             container
             direction='column'
+            justify='flex-end'
         >
 
 
-            <Grid
-                container
-                justify='space-between'
-                alignItems='center'
-                className={classes.container}>
+            <Grid item  className={classes.container}>
                 <Grid
-                    item
-                    className={classes.item}>
-                    <TextField
-                        className={classes.textField}
-                        variant='outlined'
-                        label='Raise'
-                        value={targetValue}
-                        onChange={handleRaiseChange}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.cssLabel,
-                                focused: classes.cssFocused,
-                            }
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: classes.cssOutlinedInput,
-                                focused: classes.cssFocused,
-                                notchedOutline: classes.notchedOutline,
-                            },
+                    container
+                    justify='space-between'
+                    alignItems='center'
+                   >
+                    <Grid
+                        item
+                        className={classes.item}>
+                        <TextField
+                            className={classes.textField}
+                            variant='outlined'
+                            label='Raise'
+                            value={targetValue}
+                            onChange={handleRaiseChange}
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.cssLabel,
+                                    focused: classes.cssFocused,
+                                }
+                            }}
+                            InputProps={{
+                                classes: {
+                                    root: classes.cssOutlinedInput,
+                                    focused: classes.cssFocused,
+                                    notchedOutline: classes.notchedOutline,
+                                },
 
-                        }}></TextField>
-                </Grid>
+                            }}></TextField>
+                    </Grid>
 
-                <Grid item className={classes.item}><RoundButton amount='+5'></RoundButton></Grid>
-                <Grid item className={classes.item}><RoundButton amount='+10'></RoundButton></Grid>
-                <Grid item className={classes.item}><RoundButton amount='+25'></RoundButton></Grid>
-                <Grid item className={classes.item}>
-                    <Button
-                        variant='contained'
-                        color='primary'
-                        className={classes.allInButton}>
-                        <Typography className={classes.buttonTextColor} style={theme.typography.button2}>all in</Typography>
-                    </Button>
-                </Grid>
-                <Grid item className={classes.item}>
-                    <Button
-                        variant='outlined'
-                        color='primary'
-                        className={classes.raiseButton}>
-                        <Typography style={theme.typography.button2}>raise</Typography>
-                    </Button>
+                    <Grid item className={classes.item}><RoundButton amount='+5'></RoundButton></Grid>
+                    <Grid item className={classes.item}><RoundButton amount='+10'></RoundButton></Grid>
+                    <Grid item className={classes.item}><RoundButton amount='+25'></RoundButton></Grid>
+                    <Grid item className={classes.item}>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            className={classes.allInButton}>
+                            <Typography className={classes.buttonTextColor} style={theme.typography.button2}>all in</Typography>
+                        </Button>
+                    </Grid>
+                    <Grid item className={classes.item}>
+                        <Button
+                            variant='outlined'
+                            color='primary'
+                            className={classes.raiseButton}>
+                            <Typography style={theme.typography.button2}>back</Typography>
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
-            <Grid
-                container
-                justify='flex-end'
-                alignItems='center'
-                className={classes.container}>
+            <Grid item  className={classes.container}>
 
-                <Grid item className={classes.item}>
-                    <RemoveCircleRounded className={classes.icon}></RemoveCircleRounded>
+
+                <Grid
+                    container
+                    justify='space-between'
+                    alignItems='center'
+                   >
+
+                    <Grid item className={classes.item}>
+                        <RemoveCircleRounded fontSize='large' className={classes.icon}></RemoveCircleRounded>
+                    </Grid>
+                    <Grid item className={classes.item}>
+                        <Slider
+                            className={classes.slider}
+                            color='primary'></Slider>
+                    </Grid>
+
+
+                    <Grid item className={classes.item}>
+                        <AddCircleRounded fontSize='large' className={classes.icon}></AddCircleRounded>
+                    </Grid>
+
+                    <Grid item className={classes.item}>
+                        <Button
+                            variant='outlined'
+                            color='primary'
+                            className={classes.raiseButton}>
+                            <Typography style={theme.typography.button2}>raise</Typography>
+                        </Button>
+
+                    </Grid>
+
                 </Grid>
-                <Grid item className={classes.item}>
-                    <Slider
-                        className={classes.slider}
-                        color='primary'></Slider>
-                </Grid>
-
-
-                <Grid item className={classes.item}>
-                    <AddCircleRounded className={classes.icon}></AddCircleRounded>
-                </Grid>
-
-                <Grid item className={classes.item}>
-                    <Button
-                        variant='outlined'
-                        color='primary'
-                        className={classes.raiseButton}>
-                        <Typography style={theme.typography.button2}>back</Typography>
-                    </Button>
-
-                </Grid>
-
             </Grid>
         </Grid>
 

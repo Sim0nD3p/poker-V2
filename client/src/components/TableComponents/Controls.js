@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, OutlinedInput } from '@material-ui/core';
 import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
 import { useSocket } from '../../contexts/SocketProvider';
 import { theme } from '../../theme';
@@ -7,7 +7,7 @@ import RaiseComponent from './raiseComponent';
 
 const useStyles = makeStyles({
     container:{
-        maxWidth:'40%',
+        maxWidth:550,
         margin:'auto',
         marginRight:10,
         //height:120,
@@ -32,11 +32,27 @@ const useStyles = makeStyles({
 
 function Button(props) {
     const classes = useStyles();
+    function Element(props){
+        return(
+            <Button
+            variant='outlined'
+            >{props.text}</Button>
+        )
+    }
     return (
         <Grid
             item
             className={classes.gridItem}
         >
+{/* 
+            <OutlinedInput
+            className={classes.button}
+            //inputComponent={<Button variant='outlined'>{props.text}</Button>}
+            readOnly='true'
+            notched='true'
+            label={props.text}
+            value={props.text}></OutlinedInput> */}
+
             <ButtonMUi
                 
                 size='large'
@@ -54,7 +70,7 @@ export default function Controls(props){
     const socket = props.socket;
     const [action, setAction] = useState();
     const [raise, setRaise] = useState();
-    const [dispRaise, setDispRaise] = useState(true);
+    const [dispRaise, setDispRaise] = useState(false);
 
     
     function startGame(){
