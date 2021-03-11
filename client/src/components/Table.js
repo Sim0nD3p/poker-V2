@@ -96,7 +96,6 @@ export default function Table(props) {
     const [gameOn, setGameOn] = useState(false);
     const [clientCards, setClientCards] = useState();
 
-    console.log('render table.js');
     
     useEffect(() => {
         console.log('listeners setup');
@@ -108,7 +107,8 @@ export default function Table(props) {
             console.log(cards);
             setFlop(cards)
         });
-        socket.on('cards-in-hands', (cards) => {
+        socket.on('cards-in-hand', (cards) => {
+            console.log('cards-in-hand');
             setClientCards(cards);
 
         })
@@ -123,7 +123,6 @@ export default function Table(props) {
         
     }, [])
     useEffect(() => {
-        console.log('joinning tableRoom');
         socket.emit('join-socket-room', (props.tableId));
     }, [props.tableId])
 
@@ -136,7 +135,6 @@ export default function Table(props) {
     //keep playing order put client in first pos of array
     //call check, setCall
     function playersReception(players, clientId){
-        console.log(players);
         let clientIndex;
         let highestBet = 0;
         for(let i = 0; i < players.length; i++){
@@ -161,7 +159,6 @@ export default function Table(props) {
         let toClient = players.slice(0, clientIndex);
         players = fromClient.concat(toClient)
         setPlayers(players);
-        console.log(players);
 
 
     }

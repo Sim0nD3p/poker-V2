@@ -58,6 +58,9 @@ export default function PlayerHand(props){
 
     useEffect(() => {
         if(props.cards){
+            console.log(cards);
+            console.log(deck.card(cards[0]));
+            console.log(deck.card(cards[1]));
             setCards(props.cards);
 
         }
@@ -80,10 +83,10 @@ export default function PlayerHand(props){
                 width:width,
                 transform:'translate(' + translation + 'px, 0px) rotate(-10deg)',
             }}>
-                <CardMedia
+                <img
                 className={classes.cardMedia}
-                image={cards[0] ? cards[0] : deck.back()}
-                ></CardMedia>
+                src={cards[0] ? deck.card(cards[0]) : deck.back()}
+                ></img>
             </Card>
 
             <Card
@@ -93,10 +96,10 @@ export default function PlayerHand(props){
                 width:width,
                 transform: 'translate(' + 0*translation + 'px, 0px) rotate(10deg)',
             }}>
-                <CardMedia
+                <img
                 className={classes.cardMedia}
-                image={cards[1] ? cards[1] : deck.back()}
-                ></CardMedia>
+                src={cards[1] ? deck.card(cards[1]) : deck.back()}
+                ></img>
             </Card>
         </Box>
     )

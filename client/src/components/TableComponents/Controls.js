@@ -58,7 +58,6 @@ export default function Controls(props){
 
     
     function startGame(){
-        console.log(props.tableId);
         socket.emit('start-game', (props.tableId));
     }
     function fold(){
@@ -71,13 +70,11 @@ export default function Controls(props){
         socket.emit('call', (props.tableId, props.call))
     }
     function Raise(){
-        console.log(raise);
         setDispRaise(true);
         //socket.emit('raise', (props.tableId, raise));
     }
     
     function casino(){
-        console.log('casino');
         socket.emit('casino', `test`);
     }
     function StartGame(props){
@@ -94,7 +91,6 @@ export default function Controls(props){
         return (element)
     }
     function CheckCall(props){
-        console.log(`This is props.call should display check or call ${props.call}`);
         return(
             (props.call === null) ? <Button text='Check' action={check}></Button> : <Button text='Call' action={call}></Button>
         )

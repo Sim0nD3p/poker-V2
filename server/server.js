@@ -158,7 +158,9 @@ io.on('connection', (socket) => {
 
     for(let i=0;i<server.casino[index].players.length;i++)
     {
-      io.to(server.casino[index].players[i].id).emit('cards-in-hand',server.casino[index].players[i].cardsInHand);
+      let id = server.casino[index].players[i].id;
+      let cards = server.casino[index].players[i].cardsInHand;
+      io.to(id).emit('cards-in-hand', (cards));
     }
     io.in(tableId).emit('game-started');
   })

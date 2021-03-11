@@ -78,6 +78,12 @@ const useStyles = makeStyles({
             borderColor: theme.palette.primary.main
         }
     },
+    icon:{
+        height:30,
+        fontSize:40,
+        color:theme.palette.primary.main
+
+    },
     slider: {
         width:300,
     }
@@ -173,7 +179,7 @@ export default function RaiseComponent(props) {
                 className={classes.container}>
 
                 <Grid item className={classes.item}>
-                    <RemoveCircleRounded></RemoveCircleRounded>
+                    <RemoveCircleRounded className={classes.icon}></RemoveCircleRounded>
                 </Grid>
                 <Grid item className={classes.item}>
                     <Slider
@@ -183,7 +189,7 @@ export default function RaiseComponent(props) {
 
 
                 <Grid item className={classes.item}>
-                    <AddCircleRounded></AddCircleRounded>
+                    <AddCircleRounded className={classes.icon}></AddCircleRounded>
                 </Grid>
 
                 <Grid item className={classes.item}>
