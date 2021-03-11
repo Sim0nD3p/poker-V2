@@ -17,6 +17,7 @@ class Table {
     dealerIndex = 0;
     smallBlindValue = 0;
     playersStillIn = 0;
+    updateCardsInHand= false;
 
     /*
     const defaultSettings = {
@@ -115,6 +116,7 @@ class Table {
     }
 
     NewRound() {
+        this.updateCardsInHand= true;
         this.deck = new Deck();
         this.playersStillIn=0;
         this.players.forEach(Reset);

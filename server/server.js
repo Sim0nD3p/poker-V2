@@ -67,6 +67,14 @@ class Server{
       io.in('casino').emit('players', clientPlayers);
       io.in(tableId).emit('pot', this.casino[index].totalPot);
       io.in(tableId).emit('flop', this.casino[index].CardsOnTable);
+      if(this.casino[index].updateCardsInHand)
+      {
+        for(let i=0;i<server.casino[index].players.length;i++)
+        {
+          io.to(server.casino[index].players[i].id).emit('cards-in-hand',server.casino[index].players[i].cardsInHand);
+        }
+      }
+
     }
   }
 
@@ -154,12 +162,10 @@ io.on('connection', (socket) => {
     let index = server.findTable(tableId);
     server.casino[index].StartGame();
     console.log('start game');
+
     server.updateClients(tableId);
 
-    for(let i=0;i<server.casino[index].players.length;i++)
-    {
-      io.to(server.casino[index].players[i].id).emit('cards-in-hand',server.casino[index].players[i].cardsInHand);
-    }
+
     io.in(tableId).emit('game-started');
   })
 
