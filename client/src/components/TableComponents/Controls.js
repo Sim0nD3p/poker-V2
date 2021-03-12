@@ -77,7 +77,7 @@ const useStyles = makeStyles({
     gridItem:{
         width:110,
         height:60,
-        margin:20,
+        margin:5,
         padding:0,
         dispaly:'flex',
         justifyContent:'center',
@@ -166,7 +166,7 @@ const useStyles = makeStyles({
     inputLabel:{
         //paddingLeft:0,
         position:'absolute',
-        left:23,
+        left:20,
         top:-6,
         color: theme.palette.primary.main,
         fontWeight: theme.typography.button2.fontWeight
@@ -187,7 +187,7 @@ function Button(props) {
         >
             <FormControl className={classes.formControl}>
                 <InputLabel
-                disableAnimation={true}
+                disableAnimation='true'
                 className={classes.inputLabel}
                 >{shortcut}</InputLabel>
             <ButtonBase
@@ -208,12 +208,12 @@ function Button(props) {
 
                         }}
                         type='button'
-                        //readOnly='true'
+                        readOnly='true'
                         //placeholder={props.text}
-                        //notched='true'
-                        onClick={test}
-                        labelWidth={18}
-                        hiddenLabel={false}
+                        notched='true'
+                        //labelWidth={18}
+                        label='tt'
+                        //hiddenLabel={false}
                         inputProps={{
                             defaultValue: props.text,
                             classes: {
