@@ -322,7 +322,9 @@ class Table {
                 isHost: (x === 0),
                 isBB: (x === this.bigBlindIndex),
                 isSB: (x === this.smallBlindIndex),
-                isDealer: (x === this.smallBlindIndex)
+                isDealer: (x === this.smallBlindIndex),
+                isFolded: !(this.players[x].isPlaying)
+
             });
         }
         return array;
