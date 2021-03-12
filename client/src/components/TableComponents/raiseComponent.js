@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { borders } from '@material-ui/system';
 import { theme } from '../../theme'
 import { AddCircleRounded, RemoveCircleRounded } from '@material-ui/icons';
-import { Box, Grid, Input, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment, TextField, ButtonBase } from '@material-ui/core';
+import { Box, Grid, Input, IconButton, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment, TextField, ButtonBase } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container: {
@@ -12,10 +12,14 @@ const useStyles = makeStyles({
         //display: 'flex',
         //justifyContent:'flex-end',
         //alignItems:'flex-end',
-        margin:5,
-        width: 525,
-
-
+        margin: 10,
+        marginRight: 0,
+        //width: 525,
+    },
+    wrapper:{
+    },
+    paper:{
+        padding:5,
     },
     item: {
         margin: 5
@@ -28,12 +32,25 @@ const useStyles = makeStyles({
         color: `${theme.palette.primary.main}`
     },
     cssOutlinedInput: {
+    
+        display:'flex',
+        alignItem:'center',
         '&$cssFocused $notchedOutline': {
             borderColor: `${theme.palette.primary.main} !important`,
             borderWidth: '3px',
             height: 50,
 
         }
+    },
+    inputElement:{
+        height:24,
+        fontSize:24,
+        color: theme.palette.grey[2],
+        alignItem:'center',
+        paddingLeft:0,
+        padding:13,
+        margin:'auto'
+
     },
     cssFocused: {
         borderWidth: '3px'
@@ -78,20 +95,25 @@ const useStyles = makeStyles({
             borderColor: theme.palette.primary.main
         }
     },
-    icon:{
-        height:30,
-        fontSize:40,
-        color:theme.palette.primary.main
+    icon: {
+        '&.MuiIcon-root': {
+            height: 30,
+            width: 30,
+            fontSize: 150,
+
+        },
+        color: theme.palette.primary.main
 
     },
     slider: {
-        width:300,
+        width: 300,
     }
 })
 function RoundButton(props) {
     const classes = useStyles();
     return (
         <ButtonBase
+            onClick={props.onClick}
             className={classes.roundContainer}
             variant='contained'
         >
@@ -109,101 +131,139 @@ export default function RaiseComponent(props) {
 
 
     useEffect(() => {
-        props.submitRaise(targetValue);
+        //props.submitRaise(targetValue);
     }, [targetValue]);
+    function raiseSubmit(){
+        props.submitRaise(targetValue);
+        props.submitDispRaise(false);
+    }
+    function hideRaiseComp() {
+        props.submitDispRaise(false);
+    }
+    function addCircle(){
+        setTargetValue(targetValue + 1);
+    }
+    function removeCircle(){
+        setTargetValue(targetValue - 1);
+    }
+    function add5(){
+        setTargetValue(targetValue + 5);
+    }
+    function add10(){
+        setTargetValue(targetValue + 10);
+    }
+    function add25(){
+        setTargetValue(targetValue + 25);
+    }
 
     function handleRaiseChange(e) {
-        setTargetValue(e.target.value);
+
+        setTargetValue(parseFloat(e.target.value));
+    }
+    function handleSliderChange(e, value){
+        console.log(value);
+        setTargetValue(value);
     }
     return (
-        <Grid
-            container
-            direction='column'
-        >
-
-
+        <Paper
+        className={classes.paper}
+        elevation={10}>
             <Grid
                 container
-                justify='space-between'
-                alignItems='center'
-                className={classes.container}>
-                <Grid
-                    item
-                    className={classes.item}>
-                    <TextField
-                        className={classes.textField}
-                        variant='outlined'
-                        label='Raise'
-                        value={targetValue}
-                        onChange={handleRaiseChange}
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.cssLabel,
-                                focused: classes.cssFocused,
-                            }
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: classes.cssOutlinedInput,
-                                focused: classes.cssFocused,
-                                notchedOutline: classes.notchedOutline,
-                            },
-
-                        }}></TextField>
-                </Grid>
-
-                <Grid item className={classes.item}><RoundButton amount='+5'></RoundButton></Grid>
-                <Grid item className={classes.item}><RoundButton amount='+10'></RoundButton></Grid>
-                <Grid item className={classes.item}><RoundButton amount='+25'></RoundButton></Grid>
-                <Grid item className={classes.item}>
-                    <Button
-                        variant='contained'
-                        color='primary'
-                        className={classes.allInButton}>
-                        <Typography className={classes.buttonTextColor} style={theme.typography.button2}>all in</Typography>
-                    </Button>
-                </Grid>
-                <Grid item className={classes.item}>
-                    <Button
-                        variant='outlined'
-                        color='primary'
-                        className={classes.raiseButton}>
-                        <Typography style={theme.typography.button2}>raise</Typography>
-                    </Button>
-                </Grid>
-            </Grid>
-            <Grid
-                container
+                direction='column'
                 justify='flex-end'
-                alignItems='center'
-                className={classes.container}>
-
-                <Grid item className={classes.item}>
-                    <RemoveCircleRounded className={classes.icon}></RemoveCircleRounded>
+                className={classes.wrapper}
+            >
+                <Grid item className={classes.container}>
+                    <Grid
+                        container
+                        justify='space-between'
+                        alignItems='center'
+                    >
+                        <Grid
+                            item
+                            className={classes.item}>
+                            <TextField
+                                className={classes.textField}
+                                variant='outlined'
+                                label='Raise'
+                                value={targetValue}
+                                onChange={handleRaiseChange}
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.cssLabel,
+                                        focused: classes.cssFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    type:'number',
+                                    startAdornment: '$',
+                                    classes: {
+                                        root: classes.cssOutlinedInput,
+                                        focused: classes.cssFocused,
+                                        notchedOutline: classes.notchedOutline,
+                                        input: classes.inputElement
+                                    },
+                                }}></TextField>
+                        </Grid>
+                        <Grid item className={classes.item}><RoundButton onClick={add5} amount='+5'></RoundButton></Grid>
+                        <Grid item className={classes.item}><RoundButton onClick={add10} amount='+10'></RoundButton></Grid>
+                        <Grid item className={classes.item}><RoundButton onClick={add25} amount='+25'></RoundButton></Grid>
+                        <Grid item className={classes.item}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                className={classes.allInButton}>
+                                <Typography className={classes.buttonTextColor} style={theme.typography.button2}>all in</Typography>
+                            </Button>
+                        </Grid>
+                        <Grid item className={classes.item}>
+                            <Button
+                                variant='outlined'
+                                color='primary'
+                                className={classes.raiseButton}
+                                onClick={hideRaiseComp}>
+                                <Typography style={theme.typography.button2}>back</Typography>
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item className={classes.item}>
-                    <Slider
-                        className={classes.slider}
-                        color='primary'></Slider>
+                <Grid item className={classes.container}>
+                    <Grid
+                        container
+                        justify='space-between'
+                        alignItems='center'>
+
+                        <Grid item className={classes.item}>
+                            <RemoveCircleRounded onClick={removeCircle} fontSize='large' className={classes.icon}></RemoveCircleRounded>
+                        </Grid>
+                        <Grid item className={classes.item}>
+                            <Slider
+                                className={classes.slider}
+                                color='primary'
+                                onChange={handleSliderChange}
+                                value={targetValue}
+                                min={(props.call) ? props.call : props.currentBet}
+                                max={props.balance}
+                                ></Slider>
+                        </Grid>
+
+                        <Grid item className={classes.item}>
+                            <AddCircleRounded onClick={addCircle}fontSize='large' className={classes.icon}></AddCircleRounded>
+                        </Grid>
+
+                        <Grid item className={classes.item}>
+                            <Button
+                                variant='outlined'
+                                color='primary'
+                                onClick={raiseSubmit}
+                                className={classes.raiseButton}>
+                                <Typography style={theme.typography.button2}>raise</Typography>
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
-
-
-                <Grid item className={classes.item}>
-                    <AddCircleRounded className={classes.icon}></AddCircleRounded>
-                </Grid>
-
-                <Grid item className={classes.item}>
-                    <Button
-                        variant='outlined'
-                        color='primary'
-                        className={classes.raiseButton}>
-                        <Typography style={theme.typography.button2}>back</Typography>
-                    </Button>
-
-                </Grid>
-
             </Grid>
-        </Grid>
-
+        </Paper>
     )
 }

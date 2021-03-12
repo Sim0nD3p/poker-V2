@@ -1,49 +1,242 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import { Box, Button as ButtonMUi, Typography, Grid } from '@material-ui/core';
+import { makeStyles, OutlinedInput } from '@material-ui/core';
+import { Box, Button as ButtonMUi, Typography, ButtonBase, FormControl, InputLabel, Paper, Grid } from '@material-ui/core';
 import { useSocket } from '../../contexts/SocketProvider';
 import { theme } from '../../theme';
 import RaiseComponent from './raiseComponent';
 
 const useStyles = makeStyles({
     container:{
-        maxWidth:'40%',
+        maxWidth:550,
         margin:'auto',
-        marginRight:10,
+        marginRight:0,
         //height:120,
-        marginBottom:10,
+        marginBottom:0,
         //display:'flex',
        //justifyContent:'flex-end',
         zIndex:10000,
+    },
+    paper:{
+        padding:5,
     },
     mainButtons:{
 
     },
     button: {
         borderWidth:3,
-        color: theme.palette.primary.light,
-        borderColor: theme.palette.primary.light,
-        margin:10,
+        height:50,
+        minWidth:100,
+        color: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main,
+        margin:5,
         '&:hover':{
             borderWidth:3
         }
+    },
+    newButton:{
+        minWidth:100,
+        height:50,
+        '&.MuiOutlinedInput-root':{
+
+            borderColor: `${theme.palette.primary.main} !important`,
+            borderWidth: '3px',
+            height: 50,
+
+        },
+        '&$cssFocused $notchedOutline': {
+            borderColor: `${theme.palette.primary.main} !important`,
+            borderWidth: '3px',
+            height: 50,
+
+        },
+        
+        
+        '&.MuiOutlinedInput-notchedOutline':{
+            borderWidth:'3px',
+            borderColor: `${theme.palette.primary.main} !important`,
+            width:100,
+            height:50,
+
+        },
+        '&.MuiOutlinedInput-input':{
+            //color:'red',
+            width:100,
+            height:50,
+            fontSize: `${theme.typography.button2.fontSize} !important`,
+            fontFamily: theme.typography.button2.fontFamily,
+            //textTransform:theme.typography.button2.textTransform,
+            letterSpacing: `${theme.typography.button2.letterSpacing}`,
+            fontWeight: `${theme.typography.button2.fontWeight}`,
+            lineHeight: `${theme.typography.button2.lineHeight}`,
+        }
+
+    },
+    input:{
+
+    },
+    gridItem:{
+        width:110,
+        height:60,
+        margin:20,
+        padding:0,
+        dispaly:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    newButton2:{
+        width:100,
+        height:50,
+        display:'flex',
+        alignItems:'center',
+        margin:'auto'
+
+    },
+    notchedOutline:{
+        borderWidth:'3px',
+        boderColor: `${theme.palette.primary.main} !important`,
+
+    },
+    rootInput:{
+        '&.MuiOutlinedInput-input':{
+            //color:'red',
+            fontFamily: `${theme.typography.button2.fontFamily}`,
+            textTransform:`${theme.typography.button2.textTransform}`,
+            letterSpacing: `${theme.typography.button2.letterSpacing}`,
+            fontWeight: `${theme.typography.button2.fontWeight}`,
+            lineHeight: `${theme.typography.button2.lineHeight}`,
+            //width:100,
+            //height:50,
+        },
+        //width:100,
+        //height:50,
+        borderWidth:'3px',
+        borderColor: `${theme.palette.primary.main} !important`,
+        '&.MuiInput-root':{
+            
+            
+        }
+    },
+    cssOutlinedInput: {
+        width:100,
+        height:50,
+        bottom:0,
+        
+        '&$cssFocused $notchedOutline': {
+            borderColor: `${theme.palette.primary.main} !important`,
+            alignItem:'center',
+            borderWidth: '3px',
+            
+
+        },
+        
+    },
+    cssFocused: {
+        borderWidth: '3px',
+        //width:100,
+        //height:50,
+    },
+    notchedOutline: {
+        //width:100,
+        //height:50,
+        borderWidth: '3px',
+        borderColor: `${theme.palette.primary.main} !important`,
+        //padding:0,
+    },
+    inputElement:{
+        '&.MuiOutlinedInput-input':{
+            color: `${theme.palette.primary.main}`,
+            fontSize: theme.typography.button2.fontSize,
+            fontFamily: `${theme.typography.button2.fontFamily}`,
+            textTransform:`${theme.typography.button2.textTransform}`,
+            letterSpacing: `${theme.typography.button2.letterSpacing}`,
+            fontWeight: `${theme.typography.button2.fontWeight}`,
+            lineHeight: `${theme.typography.button2.lineHeight}`,
+        },
+    },
+    formControl:{
+        //height:50,
+        //width:100,
+        display:'flex',
+        flexDirection:'column',
+        alignItem:'center',
+        position:'relative',
+        margin:'auto',
+
+    },
+    inputLabel:{
+        //paddingLeft:0,
+        position:'absolute',
+        left:23,
+        top:-6,
+        color: theme.palette.primary.main,
+        fontWeight: theme.typography.button2.fontWeight
+
     }
 })
 
 function Button(props) {
     const classes = useStyles();
+    const shortcut = props.text.slice(0, 1);
+    function test(){
+        console.log('test');
+    }
     return (
         <Grid
             item
             className={classes.gridItem}
         >
-            <ButtonMUi
-                
+            <FormControl className={classes.formControl}>
+                <InputLabel
+                disableAnimation={true}
+                className={classes.inputLabel}
+                >{shortcut}</InputLabel>
+            <ButtonBase
+                className={classes.newButton2}
+                onClick={props.action}
+            >
+
+
+
+
+                    <OutlinedInput
+                        classes={{
+                            root: classes.cssOutlinedInput,
+                            focused: classes.cssFocused,
+                            notchedOutline: classes.notchedOutline,
+                            input: classes.inputElement
+
+
+                        }}
+                        type='button'
+                        //readOnly='true'
+                        //placeholder={props.text}
+                        //notched='true'
+                        onClick={test}
+                        labelWidth={18}
+                        hiddenLabel={false}
+                        inputProps={{
+                            defaultValue: props.text,
+                            classes: {
+                                root: classes.cssOutlinedInput,
+                                focused: classes.cssFocused,
+                                notchedOutline: classes.notchedOutline,
+                                input: classes.inputElement
+                            }
+
+                        }}>
+
+                    </OutlinedInput>
+            </ButtonBase>
+                </FormControl>
+
+           {/* <ButtonMUi       
                 size='large'
                 variant='outlined'
                 onClick={props.action}
                 className={classes.button}
-            >{props.text}</ButtonMUi>
+            >
+                <Typography style={theme.typography.button2}>{props.text}</Typography>
+            </ButtonMUi> */}
         </Grid>
     )
 }
@@ -54,7 +247,7 @@ export default function Controls(props){
     const socket = props.socket;
     const [action, setAction] = useState();
     const [raise, setRaise] = useState();
-    const [dispRaise, setDispRaise] = useState(true);
+    const [dispRaise, setDispRaise] = useState(false);
 
     
     function startGame(){
@@ -68,6 +261,11 @@ export default function Controls(props){
     }
     function call(){
         socket.emit('call', (props.tableId, props.call))
+    }
+    function submitRaise(r){
+        console.log(r);
+        setRaise(r);
+
     }
     function Raise(){
         setDispRaise(true);
@@ -96,18 +294,24 @@ export default function Controls(props){
         )
     }
     function MainButtons(props) {
+        const classes = useStyles();
         return (
-            <Grid
-                container
-                justify='flex-end'
-                direction='row'
-                className={classes.mainButtons}
-            >
-                <StartGame clientIsHost={props.clientIsHost} gameOn={props.gameOn}></StartGame>
-                <CheckCall call={props.call}></CheckCall>
-                <Button text='Fold' action={fold}></Button>
-                <Button text='Raise' action={Raise}></Button>
-            </Grid>
+            <Paper
+            className={classes.paper}
+            elevation={10}>
+
+                <Grid
+                    container
+                    justify='flex-end'
+                    direction='row'
+                    className={classes.mainButtons}
+                >
+                    <StartGame clientIsHost={props.clientIsHost} gameOn={props.gameOn}></StartGame>
+                    <Button text='Fold' action={fold}></Button>
+                    <CheckCall call={props.call}></CheckCall>
+                    <Button text='Raise' action={Raise}></Button>
+                </Grid>
+            </Paper>
 
         )
 
@@ -136,7 +340,15 @@ export default function Controls(props){
         direction='row'
         className={classes.container}
         >
-            {dispRaise ? <RaiseComponent currentBet={props.currentBet} submitRaise={setRaise}></RaiseComponent>
+            {dispRaise ?
+            <RaiseComponent
+            currentBet={props.currentBet}
+            submitRaise={submitRaise}
+            balance={props.balance}
+            call={props.call}
+            currentBet={props.currentBet}
+            submitDispRaise={setDispRaise}
+            ></RaiseComponent>
             : <MainButtons
             gameOn={props.gameOn}
             clientIsHost={props.clientIsHost}
