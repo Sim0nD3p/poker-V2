@@ -95,6 +95,7 @@ export default function Table(props) {
     const [call, setCall] = useState(null);
     const [gameOn, setGameOn] = useState(false);
     const [clientCards, setClientCards] = useState();
+    const [balance, setBalance] = useState();
 
     
     useEffect(() => {
@@ -141,6 +142,7 @@ export default function Table(props) {
             if(players[i].id == clientId){
                 clientIndex = i;
                 setCurrentBet(players[i].currentBet);
+                setBalance(players[i].balance);
                 if(players[i].isHost !== clientIsHost){
                     setClientIsHost(players[i].isHost);
                 }
@@ -212,6 +214,7 @@ export default function Table(props) {
             gameOn={gameOn}
             call={call}
             currentBet={currentBet}
+            balance={balance}
             tableId={props.tableId}
             clientIsTurn={clientIsTurn}
             players = {players}

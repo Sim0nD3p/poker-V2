@@ -138,7 +138,7 @@ export default function Player(props){
                     <Typography
                         variant='body2'
                         className={classes.balance}
-                    >1200$</Typography>
+                    >{props.player.balance}</Typography>
 
                 </Box>
                     <PlayerHand cards={props.player.cardsInHand} height={75}></PlayerHand>
