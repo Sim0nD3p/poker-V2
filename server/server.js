@@ -190,14 +190,19 @@ io.on('connection', (socket) => {
   }) 
 
   socket.on('raise', (tableId, raise) => {
+    console.log(`this is raise`);
+    console.log(tableId);
+    console.log(server.casino);
     let index = server.findTable(tableId);
+    console.log(index);
+    console.log(server.casino[index]);
     server.casino[index].Call(socket.id)
     server.casino[index].Raise(raise, socket.id);
     server.casino[index].NextTurn(socket.id);
     server.updateClients(tableId);
   }) 
 
-  socket.on('call', ({tableId,raise}) => {
+  socket.on('call', (tableId) => {
     let index = server.findTable(tableId);
     server.casino[index].Call(socket.id);
     server.casino[index].NextTurn(socket.id);

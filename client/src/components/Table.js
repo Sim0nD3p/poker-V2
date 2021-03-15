@@ -118,6 +118,7 @@ export default function Table(props) {
             setClientCards(cards);
         });
         socket.on('pot', (serverPot) => {
+            console.log(`setting pot @ ${serverPot}`)
             setPot(serverPot)
         })
         socket.on('game-started', () => {

@@ -263,7 +263,8 @@ export default function Controls(props) {
     useEffect(() => {
         if (raise) {
             console.log('raising');
-            socket.emit('raise', (props.tableId, raise));
+            console.log(props.tableId)
+            socket.emit('raise', props.tableId, raise);
         }
 
     }, [raise])
@@ -279,7 +280,7 @@ export default function Controls(props) {
         socket.emit('check', (props.tableId));
     }
     function call() {
-        socket.emit('call', (props.tableId, props.call))
+        socket.emit('call', props.tableId)
     }
     function submitRaise(r) {
         console.log(r);
