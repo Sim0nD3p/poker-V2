@@ -15,66 +15,74 @@ import LoginFromUrl from './loginFromUrl';
 import { theme } from '../theme';
 import socketIOClient from "socket.io-client";
 import SideBar from './sideBar';
+import { HotKeys } from 'react-hotkeys';
+
 
 const loginContainerSize = [400, 300];
 
 const useStyles = makeStyles({
-    tableContainer:{
-        margin:0,
-        padding:0,
-        height:'100vh',
-        width:'100vw',
-        display:'flex',
-        flexDirection:'column',
+    tableContainer: {
+        margin: 0,
+        padding: 0,
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
         //backgroundColor:'blue',
-        overflow:'hidden',
+        overflow: 'hidden',
     },
-    card:{
-        height:200,
-        width:200,
-        padding:5
+    card: {
+        height: 200,
+        width: 200,
+        padding: 5
     },
-    tableTop:{
+    tableTop: {
         //doesn<t work stop trying dude
     },
-    text:{
-        position:'absolute'
+    text: {
+        position: 'absolute'
     },
-    player:{
+    player: {
     },
     loginContainer: {
-        width:loginContainerSize[0],
-        height:loginContainerSize[1],
-        position:'fixed',
-        display:'flex',
-        flexDirection:'column',
-        zIndex:10000,
+        width: loginContainerSize[0],
+        height: loginContainerSize[1],
+        position: 'fixed',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 10000,
         left: ((window.innerWidth / 2) - (loginContainerSize[0] / 2)),
         top: (window.innerHeight / 2 - loginContainerSize[1] / 2),
     },
-    header:{
-        margin:'auto',
-        marginTop:10,
-        marginBottom:10,
+    header: {
+        margin: 'auto',
+        marginTop: 10,
+        marginBottom: 10,
     },
-    nameInput:{
-        margin:'auto',
-        marginTop:10,
-        marginBottom:10,
-        width:'65%',
+    nameInput: {
+        margin: 'auto',
+        marginTop: 10,
+        marginBottom: 10,
+        width: '65%',
     },
-    joinButton:{
-        width:'65%',
-        margin:'auto',
-        marginTop:10,
+    joinButton: {
+        width: '65%',
+        margin: 'auto',
+        marginTop: 10,
     },
-    button:{
-        zIndex:1000
+    button: {
+        zIndex: 1000
     }
 })
 
 const tempPlayer = {
-    name:'Player1'
+    name: 'Player1'
+}
+const keyMap = {
+    TEST: 't'
+};
+const handlers = {
+    TEST: event => console.log('test'),
 }
 const io = require("socket.io-client");
 
@@ -90,6 +98,7 @@ export default function Table(props) {
 
     const [clientIsHost, setClientIsHost] = useState(false);
     const [flop, setFlop] = useState(tempFlop);
+    const [pot, setPot] = useState(0);
     const [clientIsTurn, setClientIsTurn] = useState(false);
     const [currentBet, setCurrentBet] = useState(0);
     const [call, setCall] = useState(null);
@@ -97,7 +106,7 @@ export default function Table(props) {
     const [clientCards, setClientCards] = useState();
     const [balance, setBalance] = useState();
 
-    
+
     useEffect(() => {
         console.log('listeners setup');
         socket.on('players', (players) => {
@@ -111,7 +120,9 @@ export default function Table(props) {
         socket.on('cards-in-hand', (cards) => {
             console.log('cards-in-hand');
             setClientCards(cards);
-
+        });
+        socket.on('pot', (serverPot) => {
+            setPot(serverPot)
         })
         socket.on('game-started', () => {
             console.log('game started!');
@@ -120,8 +131,8 @@ export default function Table(props) {
         socket.on('casinoCallback', (casino) => {
             console.log(casino);
         });
-        
-        
+
+
     }, [])
     useEffect(() => {
         socket.emit('join-socket-room', (props.tableId));
@@ -131,29 +142,29 @@ export default function Table(props) {
         //console.log(`This is clientName in Table.js ${props.clientName}`);
         //console.log(`This is tableId in Table.js ${props.tableId}`);
     }, [props.clientName, props.tableId]);
-    
+
 
     //keep playing order put client in first pos of array
     //call check, setCall
-    function playersReception(players, clientId){
+    function playersReception(players, clientId) {
         let clientIndex;
         let highestBet = 0;
-        for(let i = 0; i < players.length; i++){
-            if(players[i].id == clientId){
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].id == clientId) {
                 clientIndex = i;
                 setCurrentBet(players[i].currentBet);
                 setBalance(players[i].balance);
-                if(players[i].isHost !== clientIsHost){
+                if (players[i].isHost !== clientIsHost) {
                     setClientIsHost(players[i].isHost);
                 }
             }
-            if(players[i].currentBet > highestBet){
+            if (players[i].currentBet > highestBet) {
                 highestBet = players[i].currentBet
             }
         }
-        if(highestBet > currentBet){
+        if (highestBet > currentBet) {
             setCall(highestBet);
-        } else if(highestBet <= currentBet){
+        } else if (highestBet <= currentBet) {
             setCall(null);
         }
 
@@ -165,80 +176,84 @@ export default function Table(props) {
 
     }
 
-    
-    
-    
-    
-
-   
-            
 
 
-                //let client = clientPlayers[clientIndex];
-                //setClientIsTurn(client.isTurn);
-                //setCurrentBet(client.currentBet);
-                //let fromClient = clientPlayers.slice(clientIndex);
-                //let toClient = clientPlayers.slice(0, clientIndex);
-                //let players = fromClient.concat(toClient);
-                //setPlayers(players);
 
-                
-                
-                //add bet/raise on table when a player bet/raise
-                //set current bet and client infos before checking call/check shit
-                //send info call/check to control and display button accordingly
-                //button logic (faire les call d'avance), disable raison when isTurn==false
-                //change this to keep the playing order right
-        
-        return (
-        <Box className={classes.tableContainer}>
 
-            {props.clientName ? null : <LoginFromUrl
-                submitName={props.submitName}
-                submitTableId={props.submitTableId}
-                socket={socket}></LoginFromUrl>
-            }
-            
-            <TableContent
-            pot='pot'
-            flop={flop}
-            ></TableContent>
 
-            <SideBar
-            socket={socket}
-            tableId={props.tableId}></SideBar>
 
-            
-            <Controls
-            clientIsHost={clientIsHost}
-            gameOn={gameOn}
-            call={call}
-            currentBet={currentBet}
-            balance={balance}
-            tableId={props.tableId}
-            clientIsTurn={clientIsTurn}
-            players = {players}
-            socket={props.socket}
-            ></Controls>   {/**props= some kind of state for call/check and raise */}
 
-            {players.map((player, i) => {
-                let positions = playerPosition(players.length);
-                if(i === 0){
-                    player.cardsInHand = clientCards
+
+
+    //let client = clientPlayers[clientIndex];
+    //setClientIsTurn(client.isTurn);
+    //setCurrentBet(client.currentBet);
+    //let fromClient = clientPlayers.slice(clientIndex);
+    //let toClient = clientPlayers.slice(0, clientIndex);
+    //let players = fromClient.concat(toClient);
+    //setPlayers(players);
+
+
+
+    //add bet/raise on table when a player bet/raise
+    //set current bet and client infos before checking call/check shit
+    //send info call/check to control and display button accordingly
+    //button logic (faire les call d'avance), disable raison when isTurn==false
+    //change this to keep the playing order right
+
+    return (
+        <HotKeys keyMap={keyMap}>
+
+            <Box className={classes.tableContainer}>
+
+                {props.clientName ? null : <LoginFromUrl
+                    submitName={props.submitName}
+                    submitTableId={props.submitTableId}
+                    socket={socket}></LoginFromUrl>
                 }
-                let x = positions[i][0];
-                let place = positions[i][1];
-                return (
-                    <Player
-                    player={player}
-                    key={i}
-                    x={x}
-                    placement={place}
-                    ></Player>
-                )
-            })}
-            <TableTop className={classes.tableTop}></TableTop>
-        </Box>
+
+                <TableContent
+                    pot={pot}
+                    flop={flop}
+                ></TableContent>
+
+                <SideBar
+                    socket={socket}
+                    tableId={props.tableId}></SideBar>
+
+
+                <Controls
+                    clientIsHost={clientIsHost}
+                    gameOn={gameOn}
+                    call={call}
+                    currentBet={currentBet}
+                    balance={balance}
+                    tableId={props.tableId}
+                    clientIsTurn={clientIsTurn}
+                    players={players}
+                    socket={props.socket}
+                ></Controls>   {/**props= some kind of state for call/check and raise */}
+
+                {players.map((player, i) => {
+                    let positions = playerPosition(players.length);
+                    if (i === 0) {
+                        player.cardsInHand = clientCards
+                    }
+                    let x = positions[i][0];
+                    let place = positions[i][1];
+                    return (
+                        <Player
+                            player={player}
+                            key={i}
+                            x={x}
+                            placement={place}
+                        ></Player>
+                    )
+                })}
+                <TableTop className={classes.tableTop}></TableTop>
+            </Box>
+        </HotKeys>
+
     )
 }
 

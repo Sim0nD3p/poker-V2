@@ -4,39 +4,42 @@ import { Box, Button as ButtonMUi, Typography, ButtonBase, FormControl, InputLab
 import { useSocket } from '../../contexts/SocketProvider';
 import { theme } from '../../theme';
 import RaiseComponent from './raiseComponent';
+import { HotKeys } from 'react-hotkeys';
 
 const useStyles = makeStyles({
-    container:{
-        maxWidth:550,
-        margin:'auto',
-        marginRight:0,
+    container: {
+        maxWidth: 550,
+        margin: 'auto',
+        marginRight: 0,
         //height:120,
-        marginBottom:0,
+        marginBottom: 0,
         //display:'flex',
-       //justifyContent:'flex-end',
-        zIndex:10000,
+        //justifyContent:'flex-end',
+        zIndex: 10000,
     },
-    paper:{
-        padding:5,
+    paper: {
+        paddingRight: 5,
+        paddingTop: 10,
+        paddingLeft: 5,
     },
-    mainButtons:{
+    mainButtons: {
 
     },
     button: {
-        borderWidth:3,
-        height:50,
-        minWidth:100,
+        borderWidth: 3,
+        height: 50,
+        minWidth: 100,
         color: theme.palette.primary.main,
         borderColor: theme.palette.primary.main,
-        margin:5,
-        '&:hover':{
-            borderWidth:3
+        margin: 5,
+        '&:hover': {
+            borderWidth: 3
         }
     },
-    newButton:{
-        minWidth:100,
-        height:50,
-        '&.MuiOutlinedInput-root':{
+    newButton: {
+        minWidth: 100,
+        height: 50,
+        '&.MuiOutlinedInput-root': {
 
             borderColor: `${theme.palette.primary.main} !important`,
             borderWidth: '3px',
@@ -49,19 +52,19 @@ const useStyles = makeStyles({
             height: 50,
 
         },
-        
-        
-        '&.MuiOutlinedInput-notchedOutline':{
-            borderWidth:'3px',
+
+
+        '&.MuiOutlinedInput-notchedOutline': {
+            borderWidth: '3px',
             borderColor: `${theme.palette.primary.main} !important`,
-            width:100,
-            height:50,
+            width: 100,
+            height: 50,
 
         },
-        '&.MuiOutlinedInput-input':{
+        '&.MuiOutlinedInput-input': {
             //color:'red',
-            width:100,
-            height:50,
+            width: 100,
+            height: 50,
             fontSize: `${theme.typography.button2.fontSize} !important`,
             fontFamily: theme.typography.button2.fontFamily,
             //textTransform:theme.typography.button2.textTransform,
@@ -71,36 +74,36 @@ const useStyles = makeStyles({
         }
 
     },
-    input:{
+    input: {
 
     },
-    gridItem:{
-        width:110,
-        height:60,
-        margin:5,
-        padding:0,
-        dispaly:'flex',
-        justifyContent:'center',
-        alignItems:'center',
+    gridItem: {
+        width: 110,
+        height: 60,
+        //margin:5,
+        padding: 0,
+        dispaly: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    newButton2:{
-        width:100,
-        height:50,
-        display:'flex',
-        alignItems:'center',
-        margin:'auto'
+    newButton2: {
+        width: 100,
+        height: 50,
+        display: 'flex',
+        alignItems: 'center',
+        margin: 'auto'
 
     },
-    notchedOutline:{
-        borderWidth:'3px',
+    notchedOutline: {
+        borderWidth: '3px',
         boderColor: `${theme.palette.primary.main} !important`,
 
     },
-    rootInput:{
-        '&.MuiOutlinedInput-input':{
+    rootInput: {
+        '&.MuiOutlinedInput-input': {
             //color:'red',
             fontFamily: `${theme.typography.button2.fontFamily}`,
-            textTransform:`${theme.typography.button2.textTransform}`,
+            textTransform: `${theme.typography.button2.textTransform}`,
             letterSpacing: `${theme.typography.button2.letterSpacing}`,
             fontWeight: `${theme.typography.button2.fontWeight}`,
             lineHeight: `${theme.typography.button2.lineHeight}`,
@@ -109,26 +112,26 @@ const useStyles = makeStyles({
         },
         //width:100,
         //height:50,
-        borderWidth:'3px',
+        borderWidth: '3px',
         borderColor: `${theme.palette.primary.main} !important`,
-        '&.MuiInput-root':{
-            
-            
+        '&.MuiInput-root': {
+
+
         }
     },
     cssOutlinedInput: {
-        width:100,
-        height:50,
-        bottom:0,
-        
+        width: 100,
+        height: 50,
+        bottom: 0,
+
         '&$cssFocused $notchedOutline': {
             borderColor: `${theme.palette.primary.main} !important`,
-            alignItem:'center',
+            alignItem: 'center',
             borderWidth: '3px',
-            
+
 
         },
-        
+
     },
     cssFocused: {
         borderWidth: '3px',
@@ -142,32 +145,32 @@ const useStyles = makeStyles({
         borderColor: `${theme.palette.primary.main} !important`,
         //padding:0,
     },
-    inputElement:{
-        '&.MuiOutlinedInput-input':{
+    inputElement: {
+        '&.MuiOutlinedInput-input': {
             color: `${theme.palette.primary.main}`,
             fontSize: theme.typography.button2.fontSize,
             fontFamily: `${theme.typography.button2.fontFamily}`,
-            textTransform:`${theme.typography.button2.textTransform}`,
+            textTransform: `${theme.typography.button2.textTransform}`,
             letterSpacing: `${theme.typography.button2.letterSpacing}`,
             fontWeight: `${theme.typography.button2.fontWeight}`,
             lineHeight: `${theme.typography.button2.lineHeight}`,
         },
     },
-    formControl:{
+    formControl: {
         //height:50,
         //width:100,
-        display:'flex',
-        flexDirection:'column',
-        alignItem:'center',
-        position:'relative',
-        margin:'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItem: 'center',
+        position: 'relative',
+        margin: 'auto',
 
     },
-    inputLabel:{
+    inputLabel: {
         //paddingLeft:0,
-        position:'absolute',
-        left:20,
-        top:-6,
+        position: 'absolute',
+        left: 20,
+        top: -6,
         color: theme.palette.primary.main,
         fontWeight: theme.typography.button2.fontWeight
 
@@ -177,7 +180,7 @@ const useStyles = makeStyles({
 function Button(props) {
     const classes = useStyles();
     const shortcut = props.text.slice(0, 1);
-    function test(){
+    function test() {
         console.log('test');
     }
     return (
@@ -185,15 +188,15 @@ function Button(props) {
             item
             className={classes.gridItem}
         >
-            <FormControl className={classes.formControl}>
+            <FormControl focused className={classes.formControl}>
                 <InputLabel
-                disableAnimation='true'
-                className={classes.inputLabel}
+                    disableAnimation='true'
+                    className={classes.inputLabel}
                 >{shortcut}</InputLabel>
-            <ButtonBase
-                className={classes.newButton2}
-                onClick={props.action}
-            >
+                <ButtonBase
+                    className={classes.newButton2}
+                    onClick={props.action}
+                >
 
 
 
@@ -226,10 +229,10 @@ function Button(props) {
                         }}>
 
                     </OutlinedInput>
-            </ButtonBase>
-                </FormControl>
+                </ButtonBase>
+            </FormControl>
 
-           {/* <ButtonMUi       
+            {/* <ButtonMUi       
                 size='large'
                 variant='outlined'
                 onClick={props.action}
@@ -242,44 +245,58 @@ function Button(props) {
 }
 //keyboard shortcuts
 //Client On?
-export default function Controls(props){
+export default function Controls(props) {
     const classes = useStyles();
     const socket = props.socket;
     const [action, setAction] = useState();
     const [raise, setRaise] = useState();
     const [dispRaise, setDispRaise] = useState(false);
+    const test = React.useCallback(() => {
+        console.log('this is test from controls');
+    }, []);
+    const handlers = {
+        TEST: test
+    }
 
-    
-    function startGame(){
+    useEffect(() => {
+        if (raise) {
+            console.log('raising');
+            socket.emit('raise', (props.tableId, raise));
+        }
+
+    }, [raise])
+
+
+    function startGame() {
         socket.emit('start-game', (props.tableId));
     }
-    function fold(){
+    function fold() {
         socket.emit('fold', (props.tableId));
     }
-    function check(){
+    function check() {
         socket.emit('check', (props.tableId));
     }
-    function call(){
+    function call() {
         socket.emit('call', (props.tableId, props.call))
     }
-    function submitRaise(r){
+    function submitRaise(r) {
         console.log(r);
         setRaise(r);
 
     }
-    function Raise(){
+    function Raise() {
         setDispRaise(true);
         //socket.emit('raise', (props.tableId, raise));
     }
-    
-    function casino(){
+
+    function casino() {
         socket.emit('casino', `test`);
     }
-    function StartGame(props){
+    function StartGame(props) {
         var element;
-        if(props.gameOn == false && props.clientIsHost == true){
+        if (props.gameOn == false && props.clientIsHost == true) {
             element =
-            //<Grid container>
+                //<Grid container>
                 <Button text='Start game' action={startGame}></Button>
             //</Grid> 
         }
@@ -288,8 +305,8 @@ export default function Controls(props){
         }
         return (element)
     }
-    function CheckCall(props){
-        return(
+    function CheckCall(props) {
+        return (
             (props.call === null) ? <Button text='Check' action={check}></Button> : <Button text='Call' action={call}></Button>
         )
     }
@@ -297,8 +314,8 @@ export default function Controls(props){
         const classes = useStyles();
         return (
             <Paper
-            className={classes.paper}
-            elevation={10}>
+                className={classes.paper}
+                elevation={10}>
 
                 <Grid
                     container
@@ -329,36 +346,42 @@ export default function Controls(props){
                 display call
             }
              */
-        
-    
+
+
 
     return (
-        <Grid
-        container
-        justify='flex-end'
-        alignItems='flex-end'
-        direction='row'
-        className={classes.container}
-        >
-            {dispRaise ?
-            <RaiseComponent
-            currentBet={props.currentBet}
-            submitRaise={submitRaise}
-            balance={props.balance}
-            call={props.call}
-            currentBet={props.currentBet}
-            submitDispRaise={setDispRaise}
-            ></RaiseComponent>
-            : <MainButtons
-            gameOn={props.gameOn}
-            clientIsHost={props.clientIsHost}
-            call={props.call}
-            ></MainButtons>}
-            
+        //<HotKeys handlers={handlers}>
 
-        </Grid>
-        
 
-            
+            <Grid
+                container
+                justify='flex-end'
+                alignItems='flex-end'
+                direction='row'
+                className={classes.container}
+            >
+                {dispRaise ?
+                    <RaiseComponent
+                        currentBet={props.currentBet}
+                        submitRaise={submitRaise}
+                        socket={props.socket}
+                        balance={props.balance}
+                        call={props.call}
+                        currentBet={props.currentBet}
+                        submitDispRaise={setDispRaise}
+                    ></RaiseComponent>
+                    : <MainButtons
+                        gameOn={props.gameOn}
+                        clientIsHost={props.clientIsHost}
+                        call={props.call}
+                    ></MainButtons>}
+
+
+
+            </Grid>
+       //</HotKeys>
+
+
+
     )
 }

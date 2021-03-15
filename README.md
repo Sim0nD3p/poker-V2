@@ -8,10 +8,10 @@
  - Detecter fin des rounds
 
 # In client
-- listen pot client (sim)
 - affichage cartes empty (before reception)
-- interface controls (client/table.js)
 - fix affichage players on update (sim)
+- delay affichage on join game(cards import?)
+- keyboard shortcuts
 
 # Fonctionnalites a ajouter
 - sitOutNextRound

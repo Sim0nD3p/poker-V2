@@ -31,7 +31,7 @@ export default function TableContent(props){
             <Typography
                 variant='h5'
                 className={classes.potText}
-            >POT: 100$</Typography>
+            >{props.pot}</Typography>
 
             <Box
                 style={{
