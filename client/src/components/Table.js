@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Profiler, useEffect } from 'react';
 import { useSocket } from '../contexts/SocketProvider';
 import { useState } from 'react';
 import store from '../redux/store';
@@ -132,6 +132,7 @@ export default function Table(props) {
 
     }, [])
     useEffect(() => {
+        console.log(`tableId from table.js ${props.tableId}`);
         socket.emit('join-socket-room', (props.tableId));
     }, [props.tableId])
 
@@ -197,9 +198,24 @@ export default function Table(props) {
     //send info call/check to control and display button accordingly
     //button logic (faire les call d'avance), disable raison when isTurn==false
     //change this to keep the playing order right
+    function callback(id, phase, actualDuration, baseDuration, startTime, comitTime, interactions){
+        let object = {
+            id: id,
+            phase: phase,
+            actualDuration: actualDuration,
+            baseDuration: baseDuration,
+            startTime: startTime,
+            comitTime: comitTime,
+            interactions: interactions
+        };
+        //console.log(object);
+    }
 
     return (
         <GlobalHotKeys keyMap={keyMap}>
+            <Profiler id='main' onRender={callback}>
+
+            </Profiler>
 
             <Box className={classes.tableContainer}>
 

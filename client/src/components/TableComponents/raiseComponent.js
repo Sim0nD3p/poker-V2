@@ -243,7 +243,7 @@ export default function RaiseComponent(props) {
                                 color='primary'
                                 onChange={handleSliderChange}
                                 value={targetValue}
-                                min={(props.call) ? props.call : props.currentBet}
+                                min={0}
                                 max={props.balance}
                                 ></Slider>
                         </Grid>

@@ -255,10 +255,35 @@ export default function Controls(props) {
     const test = React.useCallback(() => {
         console.log('this is keyboard shortcut test from controls');
     }, []);
+
+    useEffect(() => {
+        console.log(props.tableId);
+
+    }, [props.tableId])
+
+    const checkCallShortcut = React.useCallback(() => {
+        if(props.call !== null){
+            call();
+        } else {
+            console.log(`check react.callback tableId is ${props.tableId}`);
+            check();
+
+        }
+    }, [props.tableId, props.call]);
+    const foldShortcut = React.useCallback(() => {
+        fold();
+    }, [props.tableId]);
+    const raiseShortcut = React.useCallback(() => {
+        setDispRaise(true);
+    }, []);
+
+
     const handlers = {
-        TEST: test,
-        CALL: test
+        CHECK_CALL: checkCallShortcut,
+        FOLD: foldShortcut,
+        RAISE: raiseShortcut,
     }
+    
 
     useEffect(() => {
         if (raise) {
@@ -269,6 +294,8 @@ export default function Controls(props) {
 
     }, [raise])
 
+   
+
 
     function startGame() {
         socket.emit('start-game', (props.tableId));
@@ -277,6 +304,7 @@ export default function Controls(props) {
         socket.emit('fold', (props.tableId));
     }
     function check() {
+        console.log(`check @ ${props.tableId}`);
         socket.emit('check', (props.tableId));
     }
     function call() {
@@ -313,6 +341,7 @@ export default function Controls(props) {
             (props.call === null) ? <Button text='Check' action={check}></Button> : <Button text='Call' action={call}></Button>
         )
     }
+    
     function MainButtons(props) {
         const classes = useStyles();
         return (
