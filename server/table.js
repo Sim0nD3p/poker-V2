@@ -214,7 +214,7 @@ class Table {
             this.players[this.playerPlaying].currentBet += raise;
             this.players[this.playerPlaying].totalBet += raise;
             if(this.players[this.playerPlaying].currentBet>this.maxBet){
-                this.maxBet = raise;
+                this.maxBet = this.players[this.playerPlaying].currentBet;
                 this.raiseIndex = this.playerPlaying;
             }
             
