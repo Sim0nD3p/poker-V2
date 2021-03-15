@@ -8,7 +8,6 @@ class Table {
     CardsOnTable = [];
     deck;
     totalPot = 0;
-    currentPot = 0;
     playerPlaying = -1;
     maxBet = 0;
     raiseIndex=0;
@@ -207,7 +206,7 @@ class Table {
         }
 
         if (this.players[this.playerPlaying].balance >= raise) {
-            this.currentPot = this.currentPot + raise;
+            this.totalPot = this.totalPot + raise;
             this.players[this.playerPlaying].balance = this.players[this.playerPlaying].balance - raise;
             this.players[this.playerPlaying].currentBet += raise;
             this.players[this.playerPlaying].totalBet += raise;
@@ -218,7 +217,7 @@ class Table {
             
         }
         else {
-            this.currentPot = this.currentPot + this.players[this.playerPlaying].balance;
+            this.totalPot = this.totalPot + this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].currentBet += this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].totalBet += this.players[this.playerPlaying].balance;
             this.players[this.playerPlaying].balance = 0;
