@@ -42,6 +42,9 @@ class Table {
     }
 
     AddCardToFlop() {
+        for(let i; i<this.players.length; i++){
+            this.players[i].currentBet = 0;
+        }
         if (this.CardsOnTable.length === 0) {
             this.deck.GetNextCard();
             this.CardsOnTable.push(this.deck.GetNextCard());
