@@ -4,7 +4,8 @@ import { Box, Button as ButtonMUi, Typography, ButtonBase, FormControl, InputLab
 import { useSocket } from '../../contexts/SocketProvider';
 import { theme } from '../../theme';
 import RaiseComponent from './raiseComponent';
-import { HotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
+import { keyMap } from'../keyMap';
 
 const useStyles = makeStyles({
     container: {
@@ -252,10 +253,11 @@ export default function Controls(props) {
     const [raise, setRaise] = useState();
     const [dispRaise, setDispRaise] = useState(false);
     const test = React.useCallback(() => {
-        console.log('this is test from controls');
+        console.log('this is keyboard shortcut test from controls');
     }, []);
     const handlers = {
-        TEST: test
+        TEST: test,
+        CALL: test
     }
 
     useEffect(() => {
@@ -313,6 +315,9 @@ export default function Controls(props) {
     function MainButtons(props) {
         const classes = useStyles();
         return (
+            <GlobalHotKeys handlers={handlers} keyMap={keyMap}>
+
+            
             <Paper
                 className={classes.paper}
                 elevation={10}>
@@ -329,6 +334,7 @@ export default function Controls(props) {
                     <Button text='Raise' action={Raise}></Button>
                 </Grid>
             </Paper>
+            </GlobalHotKeys>
 
         )
 
@@ -350,7 +356,7 @@ export default function Controls(props) {
 
 
     return (
-        //<HotKeys handlers={handlers}>
+        
 
 
             <Grid
@@ -379,7 +385,6 @@ export default function Controls(props) {
 
 
             </Grid>
-       //</HotKeys>
 
 
 

@@ -15,7 +15,8 @@ import LoginFromUrl from './loginFromUrl';
 import { theme } from '../theme';
 import socketIOClient from "socket.io-client";
 import SideBar from './sideBar';
-import { HotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
+import { keyMap } from './keyMap';
 
 
 const loginContainerSize = [400, 300];
@@ -78,12 +79,7 @@ const useStyles = makeStyles({
 const tempPlayer = {
     name: 'Player1'
 }
-const keyMap = {
-    TEST: 't'
-};
-const handlers = {
-    TEST: event => console.log('test'),
-}
+
 const io = require("socket.io-client");
 
 //faut pouvoir call, check d'avance
@@ -202,7 +198,7 @@ export default function Table(props) {
     //change this to keep the playing order right
 
     return (
-        <HotKeys keyMap={keyMap}>
+        <GlobalHotKeys keyMap={keyMap}>
 
             <Box className={classes.tableContainer}>
 
@@ -252,7 +248,7 @@ export default function Table(props) {
                 })}
                 <TableTop className={classes.tableTop}></TableTop>
             </Box>
-        </HotKeys>
+        </GlobalHotKeys>
 
     )
 }
