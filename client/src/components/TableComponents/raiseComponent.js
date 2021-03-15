@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { borders } from '@material-ui/system';
 import { theme } from '../../theme'
 import { AddCircleRounded, RemoveCircleRounded } from '@material-ui/icons';
+import ShortcutButton from './shortcutButton';
+import { GlobalHotkeys } from 'react-hotkeys';
 import { Box, Grid, Input, IconButton, OutlinedInput, Button, Paper, Silder, Slider, Typography, InputAdornment, TextField, ButtonBase } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -20,6 +22,7 @@ const useStyles = makeStyles({
     },
     paper:{
         padding:5,
+        paddingBottom:0,
     },
     item: {
         margin: 5
@@ -217,7 +220,8 @@ export default function RaiseComponent(props) {
                                 <Typography className={classes.buttonTextColor} style={theme.typography.button2}>all in</Typography>
                             </Button>
                         </Grid>
-                        <Grid item className={classes.item}>
+                        <ShortcutButton text='Back' action={hideRaiseComp}></ShortcutButton>
+                        {/* <Grid item className={classes.item}>
                             <Button
                                 variant='outlined'
                                 color='primary'
@@ -225,7 +229,7 @@ export default function RaiseComponent(props) {
                                 onClick={hideRaiseComp}>
                                 <Typography style={theme.typography.button2}>back</Typography>
                             </Button>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Grid>
                 <Grid item className={classes.container}>
@@ -252,7 +256,8 @@ export default function RaiseComponent(props) {
                             <AddCircleRounded onClick={addCircle}fontSize='large' className={classes.icon}></AddCircleRounded>
                         </Grid>
 
-                        <Grid item className={classes.item}>
+                        <ShortcutButton text='Raise' action={raiseSubmit}></ShortcutButton>
+                        {/* <Grid item className={classes.item}>
                             <Button
                                 variant='outlined'
                                 color='primary'
@@ -260,7 +265,7 @@ export default function RaiseComponent(props) {
                                 className={classes.raiseButton}>
                                 <Typography style={theme.typography.button2}>raise</Typography>
                             </Button>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Grid>
             </Grid>

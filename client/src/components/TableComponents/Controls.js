@@ -6,6 +6,7 @@ import { theme } from '../../theme';
 import RaiseComponent from './raiseComponent';
 import { GlobalHotKeys } from 'react-hotkeys';
 import { keyMap } from'../keyMap';
+import ShortcutButton from './shortcutButton';
 
 const useStyles = makeStyles({
     container: {
@@ -87,163 +88,10 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    newButton2: {
-        width: 100,
-        height: 50,
-        display: 'flex',
-        alignItems: 'center',
-        margin: 'auto'
-
-    },
-    notchedOutline: {
-        borderWidth: '3px',
-        boderColor: `${theme.palette.primary.main} !important`,
-
-    },
-    rootInput: {
-        '&.MuiOutlinedInput-input': {
-            //color:'red',
-            fontFamily: `${theme.typography.button2.fontFamily}`,
-            textTransform: `${theme.typography.button2.textTransform}`,
-            letterSpacing: `${theme.typography.button2.letterSpacing}`,
-            fontWeight: `${theme.typography.button2.fontWeight}`,
-            lineHeight: `${theme.typography.button2.lineHeight}`,
-            //width:100,
-            //height:50,
-        },
-        //width:100,
-        //height:50,
-        borderWidth: '3px',
-        borderColor: `${theme.palette.primary.main} !important`,
-        '&.MuiInput-root': {
-
-
-        }
-    },
-    cssOutlinedInput: {
-        width: 100,
-        height: 50,
-        bottom: 0,
-
-        '&$cssFocused $notchedOutline': {
-            borderColor: `${theme.palette.primary.main} !important`,
-            alignItem: 'center',
-            borderWidth: '3px',
-
-
-        },
-
-    },
-    cssFocused: {
-        borderWidth: '3px',
-        //width:100,
-        //height:50,
-    },
-    notchedOutline: {
-        //width:100,
-        //height:50,
-        borderWidth: '3px',
-        borderColor: `${theme.palette.primary.main} !important`,
-        //padding:0,
-    },
-    inputElement: {
-        '&.MuiOutlinedInput-input': {
-            color: `${theme.palette.primary.main}`,
-            fontSize: theme.typography.button2.fontSize,
-            fontFamily: `${theme.typography.button2.fontFamily}`,
-            textTransform: `${theme.typography.button2.textTransform}`,
-            letterSpacing: `${theme.typography.button2.letterSpacing}`,
-            fontWeight: `${theme.typography.button2.fontWeight}`,
-            lineHeight: `${theme.typography.button2.lineHeight}`,
-        },
-    },
-    formControl: {
-        //height:50,
-        //width:100,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItem: 'center',
-        position: 'relative',
-        margin: 'auto',
-
-    },
-    inputLabel: {
-        //paddingLeft:0,
-        position: 'absolute',
-        left: 20,
-        top: -6,
-        color: theme.palette.primary.main,
-        fontWeight: theme.typography.button2.fontWeight
-
-    }
+    
 })
 
-function Button(props) {
-    const classes = useStyles();
-    const shortcut = props.text.slice(0, 1);
-    function test() {
-        console.log('test');
-    }
-    return (
-        <Grid
-            item
-            className={classes.gridItem}
-        >
-            <FormControl focused className={classes.formControl}>
-                <InputLabel
-                    disableAnimation='true'
-                    className={classes.inputLabel}
-                >{shortcut}</InputLabel>
-                <ButtonBase
-                    className={classes.newButton2}
-                    onClick={props.action}
-                >
 
-
-
-
-                    <OutlinedInput
-                        classes={{
-                            root: classes.cssOutlinedInput,
-                            focused: classes.cssFocused,
-                            notchedOutline: classes.notchedOutline,
-                            input: classes.inputElement
-
-
-                        }}
-                        type='button'
-                        readOnly='true'
-                        //placeholder={props.text}
-                        notched='true'
-                        //labelWidth={18}
-                        label='tt'
-                        //hiddenLabel={false}
-                        inputProps={{
-                            defaultValue: props.text,
-                            classes: {
-                                root: classes.cssOutlinedInput,
-                                focused: classes.cssFocused,
-                                notchedOutline: classes.notchedOutline,
-                                input: classes.inputElement
-                            }
-
-                        }}>
-
-                    </OutlinedInput>
-                </ButtonBase>
-            </FormControl>
-
-            {/* <ButtonMUi       
-                size='large'
-                variant='outlined'
-                onClick={props.action}
-                className={classes.button}
-            >
-                <Typography style={theme.typography.button2}>{props.text}</Typography>
-            </ButtonMUi> */}
-        </Grid>
-    )
-}
 //keyboard shortcuts
 //Client On?
 export default function Controls(props) {
@@ -328,7 +176,7 @@ export default function Controls(props) {
         if (props.gameOn == false && props.clientIsHost == true) {
             element =
                 //<Grid container>
-                <Button text='Start game' action={startGame}></Button>
+                <ShortcutButton text='Start game' action={startGame}></ShortcutButton>
             //</Grid> 
         }
         else {
@@ -338,7 +186,7 @@ export default function Controls(props) {
     }
     function CheckCall(props) {
         return (
-            (props.call === null) ? <Button text='Check' action={check}></Button> : <Button text='Call' action={call}></Button>
+            (props.call === null) ? <ShortcutButton text='Check' action={check}></ShortcutButton> : <ShortcutButton text='Call' action={call}></ShortcutButton>
         )
     }
     
@@ -359,9 +207,9 @@ export default function Controls(props) {
                     className={classes.mainButtons}
                 >
                     <StartGame clientIsHost={props.clientIsHost} gameOn={props.gameOn}></StartGame>
-                    <Button text='Fold' action={fold}></Button>
+                    <ShortcutButton text='Fold' action={fold}></ShortcutButton>
                     <CheckCall call={props.call}></CheckCall>
-                    <Button text='Raise' action={Raise}></Button>
+                    <ShortcutButton text='Raise' action={Raise}></ShortcutButton>
                 </Grid>
             </Paper>
             </GlobalHotKeys>
