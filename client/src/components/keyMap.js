@@ -1,5 +1,6 @@
 export const keyMap = {
-    CALL: 'c',
+    CHECK_CALL: 'c',
     RAISE: 'r',
+    FOLD: 'f',
     TEST: 't',
 }

@@ -1,4 +1,5 @@
 function importCards(r) {
+    let t0 = performance.now()
     console.log('importing cards');
     let filePathName = r.keys();
     let source = filePathName.map(r);
@@ -7,11 +8,13 @@ function importCards(r) {
         let name = filePathName[i].substring(2, 5);
         array[name] = source[i];
     }
+    let t1 = performance.now();
+    console.log(`importing cards took ${t1-t0} ms`);
     return array;
 }
 
 function importCardsBack(r){
-    console.log(r.keys())
+    let t0 = performance.now();
     let filePathName = r.keys();
     let source = filePathName.map(r);
     let array = [];
@@ -20,6 +23,9 @@ function importCardsBack(r){
         array.push(source[i]);
         console.log(array);
     }
+    let t1 = performance.now();
+    console.log(`importing back cards took ${t1-t0} ms`);
+
     return array
 }
 
